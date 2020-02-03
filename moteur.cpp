@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
   gtk_container_add(GTK_CONTAINER(window), darea);
 
   XMLDocument svg_data;
-  svg_data.LoadFile("maison.svg");
+  svg_data.LoadFile("resources/maison.svg");
   // XMLElement *rectangle1 = svg_data.FirstChildElement("svg")->FirstChildElement("g")->FirstChildElement("rect");
   // rectangle1->SetAttribute("style", "fill:#000000");
   XMLPrinter printer;
