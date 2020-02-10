@@ -27,7 +27,7 @@ add_executable(serveur serveur/moteur.cpp)
 add_executable(testsServeur serveur/maintest.cpp serveur/message.cpp cbor11/cbor11.cpp serveur/dataparser.cpp erreur/erreur.cpp)
 
 #On crée l'executable pour le client
-add_executable(client client/main.cpp)
+add_executable(client client/client.cpp)
 
 #On lies les librairies pour le serveur
 target_link_libraries(serveur ${GTK3_LIBRARIES} ${RSVG_LIBRARIES} ${CAIRO_LIBRARIES} ${TXML_LIBRARIES})
