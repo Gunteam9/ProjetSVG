@@ -1,10 +1,11 @@
 # Compilteur
 CPPC := g++
 #options de compilation
-CPPFLAGS := --std=c++17 -Wall -Wextra -pedantic -ggdb
+CPPFLAGS := --std=c++17 -Wall -Wextra -pedantic -ggdb 
 # Sources & objets
-SRC= $(wildcard *.cpp)
+SRC= $(wildcard *.cpp) $(wildcard ../erreur/*.cpp) $(wildcard ../cbor11/*.cpp)
 OBJ= $(SRC:.cpp=.o)
+
 # executable
 EXEC = moteur
 
@@ -18,12 +19,12 @@ mem : $(EXEC)
 	valgrind --leak-check=full ./$<
 
 $(EXEC) : $(OBJ)
-	$(CPPC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+	$(CPPC) $(CPPFLAGS) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 %.o: %.cpp
-	$(CPPC) $(CXXFLAGS) -o $@ -c $<
+	$(CPPC) $(CPPFLAGS) $(CXXFLAGS) -o $@ -c $<
 
 .PHONY : clean
 
 clean:
-	rm -f *.o
+	rm -f *.o moteur

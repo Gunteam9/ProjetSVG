@@ -10,9 +10,7 @@
  * @return un tableau des messages
  */
 vector<Message> DataParser::lireMessage(cbor::binary encodedItem) {
-
-
-
+    
     cbor decodedItem= cbor::decode(encodedItem);
 
     if(!decodedItem.is_map()){
