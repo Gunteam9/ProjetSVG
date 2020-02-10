@@ -1,13 +1,29 @@
-CCPP:=g++
+# Compilteur
+CPPC := g++
+#options de compilation
+CPPFLAGS := --std=c++17 -Wall -Wextra -pedantic -ggdb
+# Sources & objets
+SRC= $(wildcard *.cpp)
+OBJ= $(SRC:.cpp=.o)
+# executable
+EXEC = moteur
 
 CXXFLAGS = $(shell pkg-config --cflags cairo gtk+-3.0 librsvg-2.0 tinyxml2)
 LDFLAGS = $(shell pkg-config --libs cairo gtk+-3.0 librsvg-2.0 tinyxml2)
 
-all : moteur
-moteur: moteur.o 
-	$(CCPP) $(CXXFLAGS) -o $@ $< $(LDFLAGS)
-%.o : %.cpp
-	$(CCPP) $(CXXFLAGS) -o $@ -c $< $(LDFLAGS)
-clean:
-	rm -f *.o *~ moteur
+# Règle de compilation
+all : clean $(EXEC)
 
+mem : $(EXEC)
+	valgrind --leak-check=full ./$<
+
+$(EXEC) : $(OBJ)
+	$(CPPC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+
+%.o: %.cpp
+	$(CPPC) $(CXXFLAGS) -o $@ -c $<
+
+.PHONY : clean
+
+clean:
+	rm -f *.o
