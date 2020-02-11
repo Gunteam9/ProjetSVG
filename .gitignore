@@ -3,3 +3,5 @@ cmake-build-debug
 .vscode
 *.o
 moteur
+client/client
+client/Makefile
