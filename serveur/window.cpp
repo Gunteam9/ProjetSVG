@@ -1,9 +1,10 @@
 
 #include "window.hpp"
 
-Window::Window(int taille_x, int taille_y){
+Window::Window(int taille_x, int taille_y, std::string const& titre){
     this->taille_x = taille_x;
     this->taille_y = taille_y;
+    this->titre = titre;
 }
 
 Window::~Window(){
@@ -50,7 +51,9 @@ void Window::init(int* argc, char*** argv){
 
     gtk_window_set_position(GTK_WINDOW(this->window), GTK_WIN_POS_CENTER);
 
-    gtk_window_set_title(GTK_WINDOW(this->window), "GTK window");
+    gtk_window_set_default_size(GTK_WINDOW(this->window), this->taille_x, this->taille_y);
+
+    gtk_window_set_title(GTK_WINDOW(this->window), this->titre.c_str());
 
     gtk_widget_show_all(this->window);
 }
