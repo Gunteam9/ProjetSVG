@@ -12,7 +12,7 @@ class Erreur: public exception
 {
 
 private:
-    string m_phrase;            //Description de l'erreur
+    string m_phrase;            //Description de l'exceptions
 
 public:
     Erreur(string const& phrase) throw();
