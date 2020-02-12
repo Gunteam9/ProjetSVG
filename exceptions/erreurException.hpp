@@ -8,16 +8,16 @@
 
 using namespace std;
 
-class Erreur: public exception
+class ErreurException: public exception
 {
 
 private:
     string m_phrase;            //Description de l'exceptions
 
 public:
-    Erreur(string const& phrase) throw();
+    ErreurException(string const& phrase) throw();
 
-    virtual ~Erreur() throw(){}
+    virtual ~ErreurException() throw(){}
 
     virtual const char* what() const throw();
 

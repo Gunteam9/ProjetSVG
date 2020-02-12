@@ -1,10 +1,10 @@
 
 #include "erreurException.hpp"
 
-Erreur::Erreur(const string &phrase) throw() {
+ErreurException::ErreurException(const string &phrase) throw() {
     this->m_phrase=phrase;
 }
 
-const char *Erreur::what() const throw() {
+const char *ErreurException::what() const throw() {
     return m_phrase.c_str();
 }

@@ -2,7 +2,7 @@
 // Created by Romain on 11/02/2020.
 //
 
-#include "functions.h"
+#include "functions.hpp"
 #include "../cbor11/cbor11.hpp"
 
 using namespace std;

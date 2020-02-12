@@ -8,7 +8,7 @@
 #include <netinet/in.h>
 #include <iostream>
 
-#include "../erreur/erreur.hpp"
+#include "../exceptions/erreurException.hpp"
 
 #define PORT    6789
 #define MAXLINE 1024

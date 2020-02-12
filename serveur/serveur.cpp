@@ -17,7 +17,7 @@ Serveur::Serveur(const sockaddr_in &adresseClient) : adresseClient(adresseClient
     int resBind = bind(this->maSocket, (const struct sockaddr *)&this->adresseServer, sizeof(this->adresseServer));
     if ( resBind < 0 )
     {
-        throw Erreur("le binding a échoué");
+        throw ErreurException("le binding a échoué");
 
     }
 
@@ -43,7 +43,7 @@ void Serveur::startServer() {
         int res2 = recvfrom(this->maSocket, buffer, MAXLINE, MSG_WAITALL, reinterpret_cast<sockaddr *>(&adresseClient),&fromlen);
 
         if (res2 <= 0) {
-            throw Erreur("Problème de reception de données");
+            throw ErreurException("Problème de reception de données");
         }
         cout<<"message recu " <<  buffer;
     }

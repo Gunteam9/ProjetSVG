@@ -6,12 +6,7 @@
 // Pourquoi utiliser htons: https://stackoverflow.com/questions/19207745/htons-function-in-socket-programing
 //
 
-#include <netinet/in.h>
-#include <cstring>
-
-#include "functions.h"
-#include "Exceptions/udpRuntimeException.h"
-#include "Exceptions/udpSendingException.h"
+#include "functions.hpp"
 
 using namespace std;
 
