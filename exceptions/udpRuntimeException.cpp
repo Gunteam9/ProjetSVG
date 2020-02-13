@@ -3,11 +3,11 @@
 // Created by gunteam on 11/02/2020.
 //
 
-#include <iostream>
 
 using namespace std;
 
-udpRuntimeException::udpRuntimeException(sockaddr_in addr, const int PORT) {
+udpRuntimeException::udpRuntimeException(const string addr, const int PORT) {
 
-    cout << "Impossible de créer la socket pour " << addr.sin_addr.s_addr <<  ":" << PORT << endl;
+    cout << "Impossible de créer la socket pour " << addr <<  ":" << PORT << endl;
+    exit(EXIT_FAILURE);
 }
