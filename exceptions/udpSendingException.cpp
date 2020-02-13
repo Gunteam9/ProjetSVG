@@ -10,10 +10,12 @@ using namespace std;
 
 udpSendingException::udpSendingException() {
     cout << "Erreur dans l'envoie des données" << endl;
+    exit(EXIT_FAILURE);
 }
 
 
 udpSendingException::udpSendingException(const char *w) {
     cout << w << endl;
+    exit(EXIT_FAILURE);
 }
 
