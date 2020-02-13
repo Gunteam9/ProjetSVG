@@ -6,7 +6,10 @@
 // Pourquoi utiliser htons: https://stackoverflow.com/questions/19207745/htons-function-in-socket-programing
 //
 
-#include "functions.hpp"
+
+#include "functions.h"
+
+
 
 using namespace std;
 
@@ -24,9 +27,6 @@ functions::functions() {
      *
      */
     sockaddr_in addr;
-
-    // Permet d'écouter sur toutes les interfaces locales
-    addr.sin_addr.s_addr = INADDR_ANY;
 
     // Traduction du port en htons port
     addr.sin_port = htons(PORT);
@@ -49,9 +49,7 @@ functions::~functions() {
 
 }
 
-void functions::sendData(cbor arg0) {
-
-    cout << sizeof(arg0) << endl;
+void functions::sendData(cbor::binary data) {
 
     sockaddr_in dst;
 
@@ -64,15 +62,32 @@ void functions::sendData(cbor arg0) {
      *
      ***************************/
 
-    //dst.sin_addr = ADRESSE;
-    dst.sin_port = PORT;
-    dst.sin_family = AF_INET;
+    inet_pton(AF_INET, "127.0.0.1", &dst.sin_addr);
+
+    cout << data.size() << endl;
+    cout << data.capacity() << endl;
+
+
     int myId = 5000000;
-    memcpy(&arg0, reinterpret_cast<const void *>(myId), sizeof(myId));
-    int ret = sendto(sckt, reinterpret_cast<const void *>(myId), 500000, 0, reinterpret_cast<const sockaddr*>(&dst), sizeof(dst));
+    int ret = sendto(sckt, (void*) &data, myId, 0, reinterpret_cast<const sockaddr*>(&dst), sizeof(dst));
 
     //Erreur lors de l'envoi
     if (ret < 0)
         throw udpSendingException();
 }
 
+cbor::binary functions::entry(){
+    double sun_x;
+    double sun_y;
+    cout << "Entrez la position du soleil sur l'axe X" << endl;
+    cin >> sun_x;
+    cout << "Entrez la position du soleil sur l'axe Y" << endl;
+    cin >> sun_y;
+
+    cbor::map message = {
+            { "sun_x", sun_x },
+            { "sun_y", sun_y }
+    };
+    cbor::encode(message);
+
+}

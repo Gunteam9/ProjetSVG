@@ -2,8 +2,8 @@
 // Created by Romain on 11/02/2020.
 //
 
-#include "functions.hpp"
 #include "../cbor11/cbor11.hpp"
+#include "functions.h"
 
 using namespace std;
 
@@ -11,9 +11,16 @@ int main() {
 
     functions func;
 
-    cbor test = "toto";
+    //cbor::binary data = func.entry();
 
-    func.sendData(test);
+    cbor::map message = {
+            { "sun_x", 5.0 },
+            { "sun_y", 2.0 }
+    };
+
+    cbor::binary data = cbor::encode(message);
+
+    func.sendData(data);
 
     return 0;
 }
