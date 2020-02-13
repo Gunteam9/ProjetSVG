@@ -9,18 +9,21 @@
 #include <string>
 #include "../cbor11/cbor11.hpp"
 
+
 class functions {
-public:
-    functions();
-    virtual ~functions();
+	public:
+	    functions();
+	    virtual ~functions();
 
-    int const PORT = 6789;
+	    int const PORT = 6789;
 
-    void sendData(cbor args0);
+	    void sendData(cbor args0);
 
-private:
+	    void entry():
 
-    int sckt;
+	private:
+
+	    int sckt;
 
 };
 

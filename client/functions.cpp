@@ -81,3 +81,18 @@ void functions::sendData(cbor arg0) {
         throw udpSendingException();
 }
 
+void entry(){
+	double sun_x;
+	double sun_y;
+	cout << "Entrez la position du soleil sur l'axe X" << endl;
+	cin >> sun_x;
+	cout << "Entrez la position du soleil sur l'axe Y" << endl;
+	cin >> sun_y;
+	
+	QCborMap message = {
+		{ "sun_x", sun_x },
+		{ "sun_y", sun_y }
+	};
+	message.encode();
+
+}
