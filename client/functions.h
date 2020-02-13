@@ -7,11 +7,15 @@
 
 
 #include <string>
+#include <bits/socket.h>
+#include <netinet/in.h>
+#include <cstring>
+
+
 #include "../cbor11/cbor11.hpp"
 #include "Exceptions/udpRuntimeException.h"
 #include "Exceptions/udpSendingException.h"
-#include <netinet/in.h>
-#include <cstring>
+
 
 class functions {
 public:
@@ -21,8 +25,8 @@ public:
     int const PORT = 6789;
 
     void sendData(cbor args0);
-    void entry();
 
+    void entry();
 
 private:
 
