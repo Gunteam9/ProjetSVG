@@ -6,12 +6,10 @@
 // Pourquoi utiliser htons: https://stackoverflow.com/questions/19207745/htons-function-in-socket-programing
 //
 
-#include <netinet/in.h>
-#include <cstring>
+
 
 #include "functions.h"
-#include "Exceptions/udpRuntimeException.h"
-#include "Exceptions/udpSendingException.h"
+
 
 using namespace std;
 
@@ -81,3 +79,18 @@ void functions::sendData(cbor arg0) {
         throw udpSendingException();
 }
 
+void functions::entry(){
+    double sun_x;
+    double sun_y;
+    cout << "Entrez la position du soleil sur l'axe X" << endl;
+    cin >> sun_x;
+    cout << "Entrez la position du soleil sur l'axe Y" << endl;
+    cin >> sun_y;
+
+    QCborMap message = {
+            { "sun_x", sun_x },
+            { "sun_y", sun_y }
+    };
+    message.encode();
+
+}
