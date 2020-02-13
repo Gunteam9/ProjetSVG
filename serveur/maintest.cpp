@@ -10,7 +10,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <iostream>
-#include "../erreur/erreur.hpp"
+#include "../exceptions/erreurException.hpp"
 
 #define PORT     6789
 #define MAXLINE 1024
@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
     int res = bind(maSocket, (const struct sockaddr *)&adresseServer, sizeof(adresseServer));
     if ( res < 0 )
     {
-        throw Erreur("le binding a échoué");
+        throw ErreurException("le binding a échoué");
     }
 
     while (true) {
@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
         int res2 = recvfrom(maSocket, buffer, MAXLINE, MSG_WAITALL, reinterpret_cast<sockaddr *>(&adresseClient),&fromlen);
 
         if (res2 <= 0) {
-            throw Erreur("Problème de reception de données");
+            throw ErreurException("Problème de reception de données");
         }
         cout<<"message recu " <<  buffer; // le code marche pour un string, à moi de le changer en message cbor
 
