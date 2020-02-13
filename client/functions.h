@@ -7,14 +7,14 @@
 
 
 #include <string>
-#include <bits/socket.h>
 #include <netinet/in.h>
 #include <cstring>
+#include <arpa/inet.h>
 
 
 #include "../cbor11/cbor11.hpp"
-#include "Exceptions/udpRuntimeException.h"
-#include "Exceptions/udpSendingException.h"
+#include "../exceptions/udpRuntimeException.h"
+#include "../exceptions/udpSendingException.h"
 
 
 class functions {
@@ -24,9 +24,9 @@ public:
 
     int const PORT = 6789;
 
-    void sendData(cbor args0);
+    void sendData(cbor::binary data);
 
-    void entry();
+    cbor::binary entry();
 
 private:
 
