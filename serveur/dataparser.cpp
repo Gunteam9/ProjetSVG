@@ -14,7 +14,7 @@ vector<Message> DataParser::lireMessage(cbor::binary encodedItem) {
     cbor decodedItem= cbor::decode(encodedItem);
 
     if(!decodedItem.is_map()){
-        throw ErreurException("encodedItem doit être une map encodée") ;
+        throw ErreurException("encodedItem doit être une map encodée");
     }
 
     map<cbor,cbor> maMap = decodedItem;

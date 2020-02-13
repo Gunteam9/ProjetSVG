@@ -15,15 +15,22 @@ static RsvgHandle *svg_handle;
 
 static void do_drawing_svg(cairo_t * cr, RsvgHandle * svg_handle)
 {
-  rsvg_handle_render_cairo(svg_handle, cr);
+    rsvg_handle_render_cairo(svg_handle, cr);
+}
+
+static void do_drawing(cairo_t* cr){
+    cairo_move_to (cr, 100.0, 150.0);
+    cairo_select_font_face (cr, "serif", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
+    cairo_show_text(cr, "Hello world !");
+    do_drawing_svg(cr, svg_handle);
+    cairo_move_to (cr, 0.0, 0.0);
 }
 
 static gboolean on_draw_event(GtkWidget *widget, cairo_t *cr, 
     gpointer user_data)
-{      
-  do_drawing_svg(cr, svg_handle);
-
-  return FALSE;
+{
+    do_drawing(cr);
+    return FALSE;
 }
 
 
@@ -64,4 +71,8 @@ void Window::start(){
 
 void Window::stop(){
     gtk_widget_destroy(this->window);
+}
+
+void Window::update(std::vector<Message> const& messages){
+
 }
