@@ -7,6 +7,10 @@
 #include <string>
 #include <netinet/in.h>
 #include <iostream>
+#include <unistd.h>
+#include <stdio.h>
+#include <sys/socket.h>
+#include <stdlib.h>
 
 #include "../exceptions/erreurException.hpp"
 
@@ -18,13 +22,12 @@ using namespace std;
 class Serveur {
 
 private:
-    int maSocket;
-    sockaddr_in adresseServer;
-    sockaddr_in adresseClient;
+    int server_fd;
+    sockaddr_in address;
 
 
 public:
-    Serveur(const sockaddr_in &adresseClient);
+    Serveur();
 
     virtual ~Serveur();
 
