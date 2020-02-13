@@ -29,5 +29,9 @@ add_executable(testsServeur serveur/maintest.cpp serveur/message.cpp cbor11/cbor
 #On crée l'executable pour le client
 add_executable(client client/client.cpp client/launcher.cpp client/functions.cpp exceptions/udpRuntimeException.cpp cbor11/cbor11.cpp exceptions/udpSendingException.cpp client/functions.h)
 
+add_executable(testClient2 testClientServeur/client.cpp)
+
+add_executable(testServeur2 testClientServeur/server.cpp)
+
 #On lies les librairies pour le serveur
 target_link_libraries(serveur ${GTK3_LIBRARIES} ${RSVG_LIBRARIES} ${CAIRO_LIBRARIES} ${TXML_LIBRARIES})

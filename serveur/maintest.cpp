@@ -28,7 +28,6 @@ int main(int argc, char *argv[]) {
     maSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP); // ON CRée le SOCKET
 
 
-
     // ON OUVRE LE SOCKET
     adresseServer.sin_family    = AF_INET; // ADresse IPV4
     adresseServer.sin_addr.s_addr = INADDR_ANY; // Permet d'écouter sur toutes les interfaces locales
@@ -43,6 +42,7 @@ int main(int argc, char *argv[]) {
 
     while (true) {
 
+        cout << "here" << endl;
 
         socklen_t fromlen = sizeof(adresseClient);
 
@@ -51,6 +51,8 @@ int main(int argc, char *argv[]) {
 
 
         int res2 = recvfrom(maSocket, buffer, MAXLINE, MSG_WAITALL, reinterpret_cast<sockaddr *>(&adresseClient),&fromlen);
+
+        cout << "here2" << endl;
 
         if (res2 <= 0) {
             throw ErreurException("Problème de reception de données");

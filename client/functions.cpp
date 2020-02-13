@@ -69,7 +69,7 @@ void functions::sendData(cbor::binary data) {
 
 
     int myId = 5000000;
-    int ret = sendto(sckt, (void*) &data, myId, 0, reinterpret_cast<const sockaddr*>(&dst), sizeof(dst));
+    int ret = sendto(this->sckt, (void*) &data, myId, 0, reinterpret_cast<const sockaddr*>(&dst), sizeof(dst));
 
     //Erreur lors de l'envoi
     if (ret < 0)
@@ -79,10 +79,14 @@ void functions::sendData(cbor::binary data) {
 cbor::binary functions::entry(){
     double sun_x;
     double sun_y;
+    /*
     cout << "Entrez la position du soleil sur l'axe X" << endl;
     cin >> sun_x;
     cout << "Entrez la position du soleil sur l'axe Y" << endl;
     cin >> sun_y;
+     */
+
+
 
     cbor::map message = {
             { "sun_x", sun_x },

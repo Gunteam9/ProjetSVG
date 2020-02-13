@@ -4,6 +4,7 @@
 
 #include "serveur.hpp"
 
+using namespace std;
 
 Serveur::Serveur(const sockaddr_in &adresseClient) : adresseClient(adresseClient) {
     // Creating socket file descriptor
