@@ -2,14 +2,10 @@
 // Created by gunteam on 13/02/2020.
 //
 
-// Source: https://www.geeksforgeeks.org/socket-programming-cc/
-// Source: https://stackoverflow.com/questions/31955514/simple-udp-socket-code-sending-and-receiving-messages
-
-// Server side C/C++ program to demonstrate Socket programming
 #include <unistd.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <string.h>
+#include <cstring>
 #include <arpa/inet.h>
 #include <vector>
 #include "../exceptions/udpRuntimeException.h"
@@ -19,7 +15,6 @@
 #include "../serveur/dataparser.hpp"
 
 #define PORT 6789
-#define IP_CLIENT "127.0.0.2"
 #define IP_SERVEUR "127.0.0.3"
 
 using namespace std;
