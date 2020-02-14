@@ -7,9 +7,7 @@
 
 // Server side C/C++ program to demonstrate Socket programming
 #include <unistd.h>
-#include <stdio.h>
 #include <sys/socket.h>
-#include <stdlib.h>
 #include <netinet/in.h>
 #include <string.h>
 #include <arpa/inet.h>
@@ -34,14 +32,12 @@ int main(int argc, char const *argv[])
     //Addresse IP
     struct sockaddr_in address;
 
-    //Buffer
 
     // Création de la socket
     if ((sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
     {
         throw udpRuntimeException(IP_SERVEUR, PORT);
     }
-    cout << "Socket créée" << endl;
 
     // Initialisation de la socket
     address.sin_family = AF_INET;
@@ -54,12 +50,10 @@ int main(int argc, char const *argv[])
         throw udpBindsException();
     }
 
-    cout << "Conversion de l'IP effectuée" << endl;
-
-    char buffer[1024] = {0};
 
     // Récupération de données
     while (true) {
+        char buffer[1024] = {0};
 
         if(recv(sock, buffer, sizeof(buffer), 0) < 0) {
             throw udpReceiveException();
@@ -79,7 +73,7 @@ int main(int argc, char const *argv[])
         DataParser p ;
         std::vector<Message> vT =p.lireMessage(encded);
 
-        std::cout << vT[0];
+        std::cout << vT[0] << endl;
 
         //puts(buffer);
 

@@ -4,27 +4,31 @@
 
 #pragma once
 
-#include <string>
-#include <netinet/in.h>
-#include <iostream>
 #include <unistd.h>
-#include <stdio.h>
 #include <sys/socket.h>
-#include <stdlib.h>
-
+#include <netinet/in.h>
+#include <cstring>
+#include <arpa/inet.h>
+#include <vector>
+#include "../exceptions/udpRuntimeException.h"
+#include "../exceptions/udpBindsException.h"
+#include "../exceptions/udpReceiveException.h"
+#include "../cbor11/cbor11.hpp"
+#include "../serveur/dataparser.hpp"
 #include "../exceptions/erreurException.hpp"
 
-#define PORT    6789
-#define MAXLINE 1024
+
+#define PORT 6789
+#define IP_CLIENT "127.0.0.2"
+#define IP_SERVEUR "127.0.0.3"
+
 
 using namespace std;
 
 class Serveur {
 
 private:
-    int server_fd;
-    sockaddr_in address;
-
+    int sock;
 
 public:
     Serveur();

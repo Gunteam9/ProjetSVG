@@ -14,7 +14,7 @@
 #include "../cbor11/cbor11.hpp"
 #include "../exceptions/udpRuntimeException.h"
 #include "../exceptions/udpAdresseConvertionException.h"
-#include "../exceptions/udpBindsException.h";
+#include "../exceptions/udpBindsException.h"
 #include "../exceptions/udpConnectionException.h"
 #include "../exceptions/udpSendingException.h"
 
@@ -32,8 +32,6 @@ int main(int argc, char const *argv[])
     //Addresse du serveur
     struct sockaddr_in serv_addr;
 
-    //Message
-    char *hello = "Hello from client";
 
     //Buffer
     char buffer[1024] = {0};
@@ -43,7 +41,6 @@ int main(int argc, char const *argv[])
     {
         throw udpRuntimeException(IP_CLIENT, PORT);
     }
-    cout << "Socket créée" << endl;
 
     //Initilisation de la socket
     serv_addr.sin_addr.s_addr = inet_addr(IP_CLIENT);
@@ -56,13 +53,11 @@ int main(int argc, char const *argv[])
     {
         throw udpAdresseConvertionException();
     }
-    cout << "Convertion effectuée" << endl;
 
     // Binds
     if (bind(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
         throw udpBindsException();
     }
-    cout << "Bind effectué" << endl;
 
     // Modification de l'ip pour atteindre le serveur
     serv_addr.sin_addr.s_addr = inet_addr(IP_SERVEUR);
@@ -71,12 +66,10 @@ int main(int argc, char const *argv[])
     if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
         throw  udpConnectionException(IP_SERVEUR, PORT);
     }
-    cout << "Connexion effectué" << endl;
 
     cbor var = cbor::map {{"sun_x","20"}, {"sun_y","30"}} ;
 
     cbor::binary encoded = cbor::encode(var);
-
     std::vector<unsigned char> v = encoded;
 
     std::vector<unsigned char>::iterator it =v.begin();
