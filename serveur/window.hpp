@@ -15,7 +15,8 @@ class Window {
         int taille_x;
         int taille_y;
         std::string titre;
-        GtkWidget * window;
+        //GtkWidget * window;
+        const tinyxml2::XMLElement* getElementByName(tinyxml2::XMLDocument const&, std::string const&, tinyxml2::XMLElement* const);
     public:
         Window(int, int, std::string const&);
         ~Window();

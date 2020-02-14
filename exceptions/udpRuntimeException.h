@@ -6,12 +6,12 @@
 #define CORBEAU_NEONAKIS_TOULARHMINE_TRIMOULET_UDPRUNTIMEEXCEPTION_H
 
 
-#include <netinet/in.h>
+#include <iostream>
 
 class udpRuntimeException {
 
 public:
-    udpRuntimeException(sockaddr_in addr, const int PORT);
+    udpRuntimeException(const std::string addr, const int port);
 };
 
 
