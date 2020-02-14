@@ -13,9 +13,12 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <arpa/inet.h>
+#include <vector>
 #include "../exceptions/udpRuntimeException.h"
-#include "../exceptions/udpBindsException.h";
+#include "../exceptions/udpBindsException.h"
 #include "../exceptions/udpReceiveException.h"
+#include "../cbor11/cbor11.hpp"
+#include "../serveur/dataparser.hpp"
 
 #define PORT 6789
 #define IP_CLIENT "127.0.0.2"
@@ -32,7 +35,6 @@ int main(int argc, char const *argv[])
     struct sockaddr_in address;
 
     //Buffer
-    char buffer[1024] = {0};
 
     // Création de la socket
     if ((sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
@@ -51,7 +53,10 @@ int main(int argc, char const *argv[])
     {
         throw udpBindsException();
     }
+
     cout << "Conversion de l'IP effectuée" << endl;
+
+    char buffer[1024] = {0};
 
     // Récupération de données
     while (true) {
@@ -59,7 +64,24 @@ int main(int argc, char const *argv[])
         if(recv(sock, buffer, sizeof(buffer), 0) < 0) {
             throw udpReceiveException();
         }
-        puts(buffer);
+
+        std::vector<unsigned char> encoded ;
+
+        encoded.reserve(strlen(buffer));
+
+        for(int i=0 ; i < strlen(buffer) ; ++i){
+            encoded.push_back(buffer[i]);
+        }
+
+
+        cbor::binary encded = encoded;
+
+        DataParser p ;
+        std::vector<Message> vT =p.lireMessage(encded);
+
+        std::cout << vT[0];
+
+        //puts(buffer);
 
     }
 

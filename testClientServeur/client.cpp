@@ -73,8 +73,25 @@ int main(int argc, char const *argv[])
     }
     cout << "Connexion effectué" << endl;
 
+    cbor var = cbor::map {{"sun_x","20"}, {"sun_y","30"}} ;
+
+    cbor::binary encoded = cbor::encode(var);
+
+    std::vector<unsigned char> v = encoded;
+
+    std::vector<unsigned char>::iterator it =v.begin();
+
+    char* total = new char[v.size()];
+    int i=0;
+    for(it = v.begin(); it < v.end() ; ++it){
+        total[i]=(*it);
+        i++;
+    }
+
+
+
     // Envoie de message
-    if(send(sock, hello, strlen(hello), 0) < 0) {
+    if(send(sock, total, strlen(total), 0) < 0) {
         throw udpSendingException();
     }
     cout << "Message envoyé" << endl;

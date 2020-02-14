@@ -13,6 +13,8 @@
 #include <iostream>
 #include "../exceptions/erreurException.hpp"
 #include "serveur.hpp"
+#include "../cbor11/cbor11.hpp"
+#include "dataparser.hpp"
 
 #define PORT     6789
 #define MAXLINE 1024
@@ -20,9 +22,8 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-    Serveur s;
-    s.startServer();
-
+    cbor::map test = cbor::map {{"salut","oui"}};
+    cout << test.at("salut").to_string();
 }
 
 
