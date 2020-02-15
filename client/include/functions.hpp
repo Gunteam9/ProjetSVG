@@ -2,19 +2,16 @@
 // Created by gunteam on 05/02/2020.
 //
 
-#ifndef CORBEAU_NEONAKIS_TOULARHMINE_TRIMOULET_FUNCTIONS_HPP
-#define CORBEAU_NEONAKIS_TOULARHMINE_TRIMOULET_FUNCTIONS_HPP
+#pragma once
 
 
 #include <string>
 #include <netinet/in.h>
 #include <cstring>
 #include <arpa/inet.h>
-
-
-#include "../cbor11/cbor11.hpp"
-#include "../exceptions/udpRuntimeException.hpp"
-#include "../exceptions/udpSendingException.hpp"
+#include "../../cbor11/cbor11.hpp"
+#include "../../exceptions/include/udpRuntimeException.hpp"
+#include "../../exceptions/include/udpSendingException.hpp"
 
 
 class functions {

@@ -8,11 +8,11 @@
 #include <cstring>
 #include <arpa/inet.h>
 #include <vector>
-#include "../exceptions/udpRuntimeException.hpp"
-#include "../exceptions/udpBindsException.hpp"
-#include "../exceptions/udpReceiveException.hpp"
+#include "../exceptions/include/udpRuntimeException.hpp"
+#include "../exceptions/include/udpBindsException.hpp"
+#include "../exceptions/include/udpReceiveException.hpp"
 #include "../cbor11/cbor11.hpp"
-#include "../serveur/dataparser.hpp"
+#include "../serveur/include/dataparser.hpp"
 
 #define PORT 6789
 #define IP_SERVEUR "127.0.0.3"

@@ -12,11 +12,11 @@
 #include <unistd.h>
 #include <string.h>
 #include "../cbor11/cbor11.hpp"
-#include "../exceptions/udpRuntimeException.hpp"
-#include "../exceptions/udpAdresseConvertionException.hpp"
-#include "../exceptions/udpBindsException.hpp"
-#include "../exceptions/udpConnectionException.hpp"
-#include "../exceptions/udpSendingException.hpp"
+#include "../exceptions/include/udpRuntimeException.hpp"
+#include "../exceptions/include/udpAdresseConvertionException.hpp"
+#include "../exceptions/include/udpBindsException.hpp"
+#include "../exceptions/include/udpConnectionException.hpp"
+#include "../exceptions/include/udpSendingException.hpp"
 
 #define PORT 6789
 #define IP_CLIENT "127.0.0.2"
