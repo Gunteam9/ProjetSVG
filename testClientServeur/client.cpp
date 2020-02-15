@@ -12,11 +12,11 @@
 #include <unistd.h>
 #include <string.h>
 #include "../cbor11/cbor11.hpp"
-#include "../exceptions/udpRuntimeException.h"
-#include "../exceptions/udpAdresseConvertionException.h"
-#include "../exceptions/udpBindsException.h"
-#include "../exceptions/udpConnectionException.h"
-#include "../exceptions/udpSendingException.h"
+#include "../exceptions/udpRuntimeException.hpp"
+#include "../exceptions/udpAdresseConvertionException.hpp"
+#include "../exceptions/udpBindsException.hpp"
+#include "../exceptions/udpConnectionException.hpp"
+#include "../exceptions/udpSendingException.hpp"
 
 #define PORT 6789
 #define IP_CLIENT "127.0.0.2"
@@ -34,7 +34,6 @@ int main(int argc, char const *argv[])
 
 
     //Buffer
-    char buffer[1024] = {0};
 
     //Création de la socket
     if ((sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
@@ -67,6 +66,10 @@ int main(int argc, char const *argv[])
         throw  udpConnectionException(IP_SERVEUR, PORT);
     }
 
+
+    /*
+     * @TODO changer la "cbor::map {{"sun_x","20"}, {"sun_y","30"}}" par une map entrée en paramètres
+     */
     cbor var = cbor::map {{"sun_x","20"}, {"sun_y","30"}} ;
 
     cbor::binary encoded = cbor::encode(var);
@@ -88,6 +91,7 @@ int main(int argc, char const *argv[])
         throw udpSendingException();
     }
     cout << "Message envoyé" << endl;
+
 
     return 0;
 }

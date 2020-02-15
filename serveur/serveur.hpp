@@ -10,9 +10,9 @@
 #include <cstring>
 #include <arpa/inet.h>
 #include <vector>
-#include "../exceptions/udpRuntimeException.h"
-#include "../exceptions/udpBindsException.h"
-#include "../exceptions/udpReceiveException.h"
+#include "../exceptions/udpRuntimeException.hpp"
+#include "../exceptions/udpBindsException.hpp"
+#include "../exceptions/udpReceiveException.hpp"
 #include "../cbor11/cbor11.hpp"
 #include "../serveur/dataparser.hpp"
 #include "../exceptions/erreurException.hpp"

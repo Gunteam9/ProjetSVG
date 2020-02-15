@@ -8,9 +8,9 @@
 #include <cstring>
 #include <arpa/inet.h>
 #include <vector>
-#include "../exceptions/udpRuntimeException.h"
-#include "../exceptions/udpBindsException.h"
-#include "../exceptions/udpReceiveException.h"
+#include "../exceptions/udpRuntimeException.hpp"
+#include "../exceptions/udpBindsException.hpp"
+#include "../exceptions/udpReceiveException.hpp"
 #include "../cbor11/cbor11.hpp"
 #include "../serveur/dataparser.hpp"
 
@@ -48,6 +48,7 @@ int main(int argc, char const *argv[])
 
     // Récupération de données
     while (true) {
+
         char buffer[1024] = {0};
 
         if(recv(sock, buffer, sizeof(buffer), 0) < 0) {
@@ -62,15 +63,12 @@ int main(int argc, char const *argv[])
             encoded.push_back(buffer[i]);
         }
 
-
         cbor::binary encded = encoded;
 
         DataParser p ;
         std::vector<Message> vT =p.lireMessage(encded);
 
         std::cout << vT[0] << endl;
-
-        //puts(buffer);
 
     }
 

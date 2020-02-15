@@ -65,7 +65,7 @@ void Serveur::startServer() {
         //il faudrait les envoyer a une methode de la window pour effectuer les changements
         std::vector<Message> vT = p.lireMessage(binaryEncodedMessage);
 
-        //std::cout << vT[0] << endl;
+        std::cout << vT[0] << endl;
 
     }
 

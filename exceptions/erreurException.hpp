@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class ErreurException: public exception
+class ErreurException: public std::exception
 {
 
 private:

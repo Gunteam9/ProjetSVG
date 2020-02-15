@@ -13,8 +13,8 @@
 
 
 #include "../cbor11/cbor11.hpp"
-#include "../exceptions/udpRuntimeException.h"
-#include "../exceptions/udpSendingException.h"
+#include "../exceptions/udpRuntimeException.hpp"
+#include "../exceptions/udpSendingException.hpp"
 
 
 class functions {
