@@ -10,8 +10,8 @@
 #include <queue>
 
 #include "event.hpp"
-#include "./message.hpp"
-
+#include "message.hpp"
+#include "serveur.hpp"
 
 class Window {
     private:
@@ -21,12 +21,13 @@ class Window {
         //GtkWidget * window;
         std::queue<int *> eventQueue;
         tinyxml2::XMLElement* getElementByName(tinyxml2::XMLDocument const&, std::string const&, tinyxml2::XMLElement* const);
-        void viderPile();
+        //int viderPile(_GIOChannel*, GIOCondition, void*);
     public:
         Window(int, int, std::string const&);
         ~Window();
-        void init(int*, char***, int);
+        void init(int*, char***, Serveur const&);
         void start();
         void stop();
         void update(std::vector<Message> const&);
+        int actualiserServeur();
 };

@@ -40,6 +40,7 @@ Serveur::~Serveur() {
 
 
 void Serveur::startServer() {
+    std::cout << "le serveur a été lancé" << std::endl;
     while (true) {
         char buffer[1024] = {0};
 
@@ -70,5 +71,10 @@ void Serveur::startServer() {
     }
 
 }
+
+int Serveur::getMaSocket() const{
+    return this->sock;
+}
+
 
 

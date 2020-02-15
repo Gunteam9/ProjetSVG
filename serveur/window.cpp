@@ -51,14 +51,22 @@ static gboolean on_draw_event(GtkWidget *widget, cairo_t *cr,
     gpointer user_data)
 {
     std::queue<int*>* queue = static_cast<std::queue<int*>*>(user_data);
-    std::cout << queue->size() << std::endl;
     do_drawing(cr);
     //delete i;
     return FALSE;
 }
 
+static int viderPile(_GIOChannel* channel, GIOCondition condition, void* user_data){
+    std::cout << "vidage de la pile" << std::endl;
+    return FALSE;
+}
 
-void Window::init(int* argc, char*** argv, int socket){
+int Window::actualiserServeur(){
+    //s.startServer();
+    return TRUE;
+}
+
+void Window::init(int* argc, char*** argv, Serveur const& s){
     GtkWidget *darea;
 
     gtk_init(argc, argv);
@@ -87,19 +95,18 @@ void Window::init(int* argc, char*** argv, int socket){
 
     gtk_window_set_title(GTK_WINDOW(window), this->titre.c_str());
 
-    g_io_add_watch(g_io_channel_unix_new(socket), G_IO_IN, &this->update, NULL);
+    g_io_add_watch(g_io_channel_unix_new(s.getMaSocket()), G_IO_IN, viderPile, NULL);
+
 
     gtk_widget_show_all(window);
 }
 
 void Window::start(){
-    while (gtk_events_pending()){
-        gtk_main_iteration_do(FALSE);
-    }
+    gtk_main();
 }
 
 void Window::stop(){
-    gtk_main_quit();
+    gtk_widget_destroy(window);
 }
 
 void Window::update(std::vector<Message> const& messages){
@@ -117,7 +124,6 @@ void Window::update(std::vector<Message> const& messages){
     svg_handle = rsvg_handle_new_from_data ((const unsigned char*) printer.CStr(), printer.CStrSize()-1, NULL);
 
     */
-   std::cout << "on a recu un message" << std::endl;
     /*tinyxml2::XMLDocument svg_data;
     tinyxml2::XMLPrinter printer;
 

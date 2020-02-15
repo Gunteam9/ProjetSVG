@@ -1,4 +1,4 @@
-#include "event.hpp"
+#include "include/event.hpp"
 
 Event::Event(tinyxml2::XMLElement* element, Message* m){
     this->element = element;
