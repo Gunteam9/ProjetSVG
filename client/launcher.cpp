@@ -3,7 +3,7 @@
 //
 
 #include "../cbor11/cbor11.hpp"
-#include "functions.h"
+#include "functions.hpp"
 
 using namespace std;
 
