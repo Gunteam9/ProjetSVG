@@ -1,6 +1,7 @@
-#include "dataparser.hpp"
 
-#include "window.hpp"
+#include "include/dataparser.hpp"
+
+#include "include/window.hpp"
 
 Window::Window(int taille_x, int taille_y, std::string const& titre){
     this->taille_x = taille_x;

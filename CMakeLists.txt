@@ -22,16 +22,42 @@ include_directories(${TXML_INCLUDE_DIRS} ${CAIRO_INCLUDE_DIRS} ${GTK3_INCLUDE_DI
 link_directories(${GTK3_LIBRARY_DIRS} ${RSVG_LIBRARY_DIRS} ${CAIRO_LIBRARY_DIRS} ${TXML_LIBRARY_DIRS})
 
 #On crée l'éxectuable pour le serveur
-add_executable(serveur serveur/moteur.cpp serveur/window.cpp cbor11/cbor11.cpp)
+add_executable( serveur serveur/moteur serveur/window serveur/message serveur/dataparser
+                cbor11/cbor11
 
-add_executable(testsServeur serveur/maintest.cpp serveur/message.cpp cbor11/cbor11.cpp serveur/dataparser.cpp exceptions/erreurException.cpp serveur/serveur.cpp serveur/serveur.hpp)
+                exceptions/udpRuntimeException exceptions/udpBindsException exceptions/udpReceiveException
+                exceptions/erreurException
+                )
+
+add_executable(testsServeur serveur/maintest serveur/message cbor11/cbor11 serveur/dataparser serveur/serveur
+
+
+        exceptions/udpRuntimeException exceptions/udpBindsException exceptions/udpReceiveException
+        exceptions/erreurException
+        )
 
 #On crée l'executable pour le client
-add_executable(client client/client.cpp client/launcher.cpp client/functions.cpp exceptions/udpRuntimeException.cpp cbor11/cbor11.cpp exceptions/udpSendingException.cpp client/functions.h)
+add_executable(client client/client client/launcher client/functions
 
-add_executable(testClient2 testClientServeur/client.cpp exceptions/udpRuntimeException.cpp exceptions/udpAdresseConvertionException.cpp exceptions/udpAdresseConvertionException.h exceptions/udpBindsException.cpp exceptions/udpBindsException.h exceptions/udpConnectionException.cpp exceptions/udpConnectionException.h exceptions/udpSendingException.cpp)
+        exceptions/udpAdresseConvertionException exceptions/udpRuntimeException exceptions/udpSendingException
 
-add_executable(testServeur2 testClientServeur/server.cpp exceptions/udpRuntimeException.cpp exceptions/udpBindsException.cpp exceptions/udpReceiveException.cpp)
+        cbor11/cbor11
+        )
+
+add_executable(testClient2 testClientServeur/client cbor11/cbor11
+
+        exceptions/udpAdresseConvertionException exceptions/udpRuntimeException
+        exceptions/udpSendingException exceptions/udpConnectionException exceptions/udpBindsException
+
+        )
+
+add_executable(testServeur2 testClientServeur/server cbor11/cbor11 serveur/dataparser serveur/message
+
+        exceptions/udpRuntimeException exceptions/udpBindsException exceptions/udpReceiveException
+
+        exceptions/erreurException
+
+        )
 
 #On lies les librairies pour le serveur
 target_link_libraries(serveur ${GTK3_LIBRARIES} ${RSVG_LIBRARIES} ${CAIRO_LIBRARIES} ${TXML_LIBRARIES})

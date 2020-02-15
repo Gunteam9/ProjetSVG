@@ -2,24 +2,33 @@
 // Created by ionas on 11/02/2020.
 //
 
-#include "serveur.hpp"
+#include "include/serveur.hpp"
 
 using namespace std;
 
-Serveur::Serveur(const sockaddr_in &adresseClient) : adresseClient(adresseClient) {
-    // Creating socket file descriptor
-    this->maSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP); // ON CRée le SOCKET
+Serveur::Serveur(){
+    //Socket
 
-    // ON OUVRE LE SOCKET
-    adresseServer.sin_family    = AF_INET; // ADresse IPV4
-    adresseServer.sin_addr.s_addr = INADDR_ANY; // Permet d'écouter sur toutes les interfaces locales
-    adresseServer.sin_port = htons(PORT); //on traduit le port en endianess réseau
 
-    int resBind = bind(this->maSocket, (const struct sockaddr *)&this->adresseServer, sizeof(this->adresseServer));
-    if ( resBind < 0 )
+    //Addresse IP
+    struct sockaddr_in address;
+
+
+    // Création de la socket
+    if ((this->sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
     {
-        throw ErreurException("le binding a échoué");
+        throw udpRuntimeException(IP_SERVEUR, PORT);
+    }
 
+    // Initialisation de la socket
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = inet_addr(IP_SERVEUR);
+    address.sin_port = htons(PORT);
+
+    // Binding
+    if (bind(sock, (struct sockaddr *)&address, sizeof(address)) < 0)
+    {
+        throw udpBindsException();
     }
 
 }
@@ -31,31 +40,35 @@ Serveur::~Serveur() {
 
 
 void Serveur::startServer() {
-
     while (true) {
+        char buffer[1024] = {0};
 
-
-        socklen_t fromlen = sizeof(adresseClient);
-
-        char buffer[MAXLINE]; // la capacité de lecture du buffer
-
-
-
-        int res2 = recvfrom(this->maSocket, buffer, MAXLINE, MSG_WAITALL, reinterpret_cast<sockaddr *>(&adresseClient),&fromlen);
-
-        if (res2 <= 0) {
-            throw ErreurException("Problème de reception de données");
+        if (recv(sock, buffer, sizeof(buffer), 0) < 0) {
+            throw udpReceiveException();
         }
-        cout<<"message recu " <<  buffer;
+
+        std::vector<unsigned char> encodedMessge;
+
+        //on reserve la place dans le vector,
+        encodedMessge.reserve(strlen(buffer));
+
+        // on assigne les valeurs du buffer dans le vector
+        for (int i = 0; i < strlen(buffer); ++i) {
+            encodedMessge.push_back(buffer[i]);
+        }
+
+
+        cbor::binary binaryEncodedMessage = encodedMessge;
+
+        DataParser p;
+        //ici on affiche les messages
+        //il faudrait les envoyer a une methode de la window pour effectuer les changements
+        std::vector<Message> vT = p.lireMessage(binaryEncodedMessage);
+
+        std::cout << vT[0] << endl;
+
     }
 
 }
 
-int Serveur::getMaSocket() const {
-    return maSocket;
-}
-
-int Serveur::getPort() const {
-    return 6789;
-}
 

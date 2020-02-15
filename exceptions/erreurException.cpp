@@ -1,5 +1,5 @@
 
-#include "erreurException.hpp"
+#include "include/erreurException.hpp"
 
 ErreurException::ErreurException(const string &phrase) throw() {
     this->m_phrase=phrase;

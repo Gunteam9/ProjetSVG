@@ -5,8 +5,8 @@
 #pragma once
 
 #include "message.hpp"
-#include "../cbor11/cbor11.hpp"
-#include "../exceptions/erreurException.hpp"
+#include "../../cbor11/cbor11.hpp"
+#include "../../exceptions/include/erreurException.hpp"
 
 
 class DataParser {

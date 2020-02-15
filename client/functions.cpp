@@ -2,14 +2,7 @@
 // Created by gunteam on 05/02/2020.
 // Source: https://bousk.developpez.com/cours/reseau-c++/UDP/01-introduction-premiers-pas/ - https://bousk.developpez.com/cours/reseau-c++/TCP/04-serveur-premiers-pas
 //
-
-// Pourquoi utiliser htons: https://stackoverflow.com/questions/19207745/htons-function-in-socket-programing
-//
-
-
-#include "functions.h"
-
-
+#include "include/functions.hpp"
 
 using namespace std;
 
