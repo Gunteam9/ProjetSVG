@@ -31,8 +31,9 @@ functions::functions() {
     int res = bind(sckt, reinterpret_cast<sockaddr*>(&addr), sizeof(addr));
 
     //En cas d'erreur
-    if (res != 0)
-        throw udpRuntimeException(addr, PORT);
+    if (res != 0){
+        //throw udpRuntimeException(addr.sin_addr.s_addr, PORT);
+    }
 
 
 

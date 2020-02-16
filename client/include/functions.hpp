@@ -30,6 +30,3 @@ private:
     int sckt;
 
 };
-
-
-#endif //CORBEAU_NEONAKIS_TOULARHMINE_TRIMOULET_FUNCTIONS_HPP
