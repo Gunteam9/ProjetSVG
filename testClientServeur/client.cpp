@@ -72,7 +72,7 @@ int main(int argc, char const *argv[])
      */
     //cbor var = cbor::map {{"sun_x","20"}, {"sun_y","30"}} ;
 
-    cbor var = cbor::map {{"sol","red"}, {"ciel","yellow"}} ;
+    cbor var = cbor::map {{"sun_x","0"}, {"sun_y","0"}} ;
 
     cbor::binary encoded = cbor::encode(var);
     std::vector<unsigned char> v = encoded;
@@ -85,8 +85,6 @@ int main(int argc, char const *argv[])
         total[i]=(*it);
         i++;
     }
-
-
 
     // Envoie de message
     if(send(sock, total, strlen(total), 0) < 0) {

@@ -29,7 +29,7 @@ class Window {
         void stop();
 
         static tinyxml2::XMLElement* getElementByName(tinyxml2::XMLDocument const& document, std::string const& name, tinyxml2::XMLElement* const e){
-            if(e != NULL && e->Attribute("id") != NULL && std::string(e->Attribute("id")).compare(name) == 0){
+            if(e != NULL && std::string(e->Name()).compare("driven") == 0 && e->Attribute("by") != NULL && std::string(e->Attribute("by")).compare(name) == 0){
                 return e;
             }else{
                 if(e->FirstChildElement() != NULL){
@@ -59,8 +59,9 @@ class Window {
             tinyxml2::XMLElement *root = svg_data.RootElement();
 
             for(Message m : v){
-                tinyxml2::XMLElement *attribut = getElementByName(svg_data, m.getNomElement(), root)->FirstChildElement();
-                attribut->SetAttribute("fill", m.getValeur().c_str());
+                tinyxml2::XMLElement *attribut = getElementByName(svg_data, m.getNomElement(), root);
+                const char* nomAttribut = attribut->Attribute("target");
+                attribut->Parent()->ToElement()->SetAttribute(nomAttribut, m.getValeur().c_str());
             }
             
             svg_data.SaveFile("resources/maison.svg");
