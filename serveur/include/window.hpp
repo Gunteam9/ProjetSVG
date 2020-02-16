@@ -13,21 +13,56 @@
 #include "message.hpp"
 #include "serveur.hpp"
 
+static RsvgHandle *svg_handle;
+
 class Window {
     private:
         int taille_x;
         int taille_y;
         std::string titre;
-        //GtkWidget * window;
-        std::queue<int *> eventQueue;
-        tinyxml2::XMLElement* getElementByName(tinyxml2::XMLDocument const&, std::string const&, tinyxml2::XMLElement* const);
-        //int viderPile(_GIOChannel*, GIOCondition, void*);
+        GtkWidget * window;
     public:
         Window(int, int, std::string const&);
         ~Window();
-        void init(int*, char***, Serveur const&);
+        void init(int*, char***);
         void start();
         void stop();
-        void update(std::vector<Message> const&);
-        int actualiserServeur();
+
+        static tinyxml2::XMLElement* getElementByName(tinyxml2::XMLDocument const& document, std::string const& name, tinyxml2::XMLElement* const e){
+            if(e != NULL && e->Attribute("id") != NULL && std::string(e->Attribute("id")).compare(name) == 0){
+                return e;
+            }else{
+                if(e->FirstChildElement() != NULL){
+                    tinyxml2::XMLElement* children = getElementByName(document, name, e->FirstChildElement());
+                    if(children != NULL){
+                        return children;
+                    }
+                }
+                if(e->NextSiblingElement() != NULL){
+                    tinyxml2::XMLElement* siblings = getElementByName(document, name, e->NextSiblingElement());
+                    if(siblings != NULL){
+                        return siblings;
+                    }
+                }
+            }
+            return NULL;
+        }
+
+        static void update(std::vector<Message> const& v){
+            std::cout << "Nouveau message pour la window" << std::endl;
+            
+            tinyxml2::XMLDocument svg_data;
+            tinyxml2::XMLPrinter printer;
+
+            svg_data.LoadFile("resources/maison.svg");
+
+            tinyxml2::XMLElement *root = svg_data.RootElement();
+
+            for(Message m : v){
+                tinyxml2::XMLElement *attribut = getElementByName(svg_data, m.getNomElement(), root)->FirstChildElement();
+                attribut->SetAttribute("fill", m.getValeur().c_str());
+            }
+            
+            svg_data.SaveFile("resources/maison.svg");
+        };
 };

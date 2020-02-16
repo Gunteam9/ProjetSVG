@@ -4,6 +4,8 @@
 
 #include "include/serveur.hpp"
 
+#include "include/window.hpp"
+
 using namespace std;
 
 Serveur::Serveur(){
@@ -67,6 +69,8 @@ void Serveur::startServer() {
         std::vector<Message> vT = p.lireMessage(binaryEncodedMessage);
 
         std::cout << vT[0] << endl;
+
+        Window::update(vT);
 
     }
 

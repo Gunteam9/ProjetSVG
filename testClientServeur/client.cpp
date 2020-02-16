@@ -70,7 +70,9 @@ int main(int argc, char const *argv[])
     /*
      * @TODO changer la "cbor::map {{"sun_x","20"}, {"sun_y","30"}}" par une map entrée en paramètres
      */
-    cbor var = cbor::map {{"sun_x","20"}, {"sun_y","30"}} ;
+    //cbor var = cbor::map {{"sun_x","20"}, {"sun_y","30"}} ;
+
+    cbor var = cbor::map {{"sol","red"}, {"ciel","yellow"}} ;
 
     cbor::binary encoded = cbor::encode(var);
     std::vector<unsigned char> v = encoded;
