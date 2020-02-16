@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 #Outil pour trouver les packages
 find_package(PkgConfig REQUIRED)
+find_package(Threads REQUIRED)
 
 #Tous les packages utilisés
 pkg_check_modules(CAIRO REQUIRED cairo)
@@ -23,7 +24,7 @@ link_directories(${GTK3_LIBRARY_DIRS} ${RSVG_LIBRARY_DIRS} ${CAIRO_LIBRARY_DIRS}
 
 #On crée l'éxectuable pour le serveur
 add_executable( serveur serveur/moteur serveur/window serveur/message serveur/dataparser
-                cbor11/cbor11
+                cbor11/cbor11 serveur/serveur
 
                 exceptions/udpRuntimeException exceptions/udpBindsException exceptions/udpReceiveException
                 exceptions/erreurException
@@ -39,7 +40,8 @@ add_executable(testsServeur serveur/maintest serveur/message cbor11/cbor11 serve
 #On crée l'executable pour le client
 add_executable(client client/client client/launcher client/functions
 
-        exceptions/udpAdresseConvertionException exceptions/udpRuntimeException exceptions/udpSendingException
+        exceptions/udpRuntimeException exceptions/udpSendingException exceptions/udpBindsException
+        exceptions/udpAdresseConvertionException exceptions/udpConnectionException
 
         cbor11/cbor11
         )
@@ -60,4 +62,4 @@ add_executable(testServeur2 testClientServeur/server cbor11/cbor11 serveur/datap
         )
 
 #On lies les librairies pour le serveur
-target_link_libraries(serveur ${GTK3_LIBRARIES} ${RSVG_LIBRARIES} ${CAIRO_LIBRARIES} ${TXML_LIBRARIES})
+target_link_libraries(serveur ${GTK3_LIBRARIES} ${RSVG_LIBRARIES} ${CAIRO_LIBRARIES} ${TXML_LIBRARIES}  Threads::Threads)

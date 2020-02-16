@@ -19,8 +19,8 @@
 
 
 #define PORT 6789
-#define IP_CLIENT "127.0.0.2"
-#define IP_SERVEUR "127.0.0.3"
+#define IP_SERVER "127.0.0.2"
+#define IP_CLIENT "127.0.0.3"
 
 
 using namespace std;

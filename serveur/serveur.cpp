@@ -19,12 +19,12 @@ Serveur::Serveur(){
     // Création de la socket
     if ((this->sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
     {
-        throw udpRuntimeException(IP_SERVEUR, PORT);
+        throw udpRuntimeException(IP_SERVER, PORT);
     }
 
     // Initialisation de la socket
     address.sin_family = AF_INET;
-    address.sin_addr.s_addr = inet_addr(IP_SERVEUR);
+    address.sin_addr.s_addr = inet_addr(IP_SERVER);
     address.sin_port = htons(PORT);
 
     // Binding
