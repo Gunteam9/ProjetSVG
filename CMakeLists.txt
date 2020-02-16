@@ -31,7 +31,7 @@ add_executable( serveur serveur/moteur serveur/window serveur/message serveur/da
                 exceptions/erreurException
                 )
 
-add_executable(testsServeur serveur/maintest serveur/message cbor11/cbor11 serveur/dataparser serveur/serveur
+add_executable(testsServeur serveur/maintest serveur/message cbor11/cbor11 serveur/dataparser
 
 
         exceptions/udpRuntimeException exceptions/udpBindsException exceptions/udpReceiveException
@@ -63,3 +63,5 @@ add_executable(testServeur2 testClientServeur/server cbor11/cbor11 serveur/datap
 
 #On lies les librairies pour le serveur
 target_link_libraries(serveur ${GTK3_LIBRARIES} ${RSVG_LIBRARIES} ${CAIRO_LIBRARIES} ${TXML_LIBRARIES} Threads::Threads)
+
+
