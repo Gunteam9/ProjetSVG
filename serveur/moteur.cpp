@@ -8,9 +8,8 @@
 int main(int argc, char *argv[]){
   Window w(500, 500, "Moteur de rendu SVG"); 
   Serveur s;
-  std::thread t(&Serveur::startServer, &s);
-  w.start();
-  w.stop();
-
+  w.init(&argc, &argv);
+  std::thread t(&Window::start, &w);
+  s.startServer();
   return 0;
 }
