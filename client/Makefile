@@ -3,7 +3,7 @@ CPPC := g++
 #options de compilation
 CPPFLAGS := --std=c++17 -Wall -Wextra -pedantic -ggdb 
 # Sources & objets
-SRC= $(wildcard *.cpp) $(wildcard ../cbor11/*.cpp) $(wildcard ../exceptions/*.cpp)
+SRC= $(wildcard *.cpp) $(wildcard ../vendor/cbor11/*.cpp) $(wildcard ../vendor/exceptions/*.cpp)
 OBJ= $(SRC:.cpp=.o)
 
 # executable

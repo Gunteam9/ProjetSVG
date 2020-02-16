@@ -9,9 +9,9 @@
 #include <netinet/in.h>
 #include <cstring>
 #include <arpa/inet.h>
-#include "../../cbor11/cbor11.hpp"
-#include "../../exceptions/include/udpRuntimeException.hpp"
-#include "../../exceptions/include/udpSendingException.hpp"
+#include "../../vendor/cbor11/cbor11.hpp"
+#include "../../vendor/exceptions/include/udpRuntimeException.hpp"
+#include "../../vendor/exceptions/include/udpSendingException.hpp"
 
 
 class functions {

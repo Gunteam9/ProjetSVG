@@ -2,12 +2,7 @@
 // Created by ionas on 10/02/2020.
 //
 
-
-
-
-
-
-
+/*
 #include "include/dataparser.hpp"
 
 using namespace std;
@@ -21,7 +16,7 @@ int main(int argc, char *argv[]) {
     cout <<m[0] <<endl;
 
     //cout <<m[1]<<endl;
-}
+}*/
 
 
 

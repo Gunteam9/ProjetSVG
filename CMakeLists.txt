@@ -25,39 +25,38 @@ link_directories(${GTK3_LIBRARY_DIRS} ${RSVG_LIBRARY_DIRS} ${CAIRO_LIBRARY_DIRS}
 
 #On crée l'éxectuable pour le serveur
 add_executable( serveur serveur/moteur serveur/window serveur/message serveur/dataparser serveur/serveur.cpp
-                cbor11/cbor11
+                vendor/cbor11/cbor11
 
-                exceptions/udpRuntimeException exceptions/udpBindsException exceptions/udpReceiveException
-                exceptions/erreurException
+                vendor/exceptions/udpRuntimeException vendor/exceptions/udpBindsException vendor/exceptions/udpReceiveException
+                vendor/exceptions/erreurException
                 )
 
-add_executable(testsServeur serveur/maintest serveur/message cbor11/cbor11 serveur/dataparser
+add_executable(testsServeur serveur/maintest serveur/message vendor/cbor11/cbor11 serveur/dataparser
 
-
-        exceptions/udpRuntimeException exceptions/udpBindsException exceptions/udpReceiveException
-        exceptions/erreurException
+        vendor/exceptions/udpRuntimeException vendor/exceptions/udpBindsException vendor/exceptions/udpReceiveException
+        vendor/exceptions/erreurException
         )
 
 #On crée l'executable pour le client
 add_executable(client client/client client/launcher client/functions
 
-        exceptions/udpAdresseConvertionException exceptions/udpRuntimeException exceptions/udpSendingException
+        vendor/exceptions/udpAdresseConvertionException vendor/exceptions/udpRuntimeException vendor/exceptions/udpSendingException
 
-        cbor11/cbor11
+        vendor/cbor11/cbor11
         )
 
-add_executable(testClient2 testClientServeur/client cbor11/cbor11
+add_executable(testClient2 testClientServeur/client vendor/cbor11/cbor11
 
-        exceptions/udpAdresseConvertionException exceptions/udpRuntimeException
-        exceptions/udpSendingException exceptions/udpConnectionException exceptions/udpBindsException
+        vendor/exceptions/udpAdresseConvertionException vendor/exceptions/udpRuntimeException
+        vendor/exceptions/udpSendingException vendor/exceptions/udpConnectionException vendor/exceptions/udpBindsException
 
         )
 
-add_executable(testServeur2 testClientServeur/server cbor11/cbor11 serveur/dataparser serveur/message
+add_executable(testServeur2 testClientServeur/server vendor/cbor11/cbor11 serveur/dataparser serveur/message
 
-        exceptions/udpRuntimeException exceptions/udpBindsException exceptions/udpReceiveException
+        vendor/exceptions/udpRuntimeException vendor/exceptions/udpBindsException vendor/exceptions/udpReceiveException
 
-        exceptions/erreurException
+        vendor/exceptions/erreurException
 
         )
 
