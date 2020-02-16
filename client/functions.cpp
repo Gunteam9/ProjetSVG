@@ -8,34 +8,38 @@ using namespace std;
 
 functions::functions() {
 
-    /*
-     * Création de la socket
-     *
-     */
-     sckt = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    //Buffer
 
-
-    /*
-     * Ouverture de la socket
-     *
-     */
-    sockaddr_in addr;
-
-    // Traduction du port en htons port
-    addr.sin_port = htons(PORT);
-
-    // Pour IPV4
-    addr.sin_family = AF_INET;
-
-    // Binding
-    int res = bind(sckt, reinterpret_cast<sockaddr*>(&addr), sizeof(addr));
-
-    //En cas d'erreur
-    if (res != 0){
-        //throw udpRuntimeException(addr.sin_addr.s_addr, PORT);
+    //Création de la socket
+    if ((sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
+    {
+        throw udpRuntimeException(IP_CLIENT, PORT);
     }
 
+    //Initilisation de la socket
+    serv_addr.sin_addr.s_addr = inet_addr(IP_CLIENT);
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(PORT);
 
+
+    // Convertion des addresses IP en binaire
+    if(inet_pton(AF_INET, IP_CLIENT, &serv_addr.sin_addr) <= 0)
+    {
+        throw udpAdresseConvertionException();
+    }
+
+    // Binds
+    if (bind(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
+        throw udpBindsException();
+    }
+
+    // Modification de l'ip pour atteindre le serveur
+    serv_addr.sin_addr.s_addr = inet_addr(IP_SERVER);
+
+    // Connexion au serveur
+    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
+        throw  udpConnectionException(IP_SERVER, PORT);
+    }
 
 }
 
@@ -43,31 +47,27 @@ functions::~functions() {
 
 }
 
-void functions::sendData(cbor::binary data) {
+void functions::sendData(cbor::map data) {
 
-    sockaddr_in dst;
+    cbor::binary encoded = cbor::encode(data);
+    std::vector<unsigned char> v = encoded;
 
-    /***************************
-     *
-     *
-     *  METTRE L'IP A LA PLACE DE "ADDRESSE"
-     *  Et décommenter la ligne
-     *
-     *
-     ***************************/
+    std::vector<unsigned char>::iterator it;
 
-    inet_pton(AF_INET, "127.0.0.1", &dst.sin_addr);
-
-    cout << data.size() << endl;
-    cout << data.capacity() << endl;
+    char* total = new char[v.size()];
+    int i=0;
+    for(it = v.begin(); it < v.end() ; ++it){
+        total[i]=(*it);
+        i++;
+    }
 
 
-    int myId = 5000000;
-    int ret = sendto(this->sckt, (void*) &data, myId, 0, reinterpret_cast<const sockaddr*>(&dst), sizeof(dst));
-
-    //Erreur lors de l'envoi
-    if (ret < 0)
+    // Envoie de message
+    if(send(sock, total, strlen(total), 0) < 0) {
         throw udpSendingException();
+    }
+    cout << "Message envoyé" << endl;
+
 }
 
 cbor::binary functions::entry(){

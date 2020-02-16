@@ -16,7 +16,6 @@ pkg_check_modules(TXML REQUIRED tinyxml2)
 pkg_check_modules(RSVG REQUIRED librsvg-2.0)
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 
-
 #On les inclus
 include_directories(${TXML_INCLUDE_DIRS} ${CAIRO_INCLUDE_DIRS} ${GTK3_INCLUDE_DIRS} ${RSVG_INCLUDE_DIRS})
 
@@ -24,14 +23,14 @@ include_directories(${TXML_INCLUDE_DIRS} ${CAIRO_INCLUDE_DIRS} ${GTK3_INCLUDE_DI
 link_directories(${GTK3_LIBRARY_DIRS} ${RSVG_LIBRARY_DIRS} ${CAIRO_LIBRARY_DIRS} ${TXML_LIBRARY_DIRS})
 
 #On crée l'éxectuable pour le serveur
-add_executable( serveur serveur/moteur serveur/window serveur/message serveur/dataparser serveur/serveur.cpp
-                vendor/cbor11/cbor11
+add_executable( serveur serveur/moteur serveur/window serveur/message serveur/dataparser
+                vendor/cbor11/cbor11 serveur/serveur
 
                 vendor/exceptions/udpRuntimeException vendor/exceptions/udpBindsException vendor/exceptions/udpReceiveException
                 vendor/exceptions/erreurException
                 )
 
-add_executable(testsServeur serveur/maintest serveur/message vendor/cbor11/cbor11 serveur/dataparser
+add_executable(testsServeur serveur/maintest serveur/message vendor/cbor11/cbor11 serveur/dataparser serveur/serveur
 
         vendor/exceptions/udpRuntimeException vendor/exceptions/udpBindsException vendor/exceptions/udpReceiveException
         vendor/exceptions/erreurException
@@ -40,7 +39,8 @@ add_executable(testsServeur serveur/maintest serveur/message vendor/cbor11/cbor1
 #On crée l'executable pour le client
 add_executable(client client/client client/launcher client/functions
 
-        vendor/exceptions/udpAdresseConvertionException vendor/exceptions/udpRuntimeException vendor/exceptions/udpSendingException
+        vendor/exceptions/udpRuntimeException vendor/exceptions/udpSendingException vendor/exceptions/udpBindsException
+        vendor/exceptions/udpAdresseConvertionException vendor/exceptions/udpConnectionException
 
         vendor/cbor11/cbor11
         )
@@ -61,6 +61,4 @@ add_executable(testServeur2 testClientServeur/server vendor/cbor11/cbor11 serveu
         )
 
 #On lies les librairies pour le serveur
-target_link_libraries(serveur ${GTK3_LIBRARIES} ${RSVG_LIBRARIES} ${CAIRO_LIBRARIES} ${TXML_LIBRARIES} Threads::Threads)
-
-
+target_link_libraries(serveur ${GTK3_LIBRARIES} ${RSVG_LIBRARIES} ${CAIRO_LIBRARIES} ${TXML_LIBRARIES}  Threads::Threads)
