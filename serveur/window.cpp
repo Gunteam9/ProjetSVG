@@ -3,16 +3,13 @@
 
 #include "include/window.hpp"
 
-Window::Window(int taille_x, int taille_y, std::string const& titre){
-    this->taille_x = taille_x;
-    this->taille_y = taille_y;
-    this->titre = titre;
+Window::Window(int taille_x, int taille_y, std::string const& titre) : taille_x(taille_x), taille_y(taille_y), titre(titre){
 }
 
 Window::~Window(){
 }
 
-static void do_drawing_svg(cairo_t * cr, RsvgHandle * svg_handle)
+static void do_drawing_svg(cairo_t * cr, RsvgHandle * svg_handle, int tx, int ty)
 { 
     tinyxml2::XMLDocument svg_data;
     tinyxml2::XMLPrinter printer;
@@ -23,20 +20,29 @@ static void do_drawing_svg(cairo_t * cr, RsvgHandle * svg_handle)
 
     svg_handle = rsvg_handle_new_from_data ((const unsigned char*) printer.CStr(), printer.CStrSize()-1, NULL);
 
+    tinyxml2::XMLElement* svg = svg_data.FirstChildElement();
+
+    std::string width = svg->Attribute("width");
+    std::string height = svg->Attribute("height");
+
+    int x = std::stoi(width);
+    int y = std::stoi(height);
+
+    cairo_translate(cr, tx/2 - x/2, ty/2 - y/2);
+
     rsvg_handle_render_cairo(svg_handle, cr);
     
 }
 
-static void do_drawing(cairo_t* cr){
-    cairo_move_to (cr, 100.0, 150.0);
-    cairo_select_font_face (cr, "serif", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
-    cairo_show_text(cr, "Hello world !");
-    do_drawing_svg(cr, svg_handle);
-    cairo_move_to (cr, 0.0, 0.0);
+static void do_drawing(cairo_t* cr, int tx, int ty){
+    do_drawing_svg(cr, svg_handle, tx, ty);
 }
 
 static gboolean on_draw_event(GtkWidget *widget, cairo_t *cr, gpointer user_data){
-    do_drawing(cr);
+    GtkWindow* w = GTK_WINDOW(user_data);
+    int x, y;
+    gtk_window_get_size(w, &x, &y);
+    do_drawing(cr, x, y);
     return FALSE;
 }
 
@@ -59,9 +65,11 @@ void Window::init(int* argc, char*** argv){
     svg_handle = rsvg_handle_new_from_data ((const unsigned char*) printer.CStr(), printer.CStrSize()-1, NULL);
     
     g_signal_connect(G_OBJECT(darea), "draw", 
-        G_CALLBACK(on_draw_event), NULL);
+        G_CALLBACK(on_draw_event), this->window);
     g_signal_connect(this->window, "destroy",
         G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(G_OBJECT (this->window), "delete_event",
+        G_CALLBACK (gtk_main_quit), NULL);
 
     gtk_window_set_position(GTK_WINDOW(this->window), GTK_WIN_POS_CENTER);
 
