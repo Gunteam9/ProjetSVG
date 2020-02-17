@@ -5,3 +5,4 @@ cmake-build-debug
 moteur
 client/client
 client/Makefile
+build
