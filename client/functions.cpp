@@ -86,6 +86,6 @@ cbor::binary functions::entry(){
             { "sun_x", sun_x },
             { "sun_y", sun_y }
     };
-    cbor::encode(message);
-
+    
+    return cbor::encode(message);
 }
