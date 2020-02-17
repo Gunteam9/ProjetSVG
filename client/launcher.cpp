@@ -13,7 +13,7 @@ int main() {
     //cbor::binary data = func.entry();
 
     cbor::map data = {
-            { "sun_x", "5.0 "},
+            { "sun_x", "5.0"},
             { "sun_y", "2.0" }
     };
 
