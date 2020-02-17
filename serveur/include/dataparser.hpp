@@ -6,7 +6,7 @@
 
 #include "message.hpp"
 #include "../../vendor/cbor11/cbor11.hpp"
-#include "../../vendor/exceptions/include/erreurException.hpp"
+#include "../../vendor/exceptions/errorException.hpp"
 
 
 class DataParser {

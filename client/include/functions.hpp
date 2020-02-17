@@ -9,11 +9,11 @@
 #include <cstring>
 #include <arpa/inet.h>
 #include "../../vendor/cbor11/cbor11.hpp"
-#include "../../vendor/exceptions/include/udpRuntimeException.hpp"
-#include "../../vendor/exceptions/include/udpSendingException.hpp"
-#include "../../vendor/exceptions/include/udpBindsException.hpp"
-#include "../../vendor/exceptions/include/udpAdresseConvertionException.hpp"
-#include "../../vendor/exceptions/include/udpConnectionException.hpp"
+#include "../../vendor/exceptions/udpRuntimeException.hpp"
+#include "../../vendor/exceptions/udpSendingException.hpp"
+#include "../../vendor/exceptions/udpBindsException.hpp"
+#include "../../vendor/exceptions/udpAdresseConvertionException.hpp"
+#include "../../vendor/exceptions/udpConnectionException.hpp"
 
 #define PORT 6789
 #define IP_SERVER "127.0.0.2"

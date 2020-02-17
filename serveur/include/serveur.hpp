@@ -10,12 +10,12 @@
 #include <cstring>
 #include <arpa/inet.h>
 #include <vector>
-#include "../../vendor/exceptions/include/udpRuntimeException.hpp"
-#include "../../vendor/exceptions/include/udpBindsException.hpp"
-#include "../../vendor/exceptions/include/udpReceiveException.hpp"
+#include "../../vendor/exceptions/udpRuntimeException.hpp"
+#include "../../vendor/exceptions/udpBindsException.hpp"
+#include "../../vendor/exceptions/udpReceiveException.hpp"
 #include "../../vendor/cbor11/cbor11.hpp"
 #include "dataparser.hpp"
-#include "../../vendor/exceptions/include/erreurException.hpp"
+#include "../../vendor/exceptions/errorException.hpp"
 
 
 #define PORT 6789

@@ -26,21 +26,18 @@ link_directories(${GTK3_LIBRARY_DIRS} ${RSVG_LIBRARY_DIRS} ${CAIRO_LIBRARY_DIRS}
 add_executable( serveur serveur/moteur serveur/window serveur/message serveur/dataparser
                 vendor/cbor11/cbor11 serveur/serveur
 
-                vendor/exceptions/udpRuntimeException vendor/exceptions/udpBindsException vendor/exceptions/udpReceiveException
-                vendor/exceptions/erreurException
+                vendor/exceptions/
                 )
 
 add_executable(testsServeur serveur/maintest serveur/message vendor/cbor11/cbor11 serveur/dataparser serveur/serveur
 
-        vendor/exceptions/udpRuntimeException vendor/exceptions/udpBindsException vendor/exceptions/udpReceiveException
-        vendor/exceptions/erreurException
+        vendor/exceptions/
         )
 
 #On crée l'executable pour le client
 add_executable(client client/launcher client/client  client/functions
 
-        vendor/exceptions/udpRuntimeException vendor/exceptions/udpSendingException vendor/exceptions/udpBindsException
-        vendor/exceptions/udpAdresseConvertionException vendor/exceptions/udpConnectionException
+        vendor/exceptions/
 
         vendor/cbor11/cbor11
         )
