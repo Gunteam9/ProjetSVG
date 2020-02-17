@@ -3,6 +3,8 @@
 
 #include "include/window.hpp"
 
+static RsvgHandle *svg_handle;
+
 Window::Window(int taille_x, int taille_y, std::string const& titre) : taille_x(taille_x), taille_y(taille_y), titre(titre){
 }
 

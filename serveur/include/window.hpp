@@ -14,11 +14,9 @@
 #include "message.hpp"
 #include "serveur.hpp"
 
-static RsvgHandle *svg_handle;
-
 namespace constantes {
-  constexpr char* RES_DIR = "serveur/resources/";
-  constexpr char* MAISON_SVG = "maison.svg";
+  constexpr const char* RES_DIR = "serveur/resources/";
+  constexpr const char* MAISON_SVG = "maison.svg";
 }
 
 class Window {

@@ -52,11 +52,14 @@ void Serveur::startServer() {
 
         std::vector<unsigned char> encodedMessge;
 
+        int taille = strlen(buffer);
+
         //on reserve la place dans le vector,
-        encodedMessge.reserve(strlen(buffer));
+        encodedMessge.reserve(taille);
+
 
         // on assigne les valeurs du buffer dans le vector
-        for (int i = 0; i < strlen(buffer); ++i) {
+        for (int i = 0; i < taille; ++i) {
             encodedMessge.push_back(buffer[i]);
         }
 
