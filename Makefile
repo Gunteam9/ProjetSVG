@@ -37,4 +37,4 @@ $(EXEC_SERVEUR) : $(OBJ_VENDOR) $(OBJ_SERVEUR)
 .PHONY : clean
 
 clean:
-	rm -f serveur/*.o client/*.o vendor/cbor11/*.o vendor/exceptions/*.o start_client start_serveur
+	rm -f serveur/*.o client/*.o vendor/exceptions/*.o start_client start_serveur
