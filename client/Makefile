@@ -7,7 +7,7 @@ SRC= $(wildcard *.cpp) $(wildcard ../vendor/cbor11/*.cpp) $(wildcard ../vendor/e
 OBJ= $(SRC:.cpp=.o)
 
 # executable
-EXEC = client
+EXEC = ../start_client
 
 CXXFLAGS = $(shell pkg-config --cflags cairo gtk+-3.0 librsvg-2.0 tinyxml2)
 LDFLAGS = $(shell pkg-config --libs cairo gtk+-3.0 librsvg-2.0 tinyxml2)
@@ -27,5 +27,5 @@ $(EXEC) : $(OBJ)
 .PHONY : clean
 
 clean:
-	rm -f *.o client
+	rm -f *.o ../start_client
 

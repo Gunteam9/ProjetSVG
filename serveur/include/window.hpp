@@ -54,7 +54,7 @@ class Window {
             tinyxml2::XMLDocument svg_data;
             tinyxml2::XMLPrinter printer;
 
-            svg_data.LoadFile("resources/maison.svg");
+            svg_data.LoadFile("serveur/resources/maison.svg");
 
             tinyxml2::XMLElement *root = svg_data.RootElement();
 
@@ -64,6 +64,6 @@ class Window {
                 attribut->Parent()->ToElement()->SetAttribute(nomAttribut, m.getValeur().c_str());
             }
             
-            svg_data.SaveFile("resources/maison.svg");
+            svg_data.SaveFile("serveur/resources/maison.svg");
         };
 };

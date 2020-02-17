@@ -14,7 +14,7 @@ static void do_drawing_svg(cairo_t * cr, RsvgHandle * svg_handle, int tx, int ty
     tinyxml2::XMLDocument svg_data;
     tinyxml2::XMLPrinter printer;
 
-    svg_data.LoadFile("resources/maison.svg");
+    svg_data.LoadFile("serveur/resources/maison.svg");
 
     svg_data.Print(&printer);
 
@@ -60,7 +60,7 @@ void Window::init(int* argc, char*** argv){
     tinyxml2::XMLDocument svg_data;
     tinyxml2::XMLPrinter printer;
 
-    svg_data.LoadFile("resources/maison.svg");
+    svg_data.LoadFile("serveur/resources/maison.svg");
     svg_data.Print(&printer);
     svg_handle = rsvg_handle_new_from_data ((const unsigned char*) printer.CStr(), printer.CStrSize()-1, NULL);
     
