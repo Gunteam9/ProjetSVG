@@ -8,12 +8,18 @@
 #include <vector>
 #include <string>
 #include <queue>
+#include <filesystem>
 
 #include "event.hpp"
 #include "message.hpp"
 #include "serveur.hpp"
 
 static RsvgHandle *svg_handle;
+
+namespace constantes {
+  constexpr char* RES_DIR = "serveur/resources/";
+  constexpr char* MAISON_SVG = "maison.svg";
+}
 
 class Window {
     private:
@@ -54,7 +60,11 @@ class Window {
             tinyxml2::XMLDocument svg_data;
             tinyxml2::XMLPrinter printer;
 
-            svg_data.LoadFile("serveur/resources/maison.svg");
+            std::filesystem::path chemin;
+            chemin.append(constantes::RES_DIR);
+            chemin.append(constantes::MAISON_SVG);
+
+            svg_data.LoadFile(chemin.c_str());
 
             tinyxml2::XMLElement *root = svg_data.RootElement();
 
@@ -64,6 +74,6 @@ class Window {
                 attribut->Parent()->ToElement()->SetAttribute(nomAttribut, m.getValeur().c_str());
             }
             
-            svg_data.SaveFile("serveur/resources/maison.svg");
+            svg_data.SaveFile(chemin.c_str());
         };
 };
