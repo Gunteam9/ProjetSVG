@@ -2,8 +2,7 @@
 // Created by Romain on 11/02/2020.
 //
 
-#include "../cbor11/cbor11.hpp"
-#include "functions.h"
+#include "include/functions.hpp"
 
 using namespace std;
 
@@ -13,12 +12,10 @@ int main() {
 
     //cbor::binary data = func.entry();
 
-    cbor::map message = {
-            { "sun_x", 5.0 },
-            { "sun_y", 2.0 }
+    cbor::map data = {
+            { "sun_x", "5.0"},
+            { "sun_y", "2.0" }
     };
-
-    cbor::binary data = cbor::encode(message);
 
     func.sendData(data);
 

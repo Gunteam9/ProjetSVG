@@ -2,6 +2,6 @@
 cmake-build-debug
 .vscode
 *.o
-moteur
-client/client
-client/Makefile
+start_client
+start_serveur
+build

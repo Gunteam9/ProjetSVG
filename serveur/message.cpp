@@ -2,7 +2,7 @@
 // Created by ionas on 10/02/2020.
 //
 
-#include "message.hpp"
+#include "include/message.hpp"
 
 Message::~Message() = default;
 

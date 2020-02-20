@@ -1,6 +1,4 @@
-#include "client.h"
-#include <string.h>
-#include <unistd.h>
+#include "include/client.hpp"
 
 
 
@@ -55,4 +53,4 @@ namespace udp_client_server {
     }
 
 }
-//source: https://linux.m2osw.com/c-implementation-udp-clientserver;
+//source: https://linux.m2osw.com/c-implementation-udp-clientserver

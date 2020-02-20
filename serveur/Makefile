@@ -3,11 +3,11 @@ CPPC := g++
 #options de compilation
 CPPFLAGS := --std=c++17 -Wall -Wextra -pedantic -ggdb 
 # Sources & objets
-SRC= $(wildcard *.cpp) $(wildcard ../cbor11/*.cpp) $(wildcard ../exceptions/*.cpp)
+SRC= $(wildcard *.cpp) $(wildcard ../vendor/cbor11/*.cpp) $(wildcard ../vendor/exceptions/*.cpp)
 OBJ= $(SRC:.cpp=.o)
 
 # executable
-EXEC = moteur
+EXEC = ../start_serveur
 
 CXXFLAGS = $(shell pkg-config --cflags cairo gtk+-3.0 librsvg-2.0 tinyxml2)
 LDFLAGS = $(shell pkg-config --libs cairo gtk+-3.0 librsvg-2.0 tinyxml2)
@@ -27,4 +27,4 @@ $(EXEC) : $(OBJ)
 .PHONY : clean
 
 clean:
-	rm -f *.o moteur
+	rm -f *.o ../start_serveur

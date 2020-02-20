@@ -3,7 +3,7 @@
 //
 
 
-#include "dataparser.hpp"
+#include "include/dataparser.hpp"
 /**
  * Méthode qui prend un cbor encodé, le cbor doit être une map d'élément valeur
  * @param encodedItem est le cbor encodé
@@ -14,7 +14,7 @@ vector<Message> DataParser::lireMessage(cbor::binary encodedItem) {
     cbor decodedItem= cbor::decode(encodedItem);
 
     if(!decodedItem.is_map()){
-        throw ErreurException("encodedItem doit être une map encodée");
+        throw errorException("EncodedItem doit être une map encodée");
     }
 
     map<cbor,cbor> maMap = decodedItem;

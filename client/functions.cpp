@@ -2,46 +2,44 @@
 // Created by gunteam on 05/02/2020.
 // Source: https://bousk.developpez.com/cours/reseau-c++/UDP/01-introduction-premiers-pas/ - https://bousk.developpez.com/cours/reseau-c++/TCP/04-serveur-premiers-pas
 //
-
-// Pourquoi utiliser htons: https://stackoverflow.com/questions/19207745/htons-function-in-socket-programing
-//
-
-
-#include "functions.h"
-
-
+#include "include/functions.hpp"
 
 using namespace std;
 
 functions::functions() {
 
-    /*
-     * Création de la socket
-     *
-     */
-     sckt = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    //Buffer
+
+    //Création de la socket
+    if ((sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
+    {
+        throw udpRuntimeException(IP_CLIENT, PORT);
+    }
+
+    //Initilisation de la socket
+    serv_addr.sin_addr.s_addr = inet_addr(IP_CLIENT);
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(PORT);
 
 
-    /*
-     * Ouverture de la socket
-     *
-     */
-    sockaddr_in addr;
+    // Convertion des addresses IP en binaire
+    if(inet_pton(AF_INET, IP_CLIENT, &serv_addr.sin_addr) <= 0)
+    {
+        throw udpAdresseConvertionException();
+    }
 
-    // Traduction du port en htons port
-    addr.sin_port = htons(PORT);
+    // Binds
+    if (bind(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
+        throw udpBindsException();
+    }
 
-    // Pour IPV4
-    addr.sin_family = AF_INET;
+    // Modification de l'ip pour atteindre le serveur
+    serv_addr.sin_addr.s_addr = inet_addr(IP_SERVER);
 
-    // Binding
-    int res = bind(sckt, reinterpret_cast<sockaddr*>(&addr), sizeof(addr));
-
-    //En cas d'erreur
-    if (res != 0)
-        throw udpRuntimeException(addr, PORT);
-
-
+    // Connexion au serveur
+    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
+        throw  udpConnectionException(IP_SERVER, PORT);
+    }
 
 }
 
@@ -49,31 +47,27 @@ functions::~functions() {
 
 }
 
-void functions::sendData(cbor::binary data) {
+void functions::sendData(cbor::map data) {
 
-    sockaddr_in dst;
+    cbor::binary encoded = cbor::encode(data);
+    std::vector<unsigned char> v = encoded;
 
-    /***************************
-     *
-     *
-     *  METTRE L'IP A LA PLACE DE "ADDRESSE"
-     *  Et décommenter la ligne
-     *
-     *
-     ***************************/
+    std::vector<unsigned char>::iterator it;
 
-    inet_pton(AF_INET, "127.0.0.1", &dst.sin_addr);
-
-    cout << data.size() << endl;
-    cout << data.capacity() << endl;
+    char* total = new char[v.size()];
+    int i=0;
+    for(it = v.begin(); it < v.end() ; ++it){
+        total[i]=(*it);
+        i++;
+    }
 
 
-    int myId = 5000000;
-    int ret = sendto(sckt, (void*) &data, myId, 0, reinterpret_cast<const sockaddr*>(&dst), sizeof(dst));
-
-    //Erreur lors de l'envoi
-    if (ret < 0)
+    // Envoie de message
+    if(send(sock, total, strlen(total), 0) < 0) {
         throw udpSendingException();
+    }
+    cout << "Message envoyé" << endl;
+
 }
 
 //
@@ -85,15 +79,20 @@ void functions::sendData(cbor::binary data) {
 cbor::binary functions::entry(){
     double sun_x;
     double sun_y;
+    /*
     cout << "Entrez la position du soleil sur l'axe X" << endl;
     cin >> sun_x;
     cout << "Entrez la position du soleil sur l'axe Y" << endl;
     cin >> sun_y;
+     */
+
+
 
     cbor::map message = {
             { "sun_x", sun_x },
             { "sun_y", sun_y }
     };
+<<<<<<< HEAD
     return cbor::encode(message);
 	
 }
@@ -113,3 +112,8 @@ void functions::showModifiableItems(cbor::binary data){
 	}
 	
 }
+=======
+    
+    return cbor::encode(message);
+}
+>>>>>>> f0b0c5f3677aeb64fefe3acf9c2872768ea40066
