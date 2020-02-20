@@ -76,6 +76,12 @@ void functions::sendData(cbor::binary data) {
         throw udpSendingException();
 }
 
+//
+// Edit by Anael
+//
+// Entrées des modifications
+// 
+
 cbor::binary functions::entry(){
     double sun_x;
     double sun_y;
@@ -88,6 +94,22 @@ cbor::binary functions::entry(){
             { "sun_x", sun_x },
             { "sun_y", sun_y }
     };
-    cbor::encode(message);
+    return cbor::encode(message);
+	
+}
 
+
+void functions::showModifiableItems(cbor::binary data){
+	cbor::map ModifiableItems = cbor::decode(data);
+	string choice;
+	for(auto it = ModifiableItems.begin(); it != ModifiableItems.end(); ++it){
+		cout << "Souhaitez-vous faire cette modification? (y: yes, n: no)" << endl;
+		cout << (string) it->first << ": " << (string) it->second << endl;
+		cin >> choice;
+		if(choice.compare("y")==0){
+			//insert function
+			break;
+		}
+	}
+	
 }

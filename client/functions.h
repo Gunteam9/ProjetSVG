@@ -5,7 +5,6 @@
 #ifndef CORBEAU_NEONAKIS_TOULARHMINE_TRIMOULET_FUNCTIONS_H
 #define CORBEAU_NEONAKIS_TOULARHMINE_TRIMOULET_FUNCTIONS_H
 
-
 #include <string>
 #include <netinet/in.h>
 #include <cstring>
@@ -27,6 +26,8 @@ public:
     void sendData(cbor::binary data);
 
     cbor::binary entry();
+
+    void showModifiableItems(cbor::binary data);
 
 private:
 
