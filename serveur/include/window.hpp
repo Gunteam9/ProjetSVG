@@ -31,24 +31,38 @@ class Window {
         void start();
         void stop();
 
-        static tinyxml2::XMLElement* getElementByName(tinyxml2::XMLDocument const& document, std::string const& name, tinyxml2::XMLElement* const e){
-            if(e != NULL && std::string(e->Name()).compare("driven") == 0 && e->Attribute("by") != NULL && std::string(e->Attribute("by")).compare(name) == 0){
-                return e;
-            }else{
-                if(e->FirstChildElement() != NULL){
-                    tinyxml2::XMLElement* children = getElementByName(document, name, e->FirstChildElement());
-                    if(children != NULL){
-                        return children;
-                    }
-                }
-                if(e->NextSiblingElement() != NULL){
-                    tinyxml2::XMLElement* siblings = getElementByName(document, name, e->NextSiblingElement());
-                    if(siblings != NULL){
-                        return siblings;
-                    }
+        static tinyxml2::XMLElement* getElementByName(std::vector<tinyxml2::XMLElement*> drivens, std::string const& name){
+            for(tinyxml2::XMLElement* driven : drivens){
+                if(std::string(driven->Attribute("by")).compare(name) == 0){
+                    return driven;
                 }
             }
             return NULL;
+        }
+
+
+        static const std::vector<tinyxml2::XMLElement*> getDrivens(tinyxml2::XMLDocument const& document, tinyxml2::XMLElement* const e){
+            std::vector<tinyxml2::XMLElement*> drivens;
+            if(e != NULL && std::string(e->Name()).compare("driven") == 0 && e->Attribute("by") != NULL){
+                drivens.push_back(e);
+            }
+            if(e->FirstChildElement() != NULL){
+                std::vector<tinyxml2::XMLElement*> drivensChildren = getDrivens(document, e->FirstChildElement());
+                drivens.insert(drivens.end(), drivensChildren.begin(), drivensChildren.end());
+            }
+            if(e->NextSiblingElement() != NULL){
+                std::vector<tinyxml2::XMLElement*> drivensChildren = getDrivens(document, e->NextSiblingElement());
+                drivens.insert(drivens.end(), drivensChildren.begin(), drivensChildren.end());
+            }
+            return drivens;
+        }
+
+        static const std::vector<const char*> getDrivensName(std::vector<tinyxml2::XMLElement*> drivens){
+            std::vector<const char*>  drivensName;
+            for(tinyxml2::XMLElement* driven : drivens){
+                drivensName.push_back(driven->Attribute("by"));
+            }
+            return drivensName;
         }
 
         static void update(std::vector<Message> const& v){
@@ -64,8 +78,11 @@ class Window {
 
             tinyxml2::XMLElement *root = svg_data.RootElement();
 
+            std::vector<tinyxml2::XMLElement*> drivens = getDrivens(svg_data, root);
+            std::vector<const char*> drivensName = getDrivensName(drivens);
+
             for(Message m : v){
-                tinyxml2::XMLElement *attribut = getElementByName(svg_data, m.getNomElement(), root);
+                tinyxml2::XMLElement *attribut = getElementByName(drivens, m.getNomElement());
                 const char* nomAttribut = attribut->Attribute("target");
                 attribut->Parent()->ToElement()->SetAttribute(nomAttribut, m.getValeur().c_str());
             }
