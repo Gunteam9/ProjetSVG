@@ -71,7 +71,6 @@ void functions::sendData(cbor::map data) {
 
     char buffer[1024] = {0};
 
-
     if (recv(sock, buffer, sizeof(buffer), 0) < 0) {
         throw udpReceiveException();
     }

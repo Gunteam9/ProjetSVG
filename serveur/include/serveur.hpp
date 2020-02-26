@@ -28,10 +28,11 @@ using namespace std;
 class Serveur {
 
 private:
+    char* IMAGE_SVG ;
     int sock;
 
 public:
-    Serveur();
+    Serveur(char* IMAGE_SVG);
 
     virtual ~Serveur();
 

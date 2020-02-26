@@ -13,6 +13,7 @@
 #include "message.hpp"
 #include "serveur.hpp"
 
+
 namespace constantes {
   constexpr char* RES_DIR = "serveur/resources/";
   constexpr char* MAISON_SVG = "maison.svg";

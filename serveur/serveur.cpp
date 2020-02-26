@@ -9,8 +9,9 @@
 
 using namespace std;
 
-Serveur::Serveur(){
-    //Socket
+Serveur::Serveur(char * IMAGE_SVG) {
+
+    this->IMAGE_SVG=IMAGE_SVG;
 
 
     //Addresse IP
@@ -48,26 +49,12 @@ void Serveur::startServer() {
 
 
         sockaddr_in from;
-        socklen_t fromlen= sizeof(from);
+        socklen_t fromlen = sizeof(from);
 
 
-        if (recvfrom(sock, buffer, sizeof(buffer), 0, reinterpret_cast<sockaddr*>(&from), &fromlen) < 0) {
+        if (recvfrom(sock, buffer, sizeof(buffer), 0, reinterpret_cast<sockaddr *>(&from), &fromlen) < 0) {
             throw udpReceiveException();
         }
-
-
-
-
-
-
-        int resEnvoi = sendto(sock,"toto",4,0, reinterpret_cast<const sockaddr*>(&from),sizeof(from));
-        if (resEnvoi<0){
-            throw udpSendingException();
-        }
-        cout << "Message envoyé serveur" << endl;
-
-
-
 
 
         std::vector<unsigned char> encodedMessge;
@@ -87,17 +74,38 @@ void Serveur::startServer() {
         cbor::binary binaryEncodedMessage = encodedMessge;
 
         DataParser p;
-        //ici on affiche les messages
-        //il faudrait les envoyer a une methode de la window pour effectuer les changements
+
         std::vector<Message> vT = p.lireMessage(binaryEncodedMessage);
 
         std::cout << vT[0] << endl;
 
-        Window::update(vT);
+        if (vT[0].getNomElement() == "?") { //si le message reçu comment par un '?' alors on envoie les driven au client
+            vector<const char *> lesElementsDriven = Window::getDrivensName(this->IMAGE_SVG);
 
+            char* lesElementsAEnvoyer ;
+            std::string s ="";
+            for(const char* elemnt : lesElementsDriven  ){
+                s.append(elemnt);
+            }
+
+            const char * drivenImage = s.c_str();
+
+
+
+            int resEnvoi = sendto(sock, (char *)drivenImage, strlen(drivenImage), 0, reinterpret_cast<const sockaddr *>(&from),sizeof(from));
+            if (resEnvoi < 0) {
+                throw udpSendingException();
+            }
+            cout << "informations envoyés serveur" << endl;
+
+        } else {
+
+            Window::update(vT, this->IMAGE_SVG);
+        }
     }
 
 }
+
 
 int Serveur::getMaSocket() const{
     return this->sock;
