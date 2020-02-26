@@ -8,7 +8,6 @@
 #include <vector>
 #include <string>
 #include <queue>
-#include <filesystem>
 
 #include "event.hpp"
 #include "message.hpp"
@@ -58,8 +57,7 @@ class Window {
             tinyxml2::XMLDocument svg_data;
             tinyxml2::XMLPrinter printer;
 
-            std::filesystem::path chemin;
-            chemin.append(constantes::RES_DIR);
+            std::string chemin(constantes::RES_DIR);
             chemin.append(constantes::MAISON_SVG);
 
             svg_data.LoadFile(chemin.c_str());

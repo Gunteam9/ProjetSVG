@@ -16,8 +16,8 @@ static void do_drawing_svg(cairo_t * cr, RsvgHandle * svg_handle, int tx, int ty
     tinyxml2::XMLDocument svg_data;
     tinyxml2::XMLPrinter printer;
 
-    std::filesystem::path chemin;
-    chemin.append(constantes::RES_DIR);
+
+    std::string chemin(constantes::RES_DIR);
     chemin.append(constantes::MAISON_SVG);
 
     svg_data.LoadFile(chemin.c_str());
@@ -66,8 +66,7 @@ void Window::init(int* argc, char*** argv){
     tinyxml2::XMLDocument svg_data;
     tinyxml2::XMLPrinter printer;
 
-    std::filesystem::path chemin;
-    chemin.append(constantes::RES_DIR);
+    std::string chemin(constantes::RES_DIR);
     chemin.append(constantes::MAISON_SVG);
 
     svg_data.LoadFile(chemin.c_str());
