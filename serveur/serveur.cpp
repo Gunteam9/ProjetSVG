@@ -83,9 +83,9 @@ void Serveur::startServer() {
             vector<const char *> lesElementsDriven = Window::getDrivensName(this->IMAGE_SVG);
 
             char* lesElementsAEnvoyer ;
-            std::string s ="";
+            std::string s ="Les elements driven sont : \n";
             for(const char* elemnt : lesElementsDriven  ){
-                s.append(elemnt);
+                s.append(elemnt).append("\n");
             }
 
             const char * drivenImage = s.c_str();

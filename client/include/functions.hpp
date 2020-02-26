@@ -45,5 +45,5 @@ private:
 
     void getModifiableInformations();
 
-    void showModifiableItems(cbor::binary data);
+    //void showModifiableItems(cbor::binary data);
 };

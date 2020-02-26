@@ -56,9 +56,6 @@ functions::functions() {
     //////////////////////////////////////////////
 
 
-    sendData(cbor::map {{"?", "?"}});
-
-    getModifiableInformations();
 
 }
 
@@ -87,51 +84,19 @@ void functions::sendData(cbor::map data) {
     }
     cout << "Message envoyé" << endl;
 
-    char buffer[1024] = {0};
+    if (data.begin()->first == "?") { // si on envoie un "?"
 
-    if (recv(sock, buffer, sizeof(buffer), 0) < 0) {
-        throw udpReceiveException();
-    }
-
-    std::cout << buffer << endl;
-
-}
-
-void functions::getModifiableInformations() {
-    std::cout << "En attente de la réception des données modifiables" << std::endl;
-    while (true) {
         char buffer[1024] = {0};
 
         if (recv(sock, buffer, sizeof(buffer), 0) < 0) {
             throw udpReceiveException();
         }
 
-        std::vector<unsigned char> encodedMessge;
-
-        int taille = strlen(buffer);
-
-        //on reserve la place dans le vector,
-        encodedMessge.reserve(taille);
-
-
-        // on assigne les valeurs du buffer dans le vector
-        for (int i = 0; i < taille; ++i) {
-            encodedMessge.push_back(buffer[i]);
-        }
-
-
-        cbor::binary binaryEncodedMessage = encodedMessge;
-
-        DataParser p;
-        //ici on affiche les messages
-        //il faudrait les envoyer a une methode de la window pour effectuer les changements
-        std::vector<Message> vT = p.lireMessage(binaryEncodedMessage);
-
-        std::cout << vT[0] << endl;
-
+        std::cout << buffer << endl;
     }
 
 }
+
 
 void functions::showModifiableItems(cbor::binary data){
     cbor::map ModifiableItems = cbor::decode(data);
