@@ -92,7 +92,6 @@ cbor::binary functions::entry(){
             { "sun_x", sun_x },
             { "sun_y", sun_y }
     };
-<<<<<<< HEAD
     return cbor::encode(message);
 	
 }
@@ -112,8 +111,3 @@ void functions::showModifiableItems(cbor::binary data){
 	}
 	
 }
-=======
-    
-    return cbor::encode(message);
-}
->>>>>>> f0b0c5f3677aeb64fefe3acf9c2872768ea40066

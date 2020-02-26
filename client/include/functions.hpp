@@ -29,6 +29,9 @@ public:
 
     cbor::binary entry();
 
+    void showModifiableItems(cbor::binary data);
+
+
 private:
 
     //Socket
