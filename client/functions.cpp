@@ -3,6 +3,7 @@
 // Source: https://bousk.developpez.com/cours/reseau-c++/UDP/01-introduction-premiers-pas/ - https://bousk.developpez.com/cours/reseau-c++/TCP/04-serveur-premiers-pas
 //
 #include "include/functions.hpp"
+#include "../vendor/exceptions/udpReceiveException.hpp"
 
 using namespace std;
 
@@ -67,6 +68,13 @@ void functions::sendData(cbor::map data) {
         throw udpSendingException();
     }
     cout << "Message envoyé" << endl;
+
+    char buffer[1024] = {0};
+
+
+    if (recv(sock, buffer, sizeof(buffer), 0) < 0) {
+        throw udpReceiveException();
+    }
 
 }
 

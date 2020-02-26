@@ -5,6 +5,7 @@
 #include "include/serveur.hpp"
 
 #include "include/window.hpp"
+#include "../vendor/exceptions/udpSendingException.hpp"
 
 using namespace std;
 
@@ -49,6 +50,18 @@ void Serveur::startServer() {
         if (recv(sock, buffer, sizeof(buffer), 0) < 0) {
             throw udpReceiveException();
         }
+
+
+
+        char * total = "salut";
+        if(send(sock, total, strlen(total), 0) < 0) {
+            throw udpSendingException();
+        }
+        cout << "Message envoyé" << endl;
+
+
+
+
 
         std::vector<unsigned char> encodedMessge;
 
