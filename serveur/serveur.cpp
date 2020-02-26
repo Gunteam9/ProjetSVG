@@ -46,9 +46,14 @@ void Serveur::startServer() {
     while (true) {
         char buffer[1024] = {0};
 
-        if (recv(sock, buffer, sizeof(buffer), 0) < 0) {
+        sockaddr_in from;
+        socklen_t fromlen= sizeof(from);
+
+
+        if (recvfrom(sock, buffer, sizeof(buffer), 0, reinterpret_cast<sockaddr*>(&from), &fromlen) < 0) {
             throw udpReceiveException();
         }
+
 
         std::vector<unsigned char> encodedMessge;
 
