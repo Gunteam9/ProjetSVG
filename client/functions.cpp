@@ -5,11 +5,20 @@
 #include "include/functions.hpp"
 #include "../vendor/exceptions/udpReceiveException.hpp"
 
+
 using namespace std;
 
 functions::functions() {
 
-    //Buffer
+    //////////////////////////////////////////////
+    //                                          //
+    //                                          //
+    //                  SOCKET                  //
+    //                                          //
+    //                                          //
+    //////////////////////////////////////////////
+
+
 
     //Création de la socket
     if ((sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
@@ -37,10 +46,19 @@ functions::functions() {
     // Modification de l'ip pour atteindre le serveur
     serv_addr.sin_addr.s_addr = inet_addr(IP_SERVER);
 
-    // Connexion au serveur
-    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
-        throw  udpConnectionException(IP_SERVER, PORT);
-    }
+
+    //////////////////////////////////////////////
+    //                                          //
+    //                                          //
+    //     Récupérations des informations       //
+    //                                          //
+    //                                          //
+    //////////////////////////////////////////////
+
+
+    sendData(cbor::map {{"?", "?"}});
+
+    getModifiableInformations();
 
 }
 
@@ -64,7 +82,7 @@ void functions::sendData(cbor::map data) {
 
 
     // Envoie de message
-    if(send(sock, total, strlen(total), 0) < 0) {
+    if (sendto(sock, total, strlen(total), 0, (const sockaddr*) &serv_addr, sizeof(serv_addr)) < 0) {
         throw udpSendingException();
     }
     cout << "Message envoyé" << endl;
@@ -79,11 +97,55 @@ void functions::sendData(cbor::map data) {
 
 }
 
-//
-// Edit by Anael
-//
-// Entrées des modifications
-// 
+void functions::getModifiableInformations() {
+    std::cout << "En attente de la réception des données modifiables" << std::endl;
+    while (true) {
+        char buffer[1024] = {0};
+
+        if (recv(sock, buffer, sizeof(buffer), 0) < 0) {
+            throw udpReceiveException();
+        }
+
+        std::vector<unsigned char> encodedMessge;
+
+        int taille = strlen(buffer);
+
+        //on reserve la place dans le vector,
+        encodedMessge.reserve(taille);
+
+
+        // on assigne les valeurs du buffer dans le vector
+        for (int i = 0; i < taille; ++i) {
+            encodedMessge.push_back(buffer[i]);
+        }
+
+
+        cbor::binary binaryEncodedMessage = encodedMessge;
+
+        DataParser p;
+        //ici on affiche les messages
+        //il faudrait les envoyer a une methode de la window pour effectuer les changements
+        std::vector<Message> vT = p.lireMessage(binaryEncodedMessage);
+
+        std::cout << vT[0] << endl;
+
+    }
+
+}
+
+void functions::showModifiableItems(cbor::binary data){
+    cbor::map ModifiableItems = cbor::decode(data);
+    string choice;
+    for(auto it = ModifiableItems.begin(); it != ModifiableItems.end(); ++it){
+        cout << "Souhaitez-vous faire cette modification? (y: yes, n: no)" << endl;
+        cout << (string) it->first << ": " << (string) it->second << endl;
+        cin >> choice;
+        if(choice.compare("y")==0){
+            //insert function
+            break;
+        }
+    }
+}
 
 cbor::binary functions::entry(){
     double sun_x;
@@ -101,22 +163,6 @@ cbor::binary functions::entry(){
             { "sun_x", sun_x },
             { "sun_y", sun_y }
     };
+    
     return cbor::encode(message);
-	
-}
-
-
-void functions::showModifiableItems(cbor::binary data){
-	cbor::map ModifiableItems = cbor::decode(data);
-	string choice;
-	for(auto it = ModifiableItems.begin(); it != ModifiableItems.end(); ++it){
-		cout << "Souhaitez-vous faire cette modification? (y: yes, n: no)" << endl;
-		cout << (string) it->first << ": " << (string) it->second << endl;
-		cin >> choice;
-		if(choice.compare("y")==0){
-			//insert function
-			break;
-		}
-	}
-	
 }

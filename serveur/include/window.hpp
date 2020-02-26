@@ -33,7 +33,6 @@ class Window {
         void init(int*, char***, const char*);
         void start();
         void stop();
-        static const char* CURRENT_SVG;
 
         static tinyxml2::XMLElement* getElementByName(std::vector<tinyxml2::XMLElement*> drivens, std::string const& name){
             for(tinyxml2::XMLElement* driven : drivens){

@@ -106,7 +106,6 @@ void Serveur::startServer() {
 
 }
 
-
 int Serveur::getMaSocket() const{
     return this->sock;
 }

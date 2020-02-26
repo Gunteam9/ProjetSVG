@@ -70,7 +70,7 @@ void Window::init(int* argc, char*** argv, const char* svg){
     tinyxml2::XMLPrinter printer;
 
     std::string chemin(constantes::RES_DIR);
-    chemin.append(CURRENT_SVG);
+    chemin.append(svg);
 
 
     svg_data.LoadFile(chemin.c_str());

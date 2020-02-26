@@ -5,6 +5,8 @@ project(corbeau_neonakis_toularhmine_trimoulet)
 
 #Standard de c++
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 
 #Outil pour trouver les packages
 find_package(PkgConfig REQUIRED)
@@ -35,7 +37,7 @@ add_executable(testsServeur serveur/maintest serveur/message vendor/cbor11/cbor1
         )
 
 #On crée l'executable pour le client
-add_executable(client client/launcher client/client  client/functions
+add_executable(client client/launcher client/client  client/functions serveur/dataparser.cpp serveur/message.cpp
 
         vendor/exceptions/
 
@@ -44,4 +46,4 @@ add_executable(client client/launcher client/client  client/functions
 
 
 #On lies les librairies pour le serveur
-target_link_libraries(serveur ${GTK3_LIBRARIES} ${RSVG_LIBRARIES} ${CAIRO_LIBRARIES} ${TXML_LIBRARIES}  Threads::Threads)
+target_link_libraries(serveur ${GTK3_LIBRARIES} ${RSVG_LIBRARIES} ${CAIRO_LIBRARIES} ${TXML_LIBRARIES}  Threads::Threads stdc++fs)
