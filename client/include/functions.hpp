@@ -14,6 +14,9 @@
 #include "../../vendor/exceptions/udpBindsException.hpp"
 #include "../../vendor/exceptions/udpAdresseConvertionException.hpp"
 #include "../../vendor/exceptions/udpConnectionException.hpp"
+#include "../../vendor/exceptions/udpReceiveException.hpp"
+#include "../../serveur/include/dataparser.hpp"
+#include "../../serveur/include/message.hpp"
 
 #define PORT 6789
 #define IP_SERVER "127.0.0.2"
@@ -40,4 +43,7 @@ private:
     //Addresse du serveur
     struct sockaddr_in serv_addr;
 
+    void getModifiableInformations();
+
+    void showModifiableItems(cbor::binary data);
 };
