@@ -23,7 +23,7 @@ include_directories(${TXML_INCLUDE_DIRS} ${CAIRO_INCLUDE_DIRS} ${GTK3_INCLUDE_DI
 link_directories(${GTK3_LIBRARY_DIRS} ${RSVG_LIBRARY_DIRS} ${CAIRO_LIBRARY_DIRS} ${TXML_LIBRARY_DIRS})
 
 #On crée l'éxectuable pour le serveur
-add_executable( serveur serveur/moteur serveur/window serveur/message serveur/dataparser
+add_executable( serveur serveur/moteur.cpp serveur/window serveur/message serveur/dataparser
                 vendor/cbor11/cbor11 serveur/serveur
 
                 vendor/exceptions/

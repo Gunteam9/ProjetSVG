@@ -76,6 +76,8 @@ void functions::sendData(cbor::map data) {
         throw udpReceiveException();
     }
 
+    std::cout << buffer << endl;
+
 }
 
 //
