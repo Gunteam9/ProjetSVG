@@ -4,6 +4,7 @@
 #include "include/window.hpp"
 
 static RsvgHandle *svg_handle;
+static const char* CURRENT_SVG;
 
 Window::Window(int taille_x, int taille_y, std::string const& titre) : taille_x(taille_x), taille_y(taille_y), titre(titre){
 }
@@ -16,9 +17,9 @@ static void do_drawing_svg(cairo_t * cr, RsvgHandle * svg_handle, int tx, int ty
     tinyxml2::XMLDocument svg_data;
     tinyxml2::XMLPrinter printer;
 
-    std::filesystem::path chemin;
-    chemin.append(constantes::RES_DIR);
-    chemin.append(constantes::MAISON_SVG);
+
+    std::string chemin(constantes::RES_DIR);
+    chemin.append(CURRENT_SVG);
 
     svg_data.LoadFile(chemin.c_str());
 
@@ -52,12 +53,14 @@ static gboolean on_draw_event(GtkWidget *widget, cairo_t *cr, gpointer user_data
     return FALSE;
 }
 
-void Window::init(int* argc, char*** argv){
+void Window::init(int* argc, char*** argv, const char* svg){
     GtkWidget *darea;
 
     gtk_init(argc, argv);
 
     this->window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+
+    CURRENT_SVG = svg;
 
     darea = gtk_drawing_area_new();
     gtk_container_add(GTK_CONTAINER(this->window), darea);
@@ -66,9 +69,9 @@ void Window::init(int* argc, char*** argv){
     tinyxml2::XMLDocument svg_data;
     tinyxml2::XMLPrinter printer;
 
-    std::filesystem::path chemin;
-    chemin.append(constantes::RES_DIR);
-    chemin.append(constantes::MAISON_SVG);
+    std::string chemin(constantes::RES_DIR);
+    chemin.append(CURRENT_SVG);
+
 
     svg_data.LoadFile(chemin.c_str());
     svg_data.Print(&printer);
