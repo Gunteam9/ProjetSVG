@@ -73,7 +73,7 @@ void Serveur::startServer() {
 
         std::cout << vT[0] << endl;
 
-        Window::update(vT);
+        Window::update(vT, constantes::MAISON_SVG);
 
     }
 
