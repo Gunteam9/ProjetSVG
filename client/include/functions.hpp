@@ -15,8 +15,10 @@
 #include "../../vendor/exceptions/udpAdresseConvertionException.hpp"
 #include "../../vendor/exceptions/udpConnectionException.hpp"
 #include "../../vendor/exceptions/udpReceiveException.hpp"
+#include "../../vendor/exceptions/udpReceiveException.hpp"
 #include "../../serveur/include/dataparser.hpp"
 #include "../../serveur/include/message.hpp"
+
 
 #define PORT 6789
 #define IP_SERVER "127.0.0.2"
@@ -30,10 +32,6 @@ public:
 
     void sendData(cbor::map data);
 
-    cbor::binary entry();
-
-    void showModifiableItems(cbor::binary data);
-
 
 private:
 
@@ -44,6 +42,8 @@ private:
     struct sockaddr_in serv_addr;
 
     void getModifiableInformations();
+    void showModifiableItems(vector<std::string> modifiableItems);
+    string modifyItem(std::string item);
 
-    //void showModifiableItems(cbor::binary data);
+    bool isItemExist(vector<std::string> modifiableItems, std::string item);
 };
