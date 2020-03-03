@@ -4,7 +4,6 @@
 
 #include "include/serveur.hpp"
 
-#include "include/window.hpp"
 #include "../vendor/exceptions/udpSendingException.hpp"
 
 using namespace std;
@@ -43,7 +42,7 @@ Serveur::~Serveur() {
 }
 
 
-void Serveur::startServer() {
+void Serveur::startServer(Window& w) {
     while (true) {
         char buffer[1024] = {0};
 
@@ -80,7 +79,7 @@ void Serveur::startServer() {
         std::cout << vT[0] << endl;
 
         if (vT[0].getNomElement() == "?") { //si le message reçu comment par un '?' alors on envoie les driven au client
-            vector<const char *> lesElementsDriven = Window::getDrivensName(this->IMAGE_SVG);
+            vector<const char *> lesElementsDriven = w.getDrivensName(this->IMAGE_SVG);
 
             char* lesElementsAEnvoyer ;
             std::string s ="Les elements driven sont : \n";
@@ -100,7 +99,7 @@ void Serveur::startServer() {
 
         } else {
 
-            Window::update(vT, this->IMAGE_SVG);
+            w.update(vT, this->IMAGE_SVG);
         }
     }
 

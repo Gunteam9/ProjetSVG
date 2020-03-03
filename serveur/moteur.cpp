@@ -1,5 +1,5 @@
-#include "include/window.hpp"
 #include "include/serveur.hpp"
+#include "include/window.hpp"
 
 #include <iostream>
 #include <stdlib.h>
@@ -11,6 +11,6 @@ int main(int argc, char *argv[]){
   Serveur s(constantes::MAISON_SVG);
   w.init(&argc, &argv, constantes::MAISON_SVG);
   std::thread t(&Window::start, &w);
-  s.startServer();
+  s.startServer(w);
   return 0;
 }

@@ -15,6 +15,7 @@
 #include "../../vendor/exceptions/udpReceiveException.hpp"
 #include "../../vendor/cbor11/cbor11.hpp"
 #include "dataparser.hpp"
+#include "window.hpp"
 #include "../../vendor/exceptions/errorException.hpp"
 
 
@@ -40,7 +41,7 @@ public:
 
     int getPort() const ;
 
-    void startServer();
+    void startServer(Window&);
 
 };
 

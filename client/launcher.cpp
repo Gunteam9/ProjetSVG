@@ -11,7 +11,7 @@ int main() {
     functions func;
 
     cbor::map data = {
-            { "?", "?"},
+            { "sun_x", "80"},
     };
 
 
