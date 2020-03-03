@@ -10,8 +10,6 @@ int main() {
 
     functions func;
 
-    //cbor::binary data = func.entry();
-
     cbor::map data = {
             { "?", "?"},
     };

@@ -3,7 +3,6 @@
 // Source: https://bousk.developpez.com/cours/reseau-c++/UDP/01-introduction-premiers-pas/ - https://bousk.developpez.com/cours/reseau-c++/TCP/04-serveur-premiers-pas
 //
 #include "include/functions.hpp"
-#include "../vendor/exceptions/udpReceiveException.hpp"
 
 
 using namespace std;
@@ -84,50 +83,85 @@ void functions::sendData(cbor::map data) {
     }
     cout << "Message envoyé" << endl;
 
-    if (data.begin()->first == "?") { // si on envoie un "?"
+    // Réception des informations modifiables
+    if (data.begin()->first == "?")
+        getModifiableInformations();
+}
 
-        char buffer[1024] = {0};
+void functions::getModifiableInformations() {
 
-        if (recv(sock, buffer, sizeof(buffer), 0) < 0) {
-            throw udpReceiveException();
-        }
+    char buffer[1024] = {0};
 
-        std::cout << buffer << endl;
+    if (recv(sock, buffer, sizeof(buffer), 0) < 0) {
+        throw udpReceiveException();
     }
+
+    string element = (string) buffer;
+    string delimiter = "\n";
+    vector<string> modifiableItems;
+    int x = 0;
+    while (x < 5) {
+        modifiableItems.push_back(element.substr(0, element.find_first_of(delimiter)));
+        element.erase(0, (int) element.find_first_of(delimiter)+1);
+        ++x;
+    }
+
+    showModifiableItems(modifiableItems);
 
 }
 
 
-void functions::showModifiableItems(cbor::binary data){
-    cbor::map ModifiableItems = cbor::decode(data);
+
+void functions::showModifiableItems(vector<string> modifiableItems) {
+
+    //Affichage des éléments modifiables
+    for (auto it = modifiableItems.begin(); it != modifiableItems.end(); ++it) {
+        cout << (*it) << endl;
+    }
+
+
     string choice;
-    for(auto it = ModifiableItems.begin(); it != ModifiableItems.end(); ++it){
-        cout << "Souhaitez-vous faire cette modification? (y: yes, n: no)" << endl;
-        cout << (string) it->first << ": " << (string) it->second << endl;
+    do {
+        cout << "Entrez le nom de l'item a modifier" << endl;
         cin >> choice;
-        if(choice.compare("y")==0){
-            //insert function
+    } while (!isItemExist(modifiableItems, choice));
+
+    cbor::map data;
+
+    for(vector<string>::iterator it = modifiableItems.begin(); it != modifiableItems.end(); ++it) {
+        if(choice.compare((*it))==0){
+            data[(*it)] = modifyItem((*it));
             break;
         }
     }
+
+    cout << "Voulez vous modifier d'autres item ? (yes / no)" << endl;
+    string resp;
+    cin >> resp;
+    for (int k = 0; k < resp.length(); ++k) {
+        tolower(resp[k]);
+    }
+    if (resp.compare("yes") == 0 || resp.compare("y") == 0 || resp.compare("oui") == 0 || resp.compare("o") == 0)
+        showModifiableItems(modifiableItems);
+    else
+        sendData(data);
+
 }
 
-cbor::binary functions::entry(){
-    double sun_x;
-    double sun_y;
-    /*
-    cout << "Entrez la position du soleil sur l'axe X" << endl;
-    cin >> sun_x;
-    cout << "Entrez la position du soleil sur l'axe Y" << endl;
-    cin >> sun_y;
-     */
+bool functions::isItemExist(vector<string> modifiableItems, string item) {
+    for (auto it = modifiableItems.begin(); it != modifiableItems.end(); ++it) {
+        if (item.compare((*it)) == 0)
+            return true;
+    }
+    return false;
+}
 
+string functions::modifyItem(string item){
+    string newValue;
 
-
-    cbor::map message = {
-            { "sun_x", sun_x },
-            { "sun_y", sun_y }
-    };
+    cout << "Entrez la nouvelle valeur pour l'objet " << item << endl;
+    cin >> newValue;
     
-    return cbor::encode(message);
+    return newValue;
 }
+
