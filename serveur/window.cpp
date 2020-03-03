@@ -1,10 +1,10 @@
 
+#include <fcntl.h>
+#include <iostream>
+
 #include "include/dataparser.hpp"
 
 #include "include/window.hpp"
-
-static RsvgHandle *svg_handle;
-static const char* CURRENT_SVG;
 
 Window::Window(int taille_x, int taille_y, std::string const& titre) : taille_x(taille_x), taille_y(taille_y), titre(titre){
 }
@@ -14,18 +14,18 @@ Window::~Window(){
 
 static void do_drawing_svg(cairo_t * cr, RsvgHandle * svg_handle, int tx, int ty)
 { 
-    tinyxml2::XMLDocument svg_data;
-    tinyxml2::XMLPrinter printer;
+    // tinyxml2::XMLDocument svg_data;
+    // tinyxml2::XMLPrinter printer;
 
 
-    std::string chemin(constantes::RES_DIR);
-    chemin.append(CURRENT_SVG);
+    // std::string chemin(constantes::RES_DIR);
+    // chemin.append(CURRENT_SVG);
 
-    svg_data.LoadFile(chemin.c_str());
+    // svg_data.LoadFile(chemin.c_str());
 
-    svg_data.Print(&printer);
+    // svg_data.Print(&printer);
 
-    svg_handle = rsvg_handle_new_from_data ((const unsigned char*) printer.CStr(), printer.CStrSize()-1, NULL);
+    // svg_handle = rsvg_handle_new_from_data ((const unsigned char*) printer.CStr(), printer.CStrSize()-1, NULL);
 
     tinyxml2::XMLElement* svg = svg_data.FirstChildElement();
 
@@ -47,14 +47,13 @@ static void do_drawing(cairo_t* cr, int tx, int ty){
 
 static gboolean on_draw_event(GtkWidget *widget, cairo_t *cr, gpointer user_data){
     GtkWindow* w = GTK_WINDOW(user_data);
-    int x, y;
+    int x, y ;
     gtk_window_get_size(w, &x, &y);
-    do_drawing(cr, x, y);
+    do_drawing(cr, 800, 600);
     return FALSE;
 }
 
 void Window::init(int* argc, char*** argv, const char* svg){
-    GtkWidget *darea;
 
     gtk_init(argc, argv);
 
@@ -62,12 +61,8 @@ void Window::init(int* argc, char*** argv, const char* svg){
 
     CURRENT_SVG = svg;
 
-    darea = gtk_drawing_area_new();
-    gtk_container_add(GTK_CONTAINER(this->window), darea);
-
-
-    tinyxml2::XMLDocument svg_data;
-    tinyxml2::XMLPrinter printer;
+    this->darea = gtk_drawing_area_new();
+    gtk_container_add(GTK_CONTAINER(this->window), this->darea);
 
     std::string chemin(constantes::RES_DIR);
     chemin.append(svg);
@@ -77,7 +72,7 @@ void Window::init(int* argc, char*** argv, const char* svg){
     svg_data.Print(&printer);
     svg_handle = rsvg_handle_new_from_data ((const unsigned char*) printer.CStr(), printer.CStrSize()-1, NULL);
     
-    g_signal_connect(G_OBJECT(darea), "draw", 
+    g_signal_connect(G_OBJECT(this->darea), "draw", 
         G_CALLBACK(on_draw_event), this->window);
     g_signal_connect(this->window, "destroy",
         G_CALLBACK(gtk_main_quit), NULL);

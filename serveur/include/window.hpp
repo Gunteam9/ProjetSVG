@@ -19,6 +19,10 @@ namespace constantes {
   constexpr char* MAISON_SVG = "maison.svg";
 }
 
+static RsvgHandle *svg_handle;
+static const char* CURRENT_SVG;
+static tinyxml2::XMLDocument svg_data;
+static tinyxml2::XMLPrinter printer;
 
 class Window {
     private:
@@ -27,6 +31,7 @@ class Window {
         std::string titre;
         const char* svg;
         GtkWidget * window;
+        GtkWidget *darea;
     public:
         Window(int, int, std::string const&);
         ~Window();
@@ -61,13 +66,13 @@ class Window {
         }
 
         static const std::vector<const char*> getDrivensName(const char* svg){
-            tinyxml2::XMLDocument svg_data;
-            tinyxml2::XMLPrinter printer;
+            // tinyxml2::XMLDocument svg_data;
+            // tinyxml2::XMLPrinter printer;
 
-            std::string chemin(constantes::RES_DIR);
-            chemin.append(svg);
+            // std::string chemin(constantes::RES_DIR);
+            // chemin.append(svg);
 
-            svg_data.LoadFile(chemin.c_str());
+            // svg_data.LoadFile(chemin.c_str());
 
             tinyxml2::XMLElement *root = svg_data.RootElement();
 
@@ -84,14 +89,14 @@ class Window {
         static void update(std::vector<Message> const& v, const char* svg){
             std::cout << "Nouveau message pour la window" << std::endl;
             
-            tinyxml2::XMLDocument svg_data;
-            tinyxml2::XMLPrinter printer;
+            // tinyxml2::XMLDocument svg_data;
+            // tinyxml2::XMLPrinter printer;
 
-            std::string chemin(constantes::RES_DIR);
-            chemin.append(svg);
+            // std::string chemin(constantes::RES_DIR);
+            // chemin.append(svg);
 
 
-            svg_data.LoadFile(chemin.c_str());
+            // svg_data.LoadFile(chemin.c_str());
 
             tinyxml2::XMLElement *root = svg_data.RootElement();
 
@@ -104,6 +109,6 @@ class Window {
                 attribut->Parent()->ToElement()->SetAttribute(nomAttribut, m.getValeur().c_str());
             }
             
-            svg_data.SaveFile(chemin.c_str());
+            //svg_data.SaveFile(chemin.c_str());
         };
 };
