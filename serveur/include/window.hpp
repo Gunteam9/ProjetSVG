@@ -5,19 +5,15 @@
 #include <gtk/gtk.h>
 #include <gio/gfile.h>
 #include <tinyxml2.h>
-#include <iostream>
+
 #include <stdlib.h>
 #include <vector>
 #include <string>
-#include <queue>
 
-#include "event.hpp"
 #include "message.hpp"
 
-
 namespace constantes {
-  constexpr char* RES_DIR = "serveur/resources/";
-  constexpr char* MAISON_SVG = "maison.svg";
+  constexpr const char* RES_DIR = "serveur/resources/";
 }
 
 class Window {
@@ -25,24 +21,30 @@ class Window {
         int taille_x;
         int taille_y;
         std::string titre;
-        
+
         GtkWidget* window;
         RsvgHandle *svg_handle;
         tinyxml2::XMLDocument svg_data;
         GtkWidget* darea;
 
         Window();
+        
     public:
         static Window& getInstance();
         ~Window();
+        
         void init(int*, char***, const char*);
+
         void start();
         void stop();
 
         tinyxml2::XMLElement* getElementByName(std::vector<tinyxml2::XMLElement*>, std::string const&);
-        const std::vector<const char*> getDrivensName(const char*);
+        
+        const std::vector<const char*> getDrivensName();
+        
         const std::vector<tinyxml2::XMLElement*> getDrivens(tinyxml2::XMLDocument const&, tinyxml2::XMLElement* const);
-        void update(std::vector<Message> const&, const char*);
+        
+        void update(std::vector<Message> const&);
 
         //SETTERS
         void setWidth(int);

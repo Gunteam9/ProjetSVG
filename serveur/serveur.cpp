@@ -79,7 +79,7 @@ void Serveur::startServer(Window& w) {
         std::cout << vT[0] << endl;
 
         if (vT[0].getNomElement() == "?") { //si le message reçu comment par un '?' alors on envoie les driven au client
-            vector<const char *> lesElementsDriven = w.getDrivensName(this->IMAGE_SVG);
+            vector<const char *> lesElementsDriven = w.getDrivensName();
 
             char* lesElementsAEnvoyer ;
             std::string s ="Les elements driven sont : \n";
@@ -99,7 +99,7 @@ void Serveur::startServer(Window& w) {
 
         } else {
 
-            w.update(vT, this->IMAGE_SVG);
+            w.update(vT);
         }
     }
 

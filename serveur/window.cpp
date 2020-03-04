@@ -2,8 +2,8 @@
 #include <iostream>
 
 #include "include/dataparser.hpp"
-
 #include "include/window.hpp"
+#include "gtk_drawing.cpp"
 
 Window::Window(){
 
@@ -12,46 +12,32 @@ Window::Window(){
 Window::~Window(){
 }
 
-static void do_drawing_svg(cairo_t * cr, RsvgHandle * svg_handle, int tx, int ty, Window& w)
-{
-    tinyxml2::XMLPrinter printer;
-
-    w.getSvgData()->Print(&printer);
-
-    svg_handle = rsvg_handle_new_from_data ((const unsigned char*) printer.CStr(), printer.CStrSize()-1, NULL);
-
-    tinyxml2::XMLElement* svg =  w.getSvgData()->FirstChildElement();
-
-    std::string width = svg->Attribute("width");
-    std::string height = svg->Attribute("height");
-
-    int x = std::stoi(width);
-    int y = std::stoi(height);
-
-    cairo_translate(cr, tx/2 - x/2, ty/2 - y/2);
-
-    rsvg_handle_render_cairo(svg_handle, cr);
-}
-
-static void do_drawing(cairo_t* cr, int tx, int ty, Window& w){
-    do_drawing_svg(cr, w.getSvgHandle(), tx, ty, w);
-}
-
-static gboolean on_draw_event(GtkWidget *widget, cairo_t *cr, gpointer user_data){
-    Window* w = static_cast<Window*>(user_data);
-    GtkWindow* window = GTK_WINDOW(w->getWindow());
-    int x, y ;
-    gtk_window_get_size(window, &x, &y);
-    do_drawing(cr, x, y, *w);
-    return FALSE;
-}
-
 Window& Window::getInstance(){
     static Window w;
     return w;
 }
 
 void Window::init(int* argc, char*** argv, const char* svg){
+
+    if(this->taille_x == 0){
+        std::cout << "Veuillez préciser la longueur de la fenètre avec la méthode setWidth(int)." << std::endl;
+        exit(1);
+    }
+
+    if(this->taille_y == 0){
+        std::cout << "Veuillez préciser la largeur de la fenètre avec la méthode setHeight(int)." << std::endl;
+        exit(1);
+    }
+
+    if(this->titre.length() == 0){
+        std::cout << "Veuillez préciser le titre de la fenètre avec la méthode setTitre(std::string)." << std::endl;
+        exit(1);
+    }
+
+    if(*argc == 1){
+        std::cout << "Veuillez préciser le nom du fichier svg, il doit se trouver dans le dossier serveur/resources." << std::endl;
+        exit(1);
+    }
 
     gtk_init(argc, argv);
 
@@ -119,7 +105,7 @@ const std::vector<tinyxml2::XMLElement*> Window::getDrivens(tinyxml2::XMLDocumen
     return drivens;
 }
 
-const std::vector<const char*> Window::getDrivensName(const char* svg){
+const std::vector<const char*> Window::getDrivensName(){
     tinyxml2::XMLElement *root = Window::svg_data.RootElement();
 
     std::vector<tinyxml2::XMLElement*> drivens = getDrivens(svg_data, root);
@@ -132,13 +118,13 @@ const std::vector<const char*> Window::getDrivensName(const char* svg){
     return drivensName;
 }
 
-void Window::update(std::vector<Message> const& v, const char* svg){
+void Window::update(std::vector<Message> const& v){
     std::cout << "Nouveau message pour la window" << std::endl;
 
     tinyxml2::XMLElement *root = Window::svg_data.RootElement();
 
     std::vector<tinyxml2::XMLElement*> drivens = getDrivens(Window::svg_data, root);
-    std::vector<const char*> drivensName = getDrivensName(constantes::MAISON_SVG);
+    std::vector<const char*> drivensName = getDrivensName();
 
     for(Message m : v){
         tinyxml2::XMLElement* attribut = getElementByName(drivens, m.getNomElement());
@@ -147,7 +133,7 @@ void Window::update(std::vector<Message> const& v, const char* svg){
     }
     
     gtk_widget_queue_draw(Window::darea);
-};
+}
 
 void Window::setWidth(int w){
     this->taille_x = w;
