@@ -1,29 +1,26 @@
 
-#include <fcntl.h>
 #include <iostream>
 
 #include "include/dataparser.hpp"
 
 #include "include/window.hpp"
 
-RsvgHandle * Window::svg_handle;
-tinyxml2::XMLDocument Window::svg_data;
+Window::Window(){
 
-Window::Window(int taille_x, int taille_y, std::string const& titre) : taille_x(taille_x), taille_y(taille_y), titre(titre){
 }
 
 Window::~Window(){
 }
 
-static void do_drawing_svg(cairo_t * cr, RsvgHandle * svg_handle, int tx, int ty)
+static void do_drawing_svg(cairo_t * cr, RsvgHandle * svg_handle, int tx, int ty, Window& w)
 {
     tinyxml2::XMLPrinter printer;
 
-    Window::svg_data.Print(&printer);
+    w.getSvgData()->Print(&printer);
 
     svg_handle = rsvg_handle_new_from_data ((const unsigned char*) printer.CStr(), printer.CStrSize()-1, NULL);
 
-    tinyxml2::XMLElement* svg = Window::svg_data.FirstChildElement();
+    tinyxml2::XMLElement* svg =  w.getSvgData()->FirstChildElement();
 
     std::string width = svg->Attribute("width");
     std::string height = svg->Attribute("height");
@@ -34,26 +31,31 @@ static void do_drawing_svg(cairo_t * cr, RsvgHandle * svg_handle, int tx, int ty
     cairo_translate(cr, tx/2 - x/2, ty/2 - y/2);
 
     rsvg_handle_render_cairo(svg_handle, cr);
-    
 }
 
-static void do_drawing(cairo_t* cr, int tx, int ty){
-    do_drawing_svg(cr, Window::svg_handle, tx, ty);
+static void do_drawing(cairo_t* cr, int tx, int ty, Window& w){
+    do_drawing_svg(cr, w.getSvgHandle(), tx, ty, w);
 }
 
 static gboolean on_draw_event(GtkWidget *widget, cairo_t *cr, gpointer user_data){
-    GtkWindow* w = GTK_WINDOW(user_data);
+    Window* w = static_cast<Window*>(user_data);
+    GtkWindow* window = GTK_WINDOW(w->getWindow());
     int x, y ;
-    gtk_window_get_size(w, &x, &y);
-    do_drawing(cr, x, y);
+    gtk_window_get_size(window, &x, &y);
+    do_drawing(cr, x, y, *w);
     return FALSE;
+}
+
+Window& Window::getInstance(){
+    static Window w;
+    return w;
 }
 
 void Window::init(int* argc, char*** argv, const char* svg){
 
     gtk_init(argc, argv);
 
-    Window::window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    this->window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
     this->darea = gtk_drawing_area_new();
     gtk_container_add(GTK_CONTAINER(Window::window), this->darea);
@@ -63,13 +65,12 @@ void Window::init(int* argc, char*** argv, const char* svg){
 
     tinyxml2::XMLPrinter printer;
 
-    Window::svg_data.LoadFile(chemin.c_str());
-    Window::svg_data.Print(&printer);
-    Window::svg_handle = rsvg_handle_new_from_data ((const unsigned char*) printer.CStr(), printer.CStrSize()-1, NULL);
-    
+    this->svg_data.LoadFile(chemin.c_str());
+    this->svg_data.Print(&printer);
+    this->svg_handle = rsvg_handle_new_from_data ((const unsigned char*) printer.CStr(), printer.CStrSize()-1, NULL);
 
     g_signal_connect(G_OBJECT(this->darea), "draw", 
-        G_CALLBACK(on_draw_event), Window::window);
+        G_CALLBACK(on_draw_event), this);
     g_signal_connect(this->window, "destroy",
         G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(G_OBJECT (this->window), "delete_event",
@@ -144,5 +145,32 @@ void Window::update(std::vector<Message> const& v, const char* svg){
         const char* nomAttribut = attribut->Attribute("target");
         attribut->Parent()->ToElement()->SetAttribute(nomAttribut, m.getValeur().c_str());
     }
-
+    
+    gtk_widget_queue_draw(Window::darea);
 };
+
+void Window::setWidth(int w){
+    this->taille_x = w;
+}
+void Window::setHeight(int h){
+    this->taille_y = h;
+}
+void Window::setTitre(std::string t){
+    this->titre = t;
+}
+
+RsvgHandle* Window::getSvgHandle(){
+    return this->svg_handle;
+}
+
+tinyxml2::XMLDocument* Window::getSvgData(){
+    return &this->svg_data;
+}
+
+GtkWidget* Window::getDarea(){
+    return this->darea;
+}
+
+GtkWidget* Window::getWindow(){
+    return this->window;
+}

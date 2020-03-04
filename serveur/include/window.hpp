@@ -25,13 +25,15 @@ class Window {
         int taille_x;
         int taille_y;
         std::string titre;
-        GtkWidget* window;
-        GtkWidget* darea;
-    public:
-        static RsvgHandle *svg_handle;
-        static tinyxml2::XMLDocument svg_data;
         
-        Window(int, int, std::string const&);
+        GtkWidget* window;
+        RsvgHandle *svg_handle;
+        tinyxml2::XMLDocument svg_data;
+        GtkWidget* darea;
+
+        Window();
+    public:
+        static Window& getInstance();
         ~Window();
         void init(int*, char***, const char*);
         void start();
@@ -41,4 +43,15 @@ class Window {
         const std::vector<const char*> getDrivensName(const char*);
         const std::vector<tinyxml2::XMLElement*> getDrivens(tinyxml2::XMLDocument const&, tinyxml2::XMLElement* const);
         void update(std::vector<Message> const&, const char*);
+
+        //SETTERS
+        void setWidth(int);
+        void setHeight(int);
+        void setTitre(std::string);
+
+        // GETTERS
+        RsvgHandle* getSvgHandle();
+        tinyxml2::XMLDocument* getSvgData();
+        GtkWidget* getDarea();
+        GtkWidget* getWindow();
 };
