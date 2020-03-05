@@ -70,9 +70,9 @@ void Window::init(int* argc, char*** argv, const char* svg){
 
     gtk_widget_show_all(this->window);
 
-    this->icon=gdk_pixbuf_new_from_file(chemin.c_str(),NULL);
+    this->icon = gdk_pixbuf_new_from_file(chemin.c_str(), NULL);
 
-    gtk_window_set_icon(GTK_WINDOW(this->window),this->icon);
+    gtk_window_set_icon(GTK_WINDOW(this->window), this->icon);
 }
 
 void Window::start(){
