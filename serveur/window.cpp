@@ -128,7 +128,7 @@ const std::map<const char*, const char*> Window::getDrivensValue(){
     for(tinyxml2::XMLElement* driven : drivens){
         tinyxml2::XMLElement* attribut = driven->Parent()->ToElement();
         const char* target = driven->Attribute("target");
-        drivensCurrentValue.insert(std::make_pair(target, attribut->Attribute(target)));
+        drivensCurrentValue.insert(std::make_pair(driven->Attribute("by"), attribut->Attribute(target)));
     }
 
     return drivensCurrentValue;
@@ -147,8 +147,6 @@ void Window::update(std::vector<Message> const& v){
         const char* nomAttribut = attribut->Attribute("target");
         attribut->Parent()->ToElement()->SetAttribute(nomAttribut, m.getValeur().c_str());
     }
-
-    getDrivensValue();
     
     gtk_widget_queue_draw(Window::darea);
 }
