@@ -123,7 +123,7 @@ void functions::showModifiableItems(vector<string> modifiableItems) {
     string choice;
     do {
         cout << "Entrez le nom de l'item a modifier" << endl;
-        cin >> choice;
+        getline(cin, choice);
     } while (!isItemExist(modifiableItems, choice));
 
     cbor::map data;
@@ -135,17 +135,23 @@ void functions::showModifiableItems(vector<string> modifiableItems) {
         }
     }
 
-    cout << "Voulez vous modifier d'autres item ? (yes / no)" << endl;
     string resp;
-    cin >> resp;
-    for (int k = 0; k < resp.length(); ++k) {
-        tolower(resp[k]);
-    }
-    if (resp.compare("yes") == 0 || resp.compare("y") == 0 || resp.compare("oui") == 0 || resp.compare("o") == 0)
-        showModifiableItems(modifiableItems);
-    else
-        sendData(data);
 
+    do {
+        cout << "Voulez vous modifier d'autres item ? (yes / no)" << endl;
+        getline(cin, resp);
+        for (int k = 0; k < resp.length(); ++k) {
+            tolower(resp[k]);
+        }
+        if (resp.compare("yes") == 0 || resp.compare("y") == 0 || resp.compare("oui") == 0 || resp.compare("o") == 0) {
+            showModifiableItems(modifiableItems);
+        }
+        else if (resp.compare("no") == 0 || resp.compare("n") == 0 || resp.compare("non") == 0) {
+            sendData(data);
+        }
+    }
+    while (resp.compare("yes") != 0 && resp.compare("y") != 0 && resp.compare("oui") != 0 && resp.compare("o") != 0
+    && resp.compare("no") != 0 && resp.compare("n") != 0 && resp.compare("non") != 0);
 }
 
 bool functions::isItemExist(vector<string> modifiableItems, string item) {
@@ -159,9 +165,13 @@ bool functions::isItemExist(vector<string> modifiableItems, string item) {
 string functions::modifyItem(string item){
     string newValue;
 
-    cout << "Entrez la nouvelle valeur pour l'objet " << item << endl;
-    cin >> newValue;
+    do {
+        cout << "Entrez la nouvelle valeur pour l'objet " << item << endl;
+        getline(cin, newValue);
+    } while (newValue == "");
+
     
     return newValue;
 }
+
 

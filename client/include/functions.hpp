@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include <string>
 #include <netinet/in.h>
 #include <cstring>
@@ -46,4 +47,5 @@ private:
     string modifyItem(std::string item);
 
     bool isItemExist(vector<std::string> modifiableItems, std::string item);
+
 };
