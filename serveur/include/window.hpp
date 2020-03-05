@@ -22,6 +22,7 @@ class Window {
         int taille_y;
         std::string titre;
 
+        GdkPixbuf* icon;
         GtkWidget* window;
         RsvgHandle *svg_handle;
         tinyxml2::XMLDocument svg_data;
@@ -53,9 +54,11 @@ class Window {
         void setHeight(int);
         void setTitre(std::string);
 
-        // GETTERS
+
+    // GETTERS
         RsvgHandle* getSvgHandle();
         tinyxml2::XMLDocument* getSvgData();
         GtkWidget* getDarea();
         GtkWidget* getWindow();
+
 };
