@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include <string>
 #include <netinet/in.h>
 #include <cstring>
