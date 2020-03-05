@@ -123,7 +123,7 @@ void functions::showModifiableItems(vector<string> modifiableItems) {
     string choice;
     do {
         cout << "Entrez le nom de l'item a modifier" << endl;
-        cin >> choice;
+        getline(cin, choice);
     } while (!isItemExist(modifiableItems, choice));
 
     cbor::map data;
@@ -137,7 +137,7 @@ void functions::showModifiableItems(vector<string> modifiableItems) {
 
     cout << "Voulez vous modifier d'autres item ? (yes / no)" << endl;
     string resp;
-    cin >> resp;
+    getline(cin, resp);
     for (int k = 0; k < resp.length(); ++k) {
         tolower(resp[k]);
     }
@@ -160,7 +160,7 @@ string functions::modifyItem(string item){
     string newValue;
 
     cout << "Entrez la nouvelle valeur pour l'objet " << item << endl;
-    cin >> newValue;
+    getline(cin, newValue);
     
     return newValue;
 }
