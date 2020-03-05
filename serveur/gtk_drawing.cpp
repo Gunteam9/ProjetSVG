@@ -27,11 +27,6 @@ static void do_drawing_svg(cairo_t * cr, RsvgHandle * svg_handle, int tx, int ty
 
     cairo_translate(cr, tx/2 - x/2, ty/2 - y/2);
 
-    std::cout <<  "ERREUR TYPE " << RSVG_TYPE_ERROR << std::endl;
-    std::cout <<  "ERREUR FAILED " << RSVG_ERROR_FAILED << std::endl;
-    std::cout << "ERREUR QUARK " << g_quark_to_string(RSVG_ERROR) << std::endl;
-
-    std::cout << cairo_status(cr) << std::endl;
     rsvg_handle_render_cairo(svg_handle, cr);
 
 }
