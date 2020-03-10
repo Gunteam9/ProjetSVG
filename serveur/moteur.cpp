@@ -12,12 +12,12 @@ int main(int argc, char *argv[]){
   w.setWidth(500);
   w.setHeight(500);
   w.setTitre("Moteur de rendu SVG");
+
   //w.setIcon("maison.svg");
 
   w.init(&argc, &argv, argv[1]);
    
   Serveur s(argv[1]);
-
 
   std::thread t(&Window::start, &w);
 
