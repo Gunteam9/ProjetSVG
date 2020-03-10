@@ -27,7 +27,7 @@ public:
 
      vector<Message> lireMessage(cbor::binary encodedItem);
 
-     const bool validateValue(const char* type, const char* value);
+     bool validateValue(const char* type, const char* value);
 
      std::vector<std::string> interpolate(std::string type, std::string oldValue, std::string newValue);
 };

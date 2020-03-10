@@ -9,10 +9,10 @@
 #include "include/dataparser.hpp"
 
 std::vector<double> rgbToHsv(float r, float g, float b){
-    color::hsv<float> test({0, 0, 100});
+    color::hsv<float> hsvT({0, 0, 100});
     color::rgb<float> rgbTest({r/255, g/255, b/255});
-    test = rgbTest;
-    return std::vector<double>({test[0], test[1], test[2]});
+    hsvT = rgbTest;
+    return std::vector<double>({hsvT[0], hsvT[1], hsvT[2]});
 }
 
 double normAngle(double a){
@@ -58,8 +58,6 @@ std::vector<std::string> colorInterpolation(std::string oldColor, std::string ne
         int r = rgbT[0] * 255;
         int g = rgbT[1] * 255;
         int b = rgbT[2] * 255;
-
-        std::cout << "#" << std::hex << (r << 16 | g << 8 | b) << std::endl;
         ifs << "#" << std::hex << (r << 16 | g << 8 | b);
         values.push_back(ifs.str());
     }
@@ -129,7 +127,7 @@ vector<Message> DataParser::lireMessage(cbor::binary encodedItem) {
     return mesMessages;
 }
 
-const bool DataParser::validateValue(const char* type, const char* value){
+bool DataParser::validateValue(const char* type, const char* value){
     std::ifstream types("serveur/config/types.cfg");
     std::string ligne;
     std::map<std::string, std::string> typesMap;
