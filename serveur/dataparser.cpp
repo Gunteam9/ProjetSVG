@@ -46,7 +46,7 @@ std::vector<std::string> colorInterpolation(std::string oldColor, std::string ne
     double d = h2 - h1;
     double delta = (d + ((std::abs(d) > 180) ? ((d < 0) ? 360 : -360) : 0)) / (steps + 1.0);
 
-    for(double i = 2; i < steps; i++){
+    for(double i = 4; i < steps - 2; i++){
         double t = i/steps;
         double hT = std::fmod(((h1 + (delta * i)) + 360), 360);
         double sT = oldHsv[1] + (t * (newHsv[1] - oldHsv[1]));
