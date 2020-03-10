@@ -154,3 +154,34 @@ bool DataParser::validateValue(const char* type, const char* value){
 std::vector<std::string> DataParser::interpolate(std::string type, std::string oldValue, std::string newValue){
     return this->interpolationMap[type](oldValue, newValue);
 }
+
+std::map<const char *,std::vector<string>> DataParser::getCss() {
+    Window & w = Window::getInstance();
+    std::map<const char *,const  char*> driven= w.getDrivensValue();
+    std::map<const char *,const  char*>::iterator it ;
+
+    std::map<const char *,std::vector<string>> map;
+
+    for(it = driven.begin(); it != driven.end();++it){
+        if(std::regex_match(it->first, std::regex(".*_style"))){
+            string s = it->second;
+            std::vector<string> vector;
+
+            while(s.length()>2) {
+                int indicefin = s.find(";");
+                std::string couple = s.substr(0, indicefin);
+                std::string type =  couple.substr(0,s.find(":"));
+
+                vector.push_back(type.c_str());
+
+                if(indicefin+2>=s.length()){
+                    s="";
+                }else {
+                    s = s.substr(indicefin + 2, s.length());
+                }
+            }
+            map.insert({it->first,vector});
+        }
+    }
+    return map;
+}

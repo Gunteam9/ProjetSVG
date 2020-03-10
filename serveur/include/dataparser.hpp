@@ -9,6 +9,7 @@
 #include <map>
 #include "../../vendor/cbor11/cbor11.hpp"
 #include "../../vendor/exceptions/errorException.hpp"
+#include "window.hpp"
 
 static std::map<std::string, std::string> COULEURS_MAP;
 
@@ -30,5 +31,7 @@ public:
      bool validateValue(const char* type, const char* value);
 
      std::vector<std::string> interpolate(std::string type, std::string oldValue, std::string newValue);
+
+     std::map<const char *,std::vector<string>> getCss();
 };
 

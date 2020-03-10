@@ -5,7 +5,9 @@
     <g id="ciel">
         <rect x="0" y="0" width="100" height="80" fill="blue"/>
         <g id="soleil">
-            <circle cx="10" cy="25" r="20" stroke="yellow" fill="orange" stroke-width="5">
+            <circle cx="10" cy="25" r="20" stroke="yellow" style1="fill: orange; stroke: black; stroke-width: 10px;" style2="fill: blue; stroke: red; stroke-width: 5px;" fill="orange" stroke-width="5">
+                <driven target="style1" by="sun1_style"/>
+                <driven target="style2" by="sun2_style"/>
                 <driven target="cx" by="sun_x" delay="5" type="coordinate"/>
                 <driven target="cy" by="sun_y" delay="5" type="coordinate"/>
                 <driven target="fill" by="sun_fill" delay="5" type="color-keyword"/>

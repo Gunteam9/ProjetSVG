@@ -19,6 +19,9 @@ int main(int argc, char *argv[]){
    
   Serveur s(argv[1]);
 
+  DataParser d= DataParser::getInstance();
+  d.getCss();
+
   std::thread t(&Window::start, &w);
 
   s.startServer(w);
