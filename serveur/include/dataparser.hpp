@@ -19,16 +19,16 @@ private:
 
      void initColorMap();
 
-     std::map<std::string, std::vector<std::string>(*)(std::string, std::string)> interpolationMap;
+     std::map<std::string, std::vector<std::string>(*)(std::string, std::string, double)> interpolationMap;
 
      DataParser();
 public:
      static DataParser getInstance();
 
-     vector<Message> lireMessage(cbor::binary encodedItem);
+     vector<Message> lireMessage(cbor::binary);
 
-     bool validateValue(const char* type, const char* value);
+     bool validateValue(const char*, const char*);
 
-     std::vector<std::string> interpolate(std::string type, std::string oldValue, std::string newValue);
+     std::vector<std::string> interpolate(std::string, std::string, std::string, double);
 };
 

@@ -168,7 +168,7 @@ void Window::update(std::vector<Message> const& v){
         tinyxml2::XMLElement* parent = attribut->Parent()->ToElement();
         bool matchingValue = DataParser::getInstance().validateValue(typeAttribut, m.getValeur().c_str());
         if(matchingValue){
-            std::vector<std::string> values = DataParser::getInstance().interpolate(typeAttribut, parent->Attribute(nomAttribut), m.getValeur().c_str());
+            std::vector<std::string> values = DataParser::getInstance().interpolate(typeAttribut, parent->Attribute(nomAttribut), m.getValeur().c_str(), 30.0);
             std::vector<Message> messages;
             for(std::string s : values){
                 parent->SetAttribute(nomAttribut, s.c_str());
@@ -178,8 +178,6 @@ void Window::update(std::vector<Message> const& v){
         }else{
             std::cout << "Parametre pas conforme" << std::endl;
         }
-        //DataParser::validateValue(typeAttribut, m.getValeur().c_str());
-
     }
     
 }

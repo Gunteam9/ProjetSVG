@@ -21,7 +21,7 @@ double normAngle(double a){
     return a;
 }
 
-std::vector<std::string> colorInterpolation(std::string oldColor, std::string newColor){
+std::vector<std::string> colorInterpolation(std::string oldColor, std::string newColor, double steps){
     std::vector<std::string> values;
 
     std::string hexOldColor = COULEURS_MAP[oldColor].substr(1, std::string::npos);
@@ -38,8 +38,6 @@ std::vector<std::string> colorInterpolation(std::string oldColor, std::string ne
     std::vector<double> oldHsv = rgbToHsv(rOld, gOld, bOld);
     std::vector<double> newHsv = rgbToHsv(rNew, gNew, bNew);
  
-    double steps = 30.0;
-
     double h1 = normAngle(oldHsv[0]);
     double h2 = normAngle(newHsv[0]);
 
@@ -66,10 +64,43 @@ std::vector<std::string> colorInterpolation(std::string oldColor, std::string ne
     return values;
 }
 
+std::vector<std::string> numberInterpolation(std::string oldValue, std::string newValue, double steps){
+    std::vector<std::string> values;
+
+    double min = std::stod(oldValue);
+    double max = std::stod(newValue);
+
+    std::cout << newValue.size() << std::endl;
+
+    std::cout << oldValue << std::endl;
+    std::cout << newValue << std::endl;
+
+    std::cout << min << std::endl;
+    std::cout << max << std::endl;
+
+    double t = 1;
+
+    for(double i = 1; i < steps; i++){
+        t = i/steps;
+        std::stringstream ifs;
+        double v = (min + ((max - min) * t));
+        std::cout << v << std::endl;
+        ifs << v;
+        values.push_back(ifs.str());
+    }
+
+    return values;
+}
+
 DataParser::DataParser(){
     this->initColorMap();
     this->interpolationMap = {
-        {"color-keyword", &colorInterpolation}
+        {"color-keyword", &colorInterpolation},
+        {"number", &numberInterpolation},
+        {"integer", &numberInterpolation},
+        {"opacity-value", &numberInterpolation},
+        {"angle", &numberInterpolation},
+        {"coordinate", &numberInterpolation}
     };
 }
 
@@ -91,7 +122,6 @@ void DataParser::initColorMap(){
     }else{
         std::cout << "Impossible d'ouvrir le fichier de configuration" << std::endl;
     }
-    std::cout << COULEURS_MAP.size() << std::endl;
 }
 
 /**
@@ -151,6 +181,6 @@ bool DataParser::validateValue(const char* type, const char* value){
     return matching;
 }
 
-std::vector<std::string> DataParser::interpolate(std::string type, std::string oldValue, std::string newValue){
-    return this->interpolationMap[type](oldValue, newValue);
+std::vector<std::string> DataParser::interpolate(std::string type, std::string oldValue, std::string newValue, double steps){
+    return this->interpolationMap[type](oldValue, newValue, steps);
 }
