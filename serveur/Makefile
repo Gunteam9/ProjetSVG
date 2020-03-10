@@ -1,7 +1,7 @@
 # Compilteur
 CPPC := g++
 #options de compilation
-CPPFLAGS := --std=c++17 -Wall -Wextra -pedantic -ggdb 
+CPPFLAGS := --std=c++17 -Wall -Wextra -pedantic -ggdb -I/home/samir/Projets/C++/corbeau_neonakis_toularhmine_trimoulet/vendor/color/src
 # Sources & objets
 SRC= $(wildcard *.cpp) $(wildcard ../vendor/cbor11/*.cpp) $(wildcard ../vendor/exceptions/*.cpp)
 OBJ= $(SRC:.cpp=.o)
@@ -21,7 +21,7 @@ mem : $(EXEC)
 $(EXEC) : $(OBJ)
 	$(CPPC) $(CPPFLAGS) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
-%.o: %.cpp
+%.o: %.cpp %.h %.hpp
 	$(CPPC) $(CPPFLAGS) $(CXXFLAGS) -o $@ -c $<
 
 .PHONY : clean

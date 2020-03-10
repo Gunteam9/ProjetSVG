@@ -41,6 +41,8 @@ class Window {
 
         tinyxml2::XMLElement* getElementByName(std::vector<tinyxml2::XMLElement*>, std::string const&);
         
+        tinyxml2::XMLElement* getAttributeByLabel(const char*, tinyxml2::XMLElement*);
+
         const std::vector<const char*> getDrivensName();
 
         const std::map<const char*, const char*> getDrivensValue();

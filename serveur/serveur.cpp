@@ -72,7 +72,7 @@ void Serveur::startServer(Window& w) {
 
         cbor::binary binaryEncodedMessage = encodedMessge;
 
-        DataParser p;
+        DataParser p = DataParser::getInstance();
 
         std::vector<Message> vT = p.lireMessage(binaryEncodedMessage);
 
