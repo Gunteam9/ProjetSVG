@@ -76,27 +76,8 @@ void Serveur::startServer(Window& w) {
 
         std::vector<Message> vT = p.lireMessage(binaryEncodedMessage);
 
-        std::cout << vT[0] << endl;
-
         if (vT[0].getNomElement() == "?") { //si le message reçu commence par un '?' alors on envoie les driven au client
-            vector<const char *> lesElementsDriven = w.getDrivensName();
-
-            char* lesElementsAEnvoyer ;
-            std::string s ="Les elements driven sont : \n";
-            for(const char* elemnt : lesElementsDriven  ){
-                s.append(elemnt).append("\n");
-            }
-
-            const char * drivenImage = s.c_str();
-
-
-
-            int resEnvoi = sendto(sock, (char *)drivenImage, strlen(drivenImage), 0, reinterpret_cast<const sockaddr *>(&from),sizeof(from));
-            if (resEnvoi < 0) {
-                throw udpSendingException();
-            }
-            cout << "informations envoyés serveur" << endl;
-
+            this->envoiDesAttributs(w,from);
         } else {
 
             w.update(vT);
@@ -107,6 +88,26 @@ void Serveur::startServer(Window& w) {
 
 int Serveur::getMaSocket() const{
     return this->sock;
+}
+
+void Serveur::envoiDesAttributs(Window& w,sockaddr_in from) {
+
+    vector<const char *> lesElementsDriven = w.getDrivensName();
+
+    std::string s ="Les elements driven sont : \n";
+    for(const char* elemnt : lesElementsDriven  ){
+        s.append(elemnt).append("\n");
+    }
+
+    const char * drivenImage = s.c_str();
+
+
+
+    int resEnvoi = sendto(sock, (char *)drivenImage, strlen(drivenImage), 0, reinterpret_cast<const sockaddr *>(&from),sizeof(from));
+    if (resEnvoi < 0) {
+        throw udpSendingException();
+    }
+
 }
 
 

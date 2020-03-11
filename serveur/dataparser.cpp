@@ -155,8 +155,13 @@ std::vector<std::string> DataParser::interpolate(std::string type, std::string o
     return this->interpolationMap[type](oldValue, newValue);
 }
 
-/**
- * Me
+/** pour le transformer en map normale
+ *   cbor::map m = d.getCss();
+  std::map<cbor,cbor> m1 = m ;
+  std::string s1 = m1.begin()->first;
+  std::vector<cbor> v = m1.begin()->second ;
+  std::string premiere_value = v[0];
+
  * @return
  */
 cbor::map DataParser::getCss() {

@@ -32,6 +32,8 @@ private:
     char* IMAGE_SVG ;
     int sock;
 
+    void envoiDesAttributs(Window& w,sockaddr_in from) ;
+
 public:
     Serveur(char* IMAGE_SVG);
 
@@ -42,6 +44,7 @@ public:
     int getPort() const ;
 
     void startServer(Window&);
+
 
 };
 
