@@ -78,7 +78,7 @@ void Serveur::startServer(Window& w) {
 
         std::cout << vT[0] << endl;
 
-        if (vT[0].getNomElement() == "?") { //si le message reçu comment par un '?' alors on envoie les driven au client
+        if (vT[0].getNomElement() == "?") { //si le message reçu commence par un '?' alors on envoie les driven au client
             vector<const char *> lesElementsDriven = w.getDrivensName();
 
             char* lesElementsAEnvoyer ;

@@ -20,7 +20,13 @@ int main(int argc, char *argv[]){
   Serveur s(argv[1]);
 
   DataParser d= DataParser::getInstance();
-  d.getCss();
+  cbor::map m = d.getCss();
+  std::map<cbor,cbor> m1 = m ;
+  std::string s1 = m1.begin()->first;
+  std::vector<cbor> v = m1.begin()->second ;
+  std::string premiere_value = v[0];
+
+  cout<<s1 << " et "<< premiere_value<<endl;
 
   std::thread t(&Window::start, &w);
 

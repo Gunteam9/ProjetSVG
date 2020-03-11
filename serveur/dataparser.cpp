@@ -155,24 +155,28 @@ std::vector<std::string> DataParser::interpolate(std::string type, std::string o
     return this->interpolationMap[type](oldValue, newValue);
 }
 
-std::map<const char *,std::vector<string>> DataParser::getCss() {
+/**
+ * Me
+ * @return
+ */
+cbor::map DataParser::getCss() {
     Window & w = Window::getInstance();
     std::map<const char *,const  char*> driven= w.getDrivensValue();
     std::map<const char *,const  char*>::iterator it ;
 
-    std::map<const char *,std::vector<string>> map;
+    cbor::map map;
 
     for(it = driven.begin(); it != driven.end();++it){
         if(std::regex_match(it->first, std::regex(".*_style"))){
-            string s = it->second;
-            std::vector<string> vector;
+            cbor::string s = it->second;
+            cbor::array vector;
 
             while(s.length()>2) {
                 int indicefin = s.find(";");
                 std::string couple = s.substr(0, indicefin);
-                std::string type =  couple.substr(0,s.find(":"));
+                cbor::string type =  couple.substr(0,s.find(":"));
 
-                vector.push_back(type.c_str());
+                vector.emplace_back(type);
 
                 if(indicefin+2>=s.length()){
                     s="";
@@ -180,8 +184,13 @@ std::map<const char *,std::vector<string>> DataParser::getCss() {
                     s = s.substr(indicefin + 2, s.length());
                 }
             }
-            map.insert({it->first,vector});
+            cbor::string first = it->first;
+            map.insert({first,vector});
         }
     }
     return map;
 }
+
+
+
+

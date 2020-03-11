@@ -32,6 +32,7 @@ public:
 
      std::vector<std::string> interpolate(std::string type, std::string oldValue, std::string newValue);
 
-     std::map<const char *,std::vector<string>> getCss();
+     cbor::map getCss();
+
 };
 
