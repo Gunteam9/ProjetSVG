@@ -67,16 +67,10 @@ std::vector<std::string> colorInterpolation(std::string oldColor, std::string ne
 std::vector<std::string> numberInterpolation(std::string oldValue, std::string newValue, double steps){
     std::vector<std::string> values;
 
-    double min = std::stod(oldValue);
-    double max = std::stod(newValue);
+    std::size_t size = 3;
 
-    std::cout << newValue.size() << std::endl;
-
-    std::cout << oldValue << std::endl;
-    std::cout << newValue << std::endl;
-
-    std::cout << min << std::endl;
-    std::cout << max << std::endl;
+    float min = std::stod(oldValue, &size);
+    float max = std::stod(newValue, &size);
 
     double t = 1;
 
