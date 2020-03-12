@@ -19,18 +19,6 @@ int main(int argc, char *argv[]){
    
   Serveur s(argv[1]);
 
-  DataParser d= DataParser::getInstance();
-  cbor::map m = d.getCss();
-
-
-  std::map<cbor,cbor> m1 = m ;
-
-  bool b = m.empty();
-
-  std::string s1 = m1.begin()->first;
-  std::vector<cbor> v = m1.begin()->second ;
-  std::string premiere_value = v[0];
-
 
   std::thread t(&Window::start, &w);
 

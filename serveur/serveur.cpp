@@ -78,6 +78,7 @@ void Serveur::startServer(Window& w) {
 
         if (vT[0].getNomElement() == "?") { //si le message reçu commence par un '?' alors on envoie les driven au client
             this->envoiDesAttributs(w,from);
+            //this->envoiDuCss(w,from);
         } else {
 
             w.update(vT);
@@ -102,6 +103,36 @@ void Serveur::envoiDesAttributs(Window& w,sockaddr_in from) {
     const char * drivenImage = s.c_str();
 
 
+
+    int resEnvoi = sendto(sock, (char *)drivenImage, strlen(drivenImage), 0, reinterpret_cast<const sockaddr *>(&from),sizeof(from));
+    if (resEnvoi < 0) {
+        throw udpSendingException();
+    }
+
+}
+
+void Serveur::envoiDuCss(Window &w, sockaddr_in from) {
+    DataParser dp = DataParser::getInstance();
+
+    cbor::map map = dp.getCss();
+
+    std::string s ="Les elements de type style sont : \n";
+
+    cbor::map::iterator it ;
+    for(it=map.begin(); it!=map.end();++it){
+        cbor::string first =  it->first;
+        s.append("pour " + first +" : \n");
+        cbor::array ar = it->second;
+        for(cbor::string second : ar ){
+            s.append("  "+second+"\n");
+        }
+        s.append("\n");
+
+    }
+
+    std::cout<<s<<std::endl;
+
+    const char * drivenImage = s.c_str();
 
     int resEnvoi = sendto(sock, (char *)drivenImage, strlen(drivenImage), 0, reinterpret_cast<const sockaddr *>(&from),sizeof(from));
     if (resEnvoi < 0) {

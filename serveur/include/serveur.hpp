@@ -46,6 +46,7 @@ public:
     void startServer(Window&);
 
 
+    void envoiDuCss(Window &window, sockaddr_in in);
 };
 
 
