@@ -39,6 +39,8 @@ private:
     //Socket
     int sock = 0;
 
+
+
     //Addresse du serveur
     struct sockaddr_in serv_addr;
 

@@ -33,8 +33,7 @@ add_executable( serveur serveur/moteur.cpp serveur/window serveur/message serveu
 
 
 #On crée l'executable pour le client
-add_executable(client client/launcher client/client  client/functions serveur/dataparser.cpp serveur/message.cpp
-
+add_executable(client client/launcher client/client  client/functions serveur/dataparser.cpp serveur/message.cpp serveur/window.cpp serveur/config/
         vendor/exceptions/
 
         vendor/cbor11/cbor11
@@ -43,3 +42,6 @@ add_executable(client client/launcher client/client  client/functions serveur/da
 
 #On lies les librairies pour le serveur
 target_link_libraries(serveur ${GTK3_LIBRARIES} ${RSVG_LIBRARIES} ${CAIRO_LIBRARIES} ${TXML_LIBRARIES}  Threads::Threads stdc++fs)
+
+target_link_libraries(client ${GTK3_LIBRARIES} ${RSVG_LIBRARIES} ${CAIRO_LIBRARIES} ${TXML_LIBRARIES}  Threads::Threads stdc++fs)
+
