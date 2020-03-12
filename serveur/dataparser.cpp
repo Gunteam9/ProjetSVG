@@ -64,6 +64,28 @@ std::vector<std::string> colorInterpolation(std::string oldColor, std::string ne
     return values;
 }
 
+std::vector<std::string> coordinateInterpolation(std::string oldValue, std::string newValue, double steps){
+    std::vector<std::string> values;
+
+    std::size_t size = 3;
+
+    float min = std::stod(oldValue, &size);
+    float max = std::stod(newValue, &size);
+
+    double t = 1;
+
+    for(double i = 1; i < steps; i++){
+        t = i/steps;
+        std::stringstream ifs;
+        double v = (min + ((max - min) * t));
+        ifs << v;
+        values.push_back(ifs.str());
+    }
+
+
+    return values;
+}
+
 std::vector<std::string> numberInterpolation(std::string oldValue, std::string newValue, double steps){
     std::vector<std::string> values;
 
@@ -78,7 +100,6 @@ std::vector<std::string> numberInterpolation(std::string oldValue, std::string n
         t = i/steps;
         std::stringstream ifs;
         double v = (min + ((max - min) * t));
-        std::cout << v << std::endl;
         ifs << v;
         values.push_back(ifs.str());
     }

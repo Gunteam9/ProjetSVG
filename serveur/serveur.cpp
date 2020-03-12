@@ -46,10 +46,8 @@ void Serveur::startServer(Window& w) {
     while (true) {
         char buffer[1024] = {0};
 
-
         sockaddr_in from;
         socklen_t fromlen = sizeof(from);
-
 
         if (recvfrom(sock, buffer, sizeof(buffer), 0, reinterpret_cast<sockaddr *>(&from), &fromlen) < 0) {
             throw udpReceiveException();
@@ -62,7 +60,6 @@ void Serveur::startServer(Window& w) {
 
         //on reserve la place dans le vector,
         encodedMessge.reserve(taille);
-
 
         // on assigne les valeurs du buffer dans le vector
         for (int i = 0; i < taille; ++i) {
@@ -89,8 +86,6 @@ void Serveur::startServer(Window& w) {
 
             const char * drivenImage = s.c_str();
 
-
-
             int resEnvoi = sendto(sock, (char *)drivenImage, strlen(drivenImage), 0, reinterpret_cast<const sockaddr *>(&from),sizeof(from));
             if (resEnvoi < 0) {
                 throw udpSendingException();
@@ -98,7 +93,7 @@ void Serveur::startServer(Window& w) {
             cout << "informations envoyés serveur" << endl;
 
         } else {
-
+            std::cout << vT.size() << std::endl;
             w.update(vT);
         }
     }
