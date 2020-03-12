@@ -19,6 +19,7 @@ int main(int argc, char *argv[]){
    
   Serveur s(argv[1]);
 
+
   std::thread t(&Window::start, &w);
 
   s.startServer(w);

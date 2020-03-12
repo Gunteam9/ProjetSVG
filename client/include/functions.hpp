@@ -25,7 +25,6 @@
 #define IP_SERVER "127.0.0.2"
 #define IP_CLIENT "127.0.0.3"
 
-
 class functions {
 public:
     functions();
@@ -39,13 +38,21 @@ private:
     //Socket
     int sock = 0;
 
+
+
     //Addresse du serveur
     struct sockaddr_in serv_addr;
+
+    //Données à envoyer
+    cbor::map data;
+
+    //Style des objets
+    map<string, vector<string>> styleItems;
 
     void getModifiableInformations();
     void showModifiableItems(vector<std::string> modifiableItems);
     string modifyItem(std::string item);
 
     bool isItemExist(vector<std::string> modifiableItems, std::string item);
-
+    bool yesNoQuestion(std::string message);
 };
