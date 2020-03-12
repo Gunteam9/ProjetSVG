@@ -78,7 +78,7 @@ void Serveur::startServer(Window& w) {
 
         if (vT[0].getNomElement() == "?") { //si le message reçu commence par un '?' alors on envoie les driven au client
             this->envoiDesAttributs(w,from);
-            //this->envoiDuCss(w,from);
+            this->envoiDuCss(w,from);
         } else {
 
             w.update(vT);
@@ -121,10 +121,10 @@ void Serveur::envoiDuCss(Window &w, sockaddr_in from) {
     cbor::map::iterator it ;
     for(it=map.begin(); it!=map.end();++it){
         cbor::string first =  it->first;
-        s.append("pour " + first +" : \n");
+        s.append(first + ": ");
         cbor::array ar = it->second;
         for(cbor::string second : ar ){
-            s.append("  "+second+"\n");
+            s.append(second + " ");
         }
         s.append("\n");
 
