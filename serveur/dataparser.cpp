@@ -210,13 +210,11 @@ std::vector<std::string> DataParser::interpolate(std::string type, std::string o
  * @return
  */
 cbor::map DataParser::getCss() {
-    Window & w = Window::getInstance();
-    std::map<const char *,const  char*> driven= w.getDrivensValue();
     std::map<const char *,const  char*>::iterator it ;
 
     cbor::map map;
 
-    for(it = driven.begin(); it != driven.end();++it){
+    for(it = this->lesElementsDriven.begin(); it != this->lesElementsDriven.end();++it){
         if(std::regex_match(it->first, std::regex(".*_style"))){
             cbor::string s = it->second;
             cbor::array vector;
@@ -239,6 +237,10 @@ cbor::map DataParser::getCss() {
         }
     }
     return map;
+}
+
+void DataParser::setLesElementsDriven(const map<const char *, const char *> &lesElementsDriven) {
+    DataParser::lesElementsDriven = lesElementsDriven;
 }
 
 

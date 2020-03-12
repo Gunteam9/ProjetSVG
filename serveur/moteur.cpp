@@ -13,10 +13,16 @@ int main(int argc, char *argv[]){
   w.setHeight(500);
   w.setTitre("Moteur de rendu SVG");
 
+  DataParser p = DataParser::getInstance();
+
+
+
   //w.setIcon("maison.svg");
 
   w.init(&argc, &argv, argv[1]);
-   
+
+  p.setLesElementsDriven(w.getDrivensValue());
+
   Serveur s(argv[1]);
 
 
