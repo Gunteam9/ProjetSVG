@@ -46,16 +46,6 @@ functions::functions() {
     serv_addr.sin_addr.s_addr = inet_addr(IP_SERVER);
 
 
-    //////////////////////////////////////////////
-    //                                          //
-    //                                          //
-    //     Récupérations des informations       //
-    //                                          //
-    //                                          //
-    //////////////////////////////////////////////
-
-
-
 }
 
 functions::~functions() {
@@ -115,11 +105,10 @@ void functions::showModifiableItems(vector<string> modifiableItems) {
         getline(cin, choice);
     } while (!isItemExist(modifiableItems, choice));
 
-    cbor::map data;
 
     for(vector<string>::iterator it = modifiableItems.begin(); it != modifiableItems.end(); ++it) {
         if(choice.compare((*it))==0){
-            data[(*it)] = modifyItem((*it));
+            data.insert({choice, modifyItem(choice)});
             break;
         }
     }
