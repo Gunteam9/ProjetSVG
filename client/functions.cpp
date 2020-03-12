@@ -46,16 +46,6 @@ functions::functions() {
     serv_addr.sin_addr.s_addr = inet_addr(IP_SERVER);
 
 
-    //////////////////////////////////////////////
-    //                                          //
-    //                                          //
-    //     Récupérations des informations       //
-    //                                          //
-    //                                          //
-    //////////////////////////////////////////////
-
-
-
 }
 
 functions::~functions() {
