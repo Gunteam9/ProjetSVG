@@ -4,11 +4,14 @@
 
 #include "include/serveur.hpp"
 
+#include <utility>
+
 #include "../vendor/exceptions/udpSendingException.hpp"
 
 using namespace std;
 
-Serveur::Serveur(char * IMAGE_SVG) {
+Serveur::Serveur(char * IMAGE_SVG,DataParser dataParser) {
+    this->dataParser=dataParser;
 
     this->IMAGE_SVG=IMAGE_SVG;
 
@@ -69,9 +72,8 @@ void Serveur::startServer(Window& w) {
 
         cbor::binary binaryEncodedMessage = encodedMessge;
 
-        DataParser p = DataParser::getInstance();
 
-        std::vector<Message> vT = p.lireMessage(binaryEncodedMessage);
+        std::vector<Message> vT = this->dataParser.lireMessage(binaryEncodedMessage);
 
         if (vT[0].getNomElement() == "?") { //si le message reçu commence par un '?' alors on envoie les driven au client
             this->envoiDesAttributs(w,from);
@@ -109,9 +111,8 @@ void Serveur::envoiDesAttributs(Window& w,sockaddr_in from) {
 }
 
 void Serveur::envoiDuCss(Window &w, sockaddr_in from) {
-    DataParser dp = DataParser::getInstance();
 
-    cbor::map map = dp.getCss();
+    cbor::map map = this->dataParser.getCss();
 
     std::string s ="Les elements de type style sont : \n";
 

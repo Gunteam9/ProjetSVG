@@ -31,11 +31,12 @@ class Serveur {
 private:
     char* IMAGE_SVG ;
     int sock;
+    DataParser dataParser;
 
     void envoiDesAttributs(Window& w,sockaddr_in from) ;
 
 public:
-    Serveur(char* IMAGE_SVG);
+    Serveur(char* IMAGE_SVG,DataParser dataparser);
 
     virtual ~Serveur();
 

@@ -15,15 +15,14 @@ int main(int argc, char *argv[]){
 
   DataParser p = DataParser::getInstance();
 
-
-
   //w.setIcon("maison.svg");
 
   w.init(&argc, &argv, argv[1]);
 
   p.setLesElementsDriven(w.getDrivensValue());
 
-  Serveur s(argv[1]);
+
+  Serveur s(argv[1],p);
 
 
   std::thread t(&Window::start, &w);
