@@ -33,7 +33,7 @@ add_executable( serveur serveur/moteur.cpp serveur/window serveur/message serveu
 
 
 #On crée l'executable pour le client
-add_executable(client client/launcher client/client  client/functions serveur/dataparser.cpp serveur/message client/include/view
+add_executable(client client/launcher client/functions serveur/dataparser.cpp serveur/message
 
         vendor/exceptions/
 

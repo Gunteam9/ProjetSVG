@@ -42,6 +42,10 @@ private:
     //Addresse du serveur
     struct sockaddr_in serv_addr;
 
+    //Données à envoyer
+    cbor::map data;
+
+
     void getModifiableInformations();
     void showModifiableItems(vector<std::string> modifiableItems);
     string modifyItem(std::string item);
