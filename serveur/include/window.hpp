@@ -22,6 +22,7 @@ class Window {
         int taille_y;
         std::string titre;
 
+        GdkPixbuf* icon;
         GtkWidget* window;
         RsvgHandle *svg_handle;
         tinyxml2::XMLDocument svg_data;
@@ -40,7 +41,11 @@ class Window {
 
         tinyxml2::XMLElement* getElementByName(std::vector<tinyxml2::XMLElement*>, std::string const&);
         
+        tinyxml2::XMLElement* getAttributeByLabel(const char*, tinyxml2::XMLElement*);
+
         const std::vector<const char*> getDrivensName();
+
+        const std::map<const char*, const char*> getDrivensValue();
         
         const std::vector<tinyxml2::XMLElement*> getDrivens(tinyxml2::XMLDocument const&, tinyxml2::XMLElement* const);
         
@@ -51,9 +56,11 @@ class Window {
         void setHeight(int);
         void setTitre(std::string);
 
-        // GETTERS
+
+    // GETTERS
         RsvgHandle* getSvgHandle();
         tinyxml2::XMLDocument* getSvgData();
         GtkWidget* getDarea();
         GtkWidget* getWindow();
+
 };

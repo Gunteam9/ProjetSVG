@@ -31,10 +31,6 @@ add_executable( serveur serveur/moteur.cpp serveur/window serveur/message serveu
                 vendor/exceptions/
                 )
 
-add_executable(testsServeur serveur/maintest serveur/message vendor/cbor11/cbor11 serveur/dataparser serveur/serveur
-
-        vendor/exceptions/
-        )
 
 #On crée l'executable pour le client
 add_executable(client client/launcher client/client  client/functions serveur/dataparser.cpp serveur/message client/include/view

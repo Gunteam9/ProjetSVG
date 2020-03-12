@@ -55,20 +55,9 @@ functions::~functions() {
 void functions::sendData(cbor::map data) {
 
     cbor::binary encoded = cbor::encode(data);
-    std::vector<unsigned char> v = encoded;
-
-    std::vector<unsigned char>::iterator it;
-
-    char* total = new char[v.size()];
-    int i=0;
-    for(it = v.begin(); it < v.end() ; ++it){
-        total[i]=(*it);
-        i++;
-    }
-
 
     // Envoie de message
-    if (sendto(sock, total, strlen(total), 0, (const sockaddr*) &serv_addr, sizeof(serv_addr)) < 0) {
+    if (sendto(sock, encoded.data(), encoded.size(), 0, (const sockaddr*) &serv_addr, sizeof(serv_addr)) < 0) {
         throw udpSendingException();
     }
     cout << "Message envoyé" << endl;

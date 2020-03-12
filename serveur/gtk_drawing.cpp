@@ -28,6 +28,7 @@ static void do_drawing_svg(cairo_t * cr, RsvgHandle * svg_handle, int tx, int ty
     cairo_translate(cr, tx/2 - x/2, ty/2 - y/2);
 
     rsvg_handle_render_cairo(svg_handle, cr);
+
 }
 
 static void do_drawing(cairo_t* cr, int tx, int ty, Window& w){

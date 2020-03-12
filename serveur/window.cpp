@@ -1,5 +1,7 @@
 
 #include <iostream>
+#include <chrono>
+#include <thread>
 
 #include "include/dataparser.hpp"
 #include "include/window.hpp"
@@ -53,6 +55,7 @@ void Window::init(int* argc, char*** argv, const char* svg){
 
     this->svg_data.LoadFile(chemin.c_str());
     this->svg_data.Print(&printer);
+    
     this->svg_handle = rsvg_handle_new_from_data ((const unsigned char*) printer.CStr(), printer.CStrSize()-1, NULL);
 
     g_signal_connect(G_OBJECT(this->darea), "draw", 
@@ -69,6 +72,10 @@ void Window::init(int* argc, char*** argv, const char* svg){
     gtk_window_set_title(GTK_WINDOW(this->window), this->titre.c_str());
 
     gtk_widget_show_all(this->window);
+
+    this->icon = gdk_pixbuf_new_from_file(chemin.c_str(), NULL);
+
+    gtk_window_set_icon(GTK_WINDOW(this->window), this->icon);
 }
 
 void Window::start(){
@@ -118,21 +125,61 @@ const std::vector<const char*> Window::getDrivensName(){
     return drivensName;
 }
 
+const std::map<const char*, const char*> Window::getDrivensValue(){
+    tinyxml2::XMLElement *root = Window::svg_data.RootElement();
+
+    std::vector<tinyxml2::XMLElement*> drivens = getDrivens(svg_data, root);
+
+    std::map<const char*, const char*> drivensCurrentValue;
+
+    for(tinyxml2::XMLElement* driven : drivens){
+        tinyxml2::XMLElement* attribut = driven->Parent()->ToElement();
+        const char* target = driven->Attribute("target");
+        drivensCurrentValue.insert(std::make_pair(driven->Attribute("by"), attribut->Attribute(target)));
+    }
+
+    return drivensCurrentValue;
+}
+
+tinyxml2::XMLElement* Window::getAttributeByLabel(const char* label, tinyxml2::XMLElement* currentElement){
+    if(currentElement != NULL){
+        if(std::string(currentElement->Name()).compare(std::string(label)) == 0){
+            return currentElement;
+        }else{
+            return this->getAttributeByLabel(label, currentElement->NextSiblingElement());
+        }
+    }
+
+    return NULL;
+}
+
 void Window::update(std::vector<Message> const& v){
     std::cout << "Nouveau message pour la window" << std::endl;
 
-    tinyxml2::XMLElement *root = Window::svg_data.RootElement();
+    tinyxml2::XMLElement *root = this->svg_data.RootElement();
 
-    std::vector<tinyxml2::XMLElement*> drivens = getDrivens(Window::svg_data, root);
+    std::vector<tinyxml2::XMLElement*> drivens = this->getDrivens(this->svg_data, root);
     std::vector<const char*> drivensName = getDrivensName();
 
     for(Message m : v){
         tinyxml2::XMLElement* attribut = getElementByName(drivens, m.getNomElement());
         const char* nomAttribut = attribut->Attribute("target");
-        attribut->Parent()->ToElement()->SetAttribute(nomAttribut, m.getValeur().c_str());
+        const char* typeAttribut = attribut->Attribute("type");
+        tinyxml2::XMLElement* parent = attribut->Parent()->ToElement();
+        bool matchingValue = DataParser::getInstance().validateValue(typeAttribut, m.getValeur().c_str());
+        if(matchingValue){
+            std::vector<std::string> values = DataParser::getInstance().interpolate(typeAttribut, parent->Attribute(nomAttribut), m.getValeur().c_str(), 30.0);
+            std::vector<Message> messages;
+            for(std::string s : values){
+                parent->SetAttribute(nomAttribut, s.c_str());
+                gtk_widget_queue_draw(Window::darea);
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            }
+        }else{
+            std::cout << "Parametre pas conforme" << std::endl;
+        }
     }
     
-    gtk_widget_queue_draw(Window::darea);
 }
 
 void Window::setWidth(int w){
