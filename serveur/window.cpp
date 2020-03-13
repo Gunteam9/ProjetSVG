@@ -156,6 +156,8 @@ tinyxml2::XMLElement* Window::getAttributeByLabel(const char* label, tinyxml2::X
 void Window::update(std::vector<Message> const& v){
     std::cout << "Nouveau message pour la window" << std::endl;
 
+    std::cout << v[0]<< std::endl;
+
     tinyxml2::XMLElement *root = this->svg_data.RootElement();
 
     std::vector<tinyxml2::XMLElement*> drivens = this->getDrivens(this->svg_data, root);
