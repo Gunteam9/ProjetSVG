@@ -54,9 +54,11 @@ functions::~functions() {
 
 void functions::sendData(cbor::map data) {
 
+    /* Debug
     for (auto it = data.begin(); it != data.end(); ++it) {
         cout << (string) it->first << " " << (string) it->second << endl;
     }
+     */
 
     cbor::binary encoded = cbor::encode(data);
 
@@ -145,7 +147,9 @@ void functions::showModifiableItems(vector<string> modifiableItems) {
 
     for(vector<string>::iterator it = modifiableItems.begin(); it != modifiableItems.end(); ++it) {
         if(choice.compare((*it))==0){
-            data.insert({choice, modifyItem(choice)});
+            string mapValueToSend = modifyItem(choice);
+            if  (mapValueToSend != "")
+                data.insert({choice, mapValueToSend});
             break;
         }
     }
@@ -167,30 +171,36 @@ string functions::modifyItem(string item){
 
     //Si l'item se termine par _style
     if (item.find_last_of("_style") == item.length() - 1) {
-        while (resp) {
-            cout << "Liste des éléments CSS modifiables: " << endl;
+        if (!this->styleItems.empty()) {
+            while (resp) {
+                cout << "Liste des éléments CSS modifiables: " << endl;
 
-            for (map<string, vector<string> >::iterator it = this->styleItems.begin(); it != this->styleItems.end(); ++it) {
-                if (it->first == item) {
-                    for (vector<string>::iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2) {
-                        cout << (*it2) << endl;
+                for (map<string, vector<string> >::iterator it = this->styleItems.begin();
+                     it != this->styleItems.end(); ++it) {
+                    if (it->first == item) {
+                        for (vector<string>::iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2) {
+                            cout << (*it2) << endl;
+                        }
+
+                        string choice;
+                        do {
+                            cout << "Entrez le nom de la règle CSS a modifier" << endl;
+                            getline(cin, choice);
+                        } while (!isItemExist(it->second, choice));
+
+                        if (newValue.find(choice) != string::npos) {
+                            newValue.erase(newValue.find(choice), newValue.find(";", newValue.find(choice)) + 2);
+                        }
+                        newValue += choice + ": " + modifyItem(choice) + "; ";
+
+                        resp = this->yesNoQuestion("Voulez vous modifier d'autres règles CSS ? (yes / no)");
+
                     }
-
-                    string choice;
-                    do {
-                        cout << "Entrez le nom de la règle CSS a modifier" << endl;
-                        getline(cin, choice);
-                    } while (!isItemExist(it->second, choice));
-
-                    if (newValue.find(choice) != string::npos) {
-                        newValue.erase(newValue.find(choice),newValue.find(";", newValue.find(choice)) + 2);
-                    }
-                    newValue += choice + ": " + modifyItem(choice) + "; ";
-
-                    resp = this->yesNoQuestion("Voulez vous modifier d'autres règles CSS ? (yes / no)");
-
                 }
             }
+        } else {
+            cout << "Cet élément driven ne contient pas de règle de style" << endl;
+            newValue = "";
         }
 
 

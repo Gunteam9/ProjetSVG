@@ -158,7 +158,6 @@ void DataParser::initColorMap(){
  * @return un tableau des messages
  */
 vector<Message> DataParser::lireMessage(cbor::binary encodedItem) {
-    
     cbor decodedItem= cbor::decode(encodedItem);
 
     if(!decodedItem.is_map()){
@@ -166,16 +165,47 @@ vector<Message> DataParser::lireMessage(cbor::binary encodedItem) {
     }
 
     map<cbor,cbor> maMap = decodedItem;
-
     vector<Message> mesMessages;
-
     mesMessages.reserve(maMap.size());
-
     map<cbor,cbor>::iterator it = maMap.begin();
 
     while (it != maMap.end()){
         string element = it->first;
         string valeur = it->second;
+
+        if(std::regex_match(element,std::regex(".*_style"))){
+            std::string s = valeur;
+            std::map<string,string> map1;
+
+            while(s.length()>2) {
+                int indicefin = s.find(";");
+                std::string couple = s.substr(0, indicefin);
+                std::string type = couple.substr(0, couple.find(":")); // changer le couple.find en s.find
+                std::string valeur = couple.substr(couple.find(":") + 2, couple.length());
+
+                map1.insert({type, valeur});
+
+                if (indicefin + 2 >= s.length()) {
+                    s = "";
+                } else {
+                    s = s.substr(indicefin + 2, s.length());
+                }
+            }
+
+            std::map<string,string> present = this->getCssValues().at(element);
+            std::map<string,string>::iterator iterator;
+
+            for (iterator=present.begin() ; iterator!=present.end() ; ++iterator) {
+                map1.insert({iterator->first,iterator->second});
+            }
+
+            string valeurFinale;
+            for(iterator=map1.begin(); iterator!=map1.end(); ++iterator){
+                valeurFinale.append(iterator->first+": "+iterator->second+"; ");
+            }
+            valeur=valeurFinale.substr(0,valeurFinale.length()-1);
+
+        }
 
         Message m(element,valeur);
         mesMessages.push_back(m);
@@ -213,23 +243,11 @@ std::vector<std::string> DataParser::interpolate(std::string type, std::string o
     return this->interpolationMap[type](oldValue, newValue, steps);
 }
 
-/** pour le transformer en map normale
- *   cbor::map m = d.getCss();
-  std::map<cbor,cbor> m1 = m ;
-  std::string s1 = m1.begin()->first;
-  std::vector<cbor> v = m1.begin()->second ;
-  std::string premiere_value = v[0];
-
- * @return
- */
 cbor::map DataParser::getCss() {
-    Window & w = Window::getInstance();
-    std::map<const char *,const  char*> driven= w.getDrivensValue();
     std::map<const char *,const  char*>::iterator it ;
-
     cbor::map map;
 
-    for(it = driven.begin(); it != driven.end();++it){
+    for(it = this->lesElementsDriven.begin(); it != this->lesElementsDriven.end();++it){
         if(std::regex_match(it->first, std::regex(".*_style"))){
             cbor::string s = it->second;
             cbor::array vector;
@@ -252,6 +270,51 @@ cbor::map DataParser::getCss() {
         }
     }
     return map;
+}
+
+
+
+
+std::map<string,std::map<string,string>> DataParser::getCssValues() {
+    std::map<const char *,const  char*>::iterator it ;
+
+    std::map<string,std::map<string,string>> map;
+
+    for(it = this->lesElementsDriven.begin(); it != this->lesElementsDriven.end();++it){
+        if(std::regex_match(it->first, std::regex(".*_style"))){
+
+            cbor::string s = it->second;
+            std::map<string,string> map1;
+
+            while(s.length()>2) {
+                int indicefin = s.find(";");
+                std::string couple = s.substr(0, indicefin);
+                std::string type =  couple.substr(0,couple.find(":")); // changer le couple.find en s.find
+                std::string valeur = couple.substr(couple.find(":")+2,couple.length());
+
+                map1.insert({type,valeur});
+
+                if(indicefin+2>=s.length()){
+                    s="";
+                }else {
+                    s = s.substr(indicefin + 2, s.length());
+                }
+            }
+            cbor::string first = it->first;
+            map.insert({first,map1});
+        }
+    }
+    return map;
+}
+
+
+
+void DataParser::setLesElementsDriven(const map<const char *, const char *> &lesElementsDriven) {
+    DataParser::lesElementsDriven = lesElementsDriven;
+}
+
+const map<const char *, const char *> &DataParser::getLesElementsDriven() const {
+    return lesElementsDriven;
 }
 
 

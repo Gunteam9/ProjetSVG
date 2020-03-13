@@ -14,15 +14,20 @@
 static std::map<std::string, std::string> COULEURS_MAP;
 
 class DataParser {
+public:
+    const map<const char *, const char *> &getLesElementsDriven() const;
+
+    DataParser();
 
 private:
+     std::map<const char *,const  char*> lesElementsDriven;
+
      static DataParser instance;
 
      void initColorMap();
 
      std::map<std::string, std::vector<std::string>(*)(std::string, std::string, double)> interpolationMap;
 
-     DataParser();
 public:
      static DataParser getInstance();
 
@@ -33,5 +38,11 @@ public:
      std::vector<std::string> interpolate(std::string, std::string, std::string, double);
 
     cbor::map getCss();
+
+    void setLesElementsDriven(const map<const char *, const char *> &lesElementsDriven);
+
+    std::map<string,std::map<string,string>> getCssValues();
+
+    map<string, std::map<string, string>> getCssValuesReceived();
 };
 
