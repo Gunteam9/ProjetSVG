@@ -29,7 +29,7 @@ private:
      std::map<std::string, std::vector<std::string>(*)(std::string, std::string, double)> interpolationMap;
 
 public:
-     static DataParser getInstance();
+     static DataParser& getInstance();
 
      vector<Message> lireMessage(cbor::binary);
 

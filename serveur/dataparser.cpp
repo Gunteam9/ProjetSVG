@@ -132,7 +132,7 @@ DataParser::DataParser(){
     };
 }
 
-DataParser DataParser::getInstance(){
+DataParser& DataParser::getInstance(){
     static DataParser i;
     return i;
 }
