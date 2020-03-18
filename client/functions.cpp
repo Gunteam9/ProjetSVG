@@ -169,8 +169,8 @@ string functions::modifyItem(string item){
     string newValue;
     bool resp = true;
 
-    //Si l'item se termine par _style
-    if (item.find_last_of("_style") == item.length() - 1) {
+    //Si l'item se termine par _style et que son nom est plus long que 6 (sinon exception dans le item.compare)
+    if (item.length() > 6 && item.compare(item.length()-6, 6, "_style") == 0) {
         if (!this->styleItems.empty()) {
             while (resp) {
                 cout << "Liste des éléments CSS modifiables: " << endl;
