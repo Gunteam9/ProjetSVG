@@ -110,11 +110,8 @@ std::vector<std::string> numberInterpolation(std::string oldValue, std::string n
 std::vector<std::string> styleInterpolation(std::string oldRule, std::string newRule, double steps){
     std::vector<std::string> values;
 
-    std::string oldRuleValue = oldRule.substr(oldRule.find(":") + 2, oldRule.size() - (oldRule.substr(0, oldRule.find(":")).size()) - 4);
-    std::string newRuleValue = newRule.substr(newRule.find(":") + 2, newRule.size() - (newRule.substr(0, newRule.find(":")).size()) - 4);
-
-    std::cout << oldRuleValue << std::endl;
-    std::cout << newRuleValue << std::endl;
+    values.push_back(oldRule);
+    values.push_back(newRule);
 
     return values;
 }   
