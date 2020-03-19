@@ -30,18 +30,14 @@ public:
     functions();
     virtual ~functions();
 
-    void sendData(cbor::map data);
-
+    void sendData(const cbor::map & data);
 
 private:
 
     //Socket
     int sock = 0;
-
-
-
     //Addresse du serveur
-    struct sockaddr_in serv_addr;
+    struct sockaddr_in serv_addr{};
 
     //Données à envoyer
     cbor::map data;
@@ -49,10 +45,13 @@ private:
     //Style des objets
     map<string, vector<string>> styleItems;
 
+    //Informations serveur
     void getModifiableInformations();
     void showModifiableItems(vector<std::string> modifiableItems);
-    string modifyItem(std::string item);
+    string modifyItem(const std::string& item);
 
-    bool isItemExist(vector<std::string> modifiableItems, std::string item);
-    bool yesNoQuestion(std::string message);
+    //Utile
+    bool yesNoQuestion(const std::string& message);
+    bool isItemExist(const vector<string> &modifiableItems, const string &item);
+
 };

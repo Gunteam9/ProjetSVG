@@ -8,17 +8,14 @@ using namespace std;
 
 int main() {
 
+    //Instancie la classe principal du client
     functions func;
 
+    //La map à envoyer au serveur pour récupérer les infos
     cbor::map data = {
             { "?", "?"},
     };
 
-
-    /*for (auto it = data.begin(); it != data.end(); ++it) {
-        cout << (string) it->first << " " << (string) it->second << endl;
-    }
-*/
     func.sendData(data);
 
     return 0;
