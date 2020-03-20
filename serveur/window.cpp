@@ -6,6 +6,7 @@
 #include "include/dataparser.hpp"
 #include "include/window.hpp"
 #include "gtk_drawing.cpp"
+#include "../vendor/exprtk/exprtk.hpp"
 
 Window::Window(){
 
@@ -162,15 +163,26 @@ void Window::update(std::vector<Message> const& v){
 
     std::vector<tinyxml2::XMLElement*> drivens = this->getDrivens(this->svg_data, root);
     std::vector<const char*> drivensName = getDrivensName();
-
     for(Message m : v){
         tinyxml2::XMLElement* attribut = getElementByName(drivens, m.getNomElement());
         const char* nomAttribut = attribut->Attribute("target");
         const char* typeAttribut = attribut->Attribute("type");
         tinyxml2::XMLElement* parent = attribut->Parent()->ToElement();
-        bool matchingValue = DataParser::getInstance().validateValue(typeAttribut, m.getValeur().c_str());
+        
+        exprtk::parser<double> parser;
+        exprtk::symbol_table<double> symbol_table;
+        exprtk::expression<double> expression;
+
+        expression.register_symbol_table(symbol_table);
+        symbol_table.add_constants();
+
+        parser.compile(m.getValeur(), expression);
+
+        std::string value = std::to_string((int)std::round(expression.value()));
+        
+        bool matchingValue = DataParser::getInstance().validateValue(typeAttribut, value.c_str());
         if(matchingValue){
-            std::vector<std::string> values = DataParser::getInstance().interpolate(typeAttribut, parent->Attribute(nomAttribut), m.getValeur().c_str(), 30.0);
+            std::vector<std::string> values = DataParser::getInstance().interpolate(typeAttribut, parent->Attribute(nomAttribut), value, 30.0);
             std::vector<Message> messages;
             for(std::string s : values){
                 parent->SetAttribute(nomAttribut, s.c_str());
