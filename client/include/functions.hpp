@@ -25,12 +25,28 @@
 #define IP_SERVER "127.0.0.2"
 #define IP_CLIENT "127.0.0.3"
 
+#define FIRST_DELIMITER ": "
+#define SECOND_DELIMITER " "
+#define MAIN_DELIMITER "\n"
+
 class functions {
 public:
     functions();
     virtual ~functions();
 
-    void sendData(const cbor::map & data);
+    //Données
+    void sendData();
+    void insertInData(const std::string& item, const std::string& value);
+
+    //Utile
+    bool isItemExist(const vector<std::string> &vectorOfItem, const string &item);
+    bool yesNoQuestion(const std::string& message);
+    bool isStyleItem(const string& item);
+
+    vector<std::string> getStyleElements(const std::string& item);
+
+    //Getters and setters
+    const vector<string> &getDrivensItems();
 
 private:
 
@@ -42,16 +58,11 @@ private:
     //Données à envoyer
     cbor::map data;
 
-    //Style des objets
-    map<string, vector<string>> styleItems;
+    //Items
+    vector<std::string> drivensItems;
+    map<std::string, vector<std::string>> styleItems;
 
     //Informations serveur
     void getModifiableInformations();
-    void showModifiableItems(vector<std::string> modifiableItems);
-    string modifyItem(const std::string& item);
-
-    //Utile
-    bool yesNoQuestion(const std::string& message);
-    bool isItemExist(const vector<string> &modifiableItems, const string &item);
 
 };

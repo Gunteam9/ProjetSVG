@@ -38,7 +38,7 @@ add_executable(client client/launcher client/functions serveur/dataparser.cpp se
         vendor/exceptions/
 
         vendor/cbor11/cbor11
-        )
+        client/consoleClient.cpp client/include/consoleClient.hpp client/include/iClient.hpp)
 
 
 #On lies les librairies pour le serveur
