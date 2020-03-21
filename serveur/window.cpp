@@ -176,9 +176,9 @@ void Window::update(std::vector<Message> const& v){
         expression.register_symbol_table(symbol_table);
         symbol_table.add_constants();
 
-        parser.compile(m.getValeur(), expression);
+        bool succeeded = parser.compile(m.getValeur(), expression);
 
-        std::string value = std::to_string((int)std::round(expression.value()));
+        std::string value = succeeded ? std::to_string(expression.value()) : std::string(m.getValeur().c_str());
         
         bool matchingValue = DataParser::getInstance().validateValue(typeAttribut, value.c_str());
         if(matchingValue){
