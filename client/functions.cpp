@@ -48,6 +48,9 @@ functions::functions() {
     // Modification de l'ip pour atteindre le serveur
     serv_addr.sin_addr.s_addr = inet_addr(IP_SERVER);
 
+    data = { { "?", "?"} };
+
+    sendData();
 
 }
 
@@ -60,7 +63,7 @@ functions::~functions() = default;
  * Send Data to the server
  * @param data - data to send
  */
-void functions::sendData(const cbor::map & data) {
+void functions::sendData() {
 
     /* Debug
     for (auto it = data.begin(); it != data.end(); ++it) {
@@ -77,13 +80,16 @@ void functions::sendData(const cbor::map & data) {
     cout << "Message envoyé" << endl;
 
     // Réception des informations modifiables
-    if (data.begin()->first == "?")
+    if (data.begin()->first == "?") {
+        data = {};
         getModifiableInformations();
+    }
 }
 
 
 /**
  * Get and save data from the server
+ * Modify drivensItems and styleItems
  */
 void functions::getModifiableInformations() {
 
@@ -95,13 +101,11 @@ void functions::getModifiableInformations() {
     }
 
     string element = (string) buffer;
-    string delimiter = "\n";
-    vector<string> modifiableItems;
 
     //Stockage dans un vector<string> des éléments simple
     while (element.length() != 0) {
-        modifiableItems.push_back(element.substr(0, element.find_first_of(delimiter)));
-        element.erase(0, (int) element.find_first_of(delimiter)+1);
+        this->drivensItems.push_back(element.substr(0, element.find_first_of(MAIN_DELIMITER)));
+        element.erase(0, (int) element.find_first_of(MAIN_DELIMITER)+1);
     }
 
     char buffer2[1024] = {0};
@@ -113,147 +117,37 @@ void functions::getModifiableInformations() {
 
     element = (string) buffer2;
 
-    string firstDelimiter = ": ";
-    string secondDelimiter = " ";
-    string mainDelimiter = "\n";
-
     vector<string> vectorStyleItems;
 
     //Suppression de la 1ère phrase de présentation
-    element.erase(0, element.find_first_of(mainDelimiter) + 1);
+    element.erase(0, element.find_first_of(MAIN_DELIMITER) + 1);
 
     //Stockage des éléments dans une map<string, vector<string> >
     //En clef: l'élément en question
     //En valeur, un vector<string> des paramètres CSS (margin, padding, etc)
     while(element.length() != 0) {
-        string key = element.substr(0, element.find_first_of(firstDelimiter));
-        element.erase(0, element.find_first_of(firstDelimiter) + 2);
-        string value = element.substr(0, element.find_first_of(mainDelimiter));
-        element.erase(0, element.find_first_of(mainDelimiter) + 1);
+        string key = element.substr(0, element.find_first_of(FIRST_DELIMITER));
+        element.erase(0, element.find_first_of(FIRST_DELIMITER) + 2);
+        string value = element.substr(0, element.find_first_of(MAIN_DELIMITER));
+        element.erase(0, element.find_first_of(MAIN_DELIMITER) + 1);
 
         while(value.length() != 0) {
-            vectorStyleItems.push_back(value.substr(0, value.find_first_of(secondDelimiter)));
-            value.erase(0, (int) value.find_first_of(secondDelimiter) + 1);
+            vectorStyleItems.push_back(value.substr(0, value.find_first_of(SECOND_DELIMITER)));
+            value.erase(0, (int) value.find_first_of(SECOND_DELIMITER) + 1);
         }
 
         styleItems.insert({key, vectorStyleItems});
-        element.erase(0, (int) element.find_first_of(mainDelimiter) + 1);
+        element.erase(0, (int) element.find_first_of(MAIN_DELIMITER) + 1);
     }
-
-    //Demande à l'utilisateur les modifications à effectuer
-    showModifiableItems(modifiableItems);
-
 }
 
-
-/**
- * Print and select modifiables items
- * @param modifiableItems - Liste des items modifiables
- */
-void functions::showModifiableItems(vector<string> modifiableItems) {
-
-    //Affichage des éléments modifiables
-    for (auto & modifiableItem : modifiableItems) {
-        cout << modifiableItem << endl;
-    }
-
-    //Choix de l'item à modifier
-    string choice;
-    do {
-        cout << "Entrez le nom de l'item a modifier" << endl;
-        getline(cin, choice);
-    } while (!isItemExist(modifiableItems, choice));
-
-    //Modifie les items (via la fonction modifyItem)
-    //Les ajoute dans la map de données pour envoyer au serveur
-    for(auto & modifiableItem : modifiableItems) {
-        if(choice == modifiableItem){
-            string mapValueToSend = modifyItem(choice);
-            if  (!mapValueToSend.empty())
-                data.insert({choice, mapValueToSend});
-            break;
-        }
-    }
-
-    //Demande à l'utilisateur si il souhaite en modifier d'autres
-    //Sinon, envoie les données au serveur (puis le client se ferme)
-    bool resp = this->yesNoQuestion("Voulez vous modifier d'autres item ? (yes / no)");
-    if (resp)
-        showModifiableItems(modifiableItems);
-    else
-        sendData(data);
-
-
-}
-
-/**
- * Assign a new value to the specified item
- * @param item
- * @return the new Value
- */
-string functions::modifyItem(const string& item){
-    string newValue;
-    bool resp = true;
-
-    //Si l'item se termine par _style et que son nom est plus long que 6 (sinon exception dans le item.compare)
-    if (item.length() > 6 && item.compare(item.length()-6, 6, "_style") == 0) {
-
-        //Si l'élément de style contient des règles CSS
-        if (!this->styleItems.empty()) {
-
-            //Si on souhaite modifier plusieurs règles CSS
-            while (resp) {
-                cout << "Liste des éléments CSS modifiables: " << endl;
-
-                //Trouve le bon item parmi ceux existant
-                for (map<string, vector<string> >::iterator it = this->styleItems.begin();
-                     it != this->styleItems.end(); ++it) {
-                    if (it->first == item) {
-
-                        //Liste les éléments CSS modifiables pour l'item concerné
-                        for (vector<string>::iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2) {
-                            cout << (*it2) << endl;
-                        }
-
-                        //Choix de l'utilisateur
-                        string choice;
-                        do {
-                            cout << "Entrez le nom de la règle CSS a modifier" << endl;
-                            getline(cin, choice);
-                        } while (!isItemExist(it->second, choice));
-
-                        //Si l'item a déjà été modifié dans la même session, on supprime l'ancienne valeur et concerve la nouvelle
-                        if (newValue.find(choice) != string::npos) {
-                            newValue.erase(newValue.find(choice), newValue.find(";", newValue.find(choice)) + 2);
-                        }
-
-                        //Ré invoque la fonction pour considérer l'élément CSS comme un item classique
-                        // + Mise en forme pour la map pour le serveur
-                        newValue += choice + ": " + modifyItem(choice) + "; ";
-
-                        resp = this->yesNoQuestion("Voulez vous modifier d'autres règles CSS ? (yes / no)");
-
-                    }
-                }
-            }
-        } else {
-            cout << "Cet élément driven ne contient pas de règle de style" << endl;
-            newValue = "";
-        }
-
-    //Pour les item simple
-    } else {
-        do {
-            cout << "Entrez la nouvelle valeur pour l'objet " << item << endl;
-            getline(cin, newValue);
-        } while (newValue.empty());
-    }
-
-
-    
-    return newValue;
-}
-
+//////////////////////////////////////////////
+//                                          //
+//                                          //
+//                  UTILS                   //
+//                                          //
+//                                          //
+//////////////////////////////////////////////
 
 /**
  * To ask yes no question
@@ -291,10 +185,62 @@ bool functions::yesNoQuestion(const string& message) {
  * @param item - Item (string)
  * @return True if the item is in the list
  */
-bool functions::isItemExist(const vector<string>& modifiableItems, const string& item) {
-    for (auto it = modifiableItems.begin(); it != modifiableItems.end(); ++it) {
-        if (item == *it)
+bool functions::isItemExist(const vector<string>& vectorOfItem, const string& item) {
+    for (const auto & it : vectorOfItem) {
+        if (item == it)
             return true;
     }
     return false;
+}
+
+/**
+ *
+ * @param item
+ * @return Return true if the specified item is a styleItem
+ */
+bool functions::isStyleItem(const string& item) {
+    //Si l'item se termine par _style et que son nom est plus long que 6 (sinon exception dans le item.compare)
+    return item.length() > 6 && item.compare(item.length() - 6, 6, "_style") == 0;
+}
+
+/**
+ *
+ * @param item
+ * @return Return a vector<string> who contains all the style element for the specified item
+ * @throw Throw a errorException if the speficied item is not a style Item
+ */
+vector<std::string> functions::getStyleElements(const string& item) {
+
+    //Trouve le bon item parmi ceux existant
+    for (auto & styleItem : styleItems) {
+        if (item == styleItem.first)
+            return styleItem.second;
+    }
+
+    throw errorException("L'item n'est pas un élément de style");
+}
+
+//////////////////////////////////////////////
+//                                          //
+//                                          //
+//           GETTERS AND SETTERS            //
+//                                          //
+//                                          //
+//////////////////////////////////////////////
+
+/**
+ *
+ * @return drivensItems
+ */
+const vector<string> &functions::getDrivensItems() {
+    return drivensItems;
+}
+
+/**
+ *
+ * @param item
+ * @param value
+ */
+void functions::insertInData(const string& item, const string& value) {
+    data.insert({item, value});
 }
