@@ -1,0 +1,11 @@
+<svg width="143" height="70" viewBox="0 0 143 70" xmlns="http://www.w3.org/2000/svg">
+  <path d="M2,6h14l12,45l11-41c3-7,13-7,16,0l11,41l12-45h14l-17,58c-3,7-13,7-16,0l-12-39l-12,39c-3,7-13,7-16,0zM99,68v-43h14v43zM126,68v-43h14v43z" fill="white">
+    <driven target="fill" by="wii_fill" delay="5" type="color-keyword"/>
+  </path>
+  <circle cx="133" cy="10" fill="white" r="8">
+    <driven target="fill" by="wii_fill2" delay="5" type="color-keyword"/>
+  </circle>
+  <circle cx="106" cy="10" fill="white" r="8">
+     <driven target="fill" by="wii_fill3" delay="5" type="color-keyword"/>
+  </circle>
+</svg>
