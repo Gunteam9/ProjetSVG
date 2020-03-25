@@ -1,0 +1,14 @@
+<svg id="svg1" width="500" height="500" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <circle r="32" cx="35" cy="65" fill="red" opacity="0.5">
+    <driven target="opacity" by="red_opacity" delay="1" type="opacity-value"/>
+    <driven target="fill" by="red_fill" delay="1" type="color-keyword"/>
+  </circle>
+  <circle r="32" cx="65" cy="65" fill="green" opacity="0.5">
+    <driven target="opacity" by="green_opacity" delay="1" type="opacity-value"/>
+    <driven target="fill" by="green_fill" delay="1" type="color-keyword"/>
+  </circle>
+  <circle r="32" cx="50" cy="35" fill="blue" opacity="0.5">
+    <driven target="opacity" by="blue_opacity" delay="2" type="opacity-value"/>
+    <driven target="fill" by="blue_fill" delay="2" type="color-keyword"/>
+  </circle>
+</svg>
