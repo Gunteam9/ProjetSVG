@@ -169,9 +169,9 @@ void Window::update(std::vector<Message> const& v){
         const char* typeAttribut = attribut->Attribute("type");
         tinyxml2::XMLElement* parent = attribut->Parent()->ToElement();
         
-        exprtk::parser<double> parser;
-        exprtk::symbol_table<double> symbol_table;
-        exprtk::expression<double> expression;
+        exprtk::parser<float> parser;
+        exprtk::symbol_table<float> symbol_table;
+        exprtk::expression<float> expression;
 
         expression.register_symbol_table(symbol_table);
         symbol_table.add_constants();
@@ -182,6 +182,7 @@ void Window::update(std::vector<Message> const& v){
         
         bool matchingValue = DataParser::getInstance().validateValue(typeAttribut, value.c_str());
         if(matchingValue){
+            std::string parentAttribute = parent->Attribute(nomAttribut);
             std::vector<std::string> values = DataParser::getInstance().interpolate(typeAttribut, parent->Attribute(nomAttribut), value, 30.0);
             std::vector<Message> messages;
             for(std::string s : values){

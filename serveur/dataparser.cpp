@@ -94,6 +94,9 @@ std::vector<std::string> numberInterpolation(std::string oldValue, std::string n
     float min = std::stod(oldValue, &size);
     float max = std::stod(newValue, &size);
 
+    std::cout << max << endl;
+    std::cout << min << endl;
+
     double t = 1;
 
     for(double i = 1; i < steps; i++){
@@ -103,6 +106,8 @@ std::vector<std::string> numberInterpolation(std::string oldValue, std::string n
         ifs << v;
         values.push_back(ifs.str());
     }
+
+    values.push_back(std::to_string(max));
 
     return values;
 }
