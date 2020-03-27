@@ -47,6 +47,8 @@ class DataParser {
 
         const map<const char *, const char *> &getLesElementsDriven() const;
 
+        void setLesElementsDriven(const map<const char *, const char *>&);
+
         static DataParser& getInstance();
 
         /**
@@ -66,15 +68,13 @@ class DataParser {
         bool validateValue(const char*, const char*);
 
         /**
-         * @brief Cette fonction effectue l'interpolation en fonction de la première valeur et la dernière valeur.
+         * @brief Cette fonction effectue l'interpolation en fonction de la première valeur et la dernière valeur par
          * 
-         * @return std::vector<std::string> 
+         * @return std::vector<std::string> un vecteur contenant toutes les valeurs comprises entre l'ancienne et la nouvelle.
          */
         std::vector<std::string> interpolate(std::string, std::string, std::string, double);
 
         cbor::map getCss();
-
-        void setLesElementsDriven(const map<const char *, const char *> &lesElementsDriven);
 
         std::map<string,std::map<string,string>> getCssValues();
 

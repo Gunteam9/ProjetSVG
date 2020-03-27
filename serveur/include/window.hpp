@@ -1,14 +1,13 @@
 #pragma once
 
-#include <librsvg/rsvg.h>
 #include <cairo.h>
 #include <gtk/gtk.h>
 #include <gio/gfile.h>
-#include <tinyxml2.h>
-
+#include <librsvg/rsvg.h>
 #include <stdlib.h>
-#include <vector>
 #include <string>
+#include <tinyxml2.h>
+#include <vector>
 
 #include "message.hpp"
 
