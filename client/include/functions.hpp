@@ -37,7 +37,6 @@ public:
     //Données
     void sendData();
     void insertInData(const std::string& item, const std::string& value);
-    void deleteEntry(const std::string& key);
 
     //Utile
     bool isItemExist(const vector<std::string> &vectorOfItem, const string &item);

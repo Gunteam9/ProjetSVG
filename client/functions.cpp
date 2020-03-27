@@ -246,12 +246,3 @@ const vector<string> &functions::getDrivensItems() {
 void functions::insertInData(const string& item, const string& value) {
     data.insert({item, value});
 }
-
-
-/**
- *
- * @param key
- */
-void functions::deleteEntry(const string& key) {
-    this->data.erase(this->data.find(key));
-}

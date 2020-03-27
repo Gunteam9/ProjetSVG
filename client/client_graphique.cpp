@@ -1,10 +1,10 @@
 #include <iostream>
-
 #include <gtk/gtk.h>
-#include "gtk_wrappers.cpp"
-#include "../include/functions.hpp"
 
-#include "client_graphique.hpp"
+#include "gtk_wrappers.cpp"
+#include "include/functions.hpp"
+
+#include "include/client_graphique.hpp"
 
 ClientGraphique::ClientGraphique(int* argc, char*** argv){
     this->argc = argc;
@@ -31,7 +31,7 @@ void ClientGraphique::start(){
     /* Création du chemin complet pour accéder au fichier test.glade. */
     /* g_build_filename(); construit le chemin complet en fonction du système */
     /* d'exploitation. ( / pour Linux et \ pour Windows) */
-    filename =  g_build_filename ("client/test_gtk/client_xml.glade", NULL);
+    filename =  g_build_filename ("client/resources/client_xml.glade", NULL);
 
     /* Chargement du fichier test.glade. */
     gtk_builder_add_from_file(builder, filename, &error);

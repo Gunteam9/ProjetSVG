@@ -2,14 +2,14 @@
 // Created by gunteam on 21/03/2020.
 //
 
-#include "include/consoleClient.hpp"
+#include "include/client_console.hpp"
 
 using namespace std;
 
 /**
  * Main function
  */
-void consoleClient::start() {
+void ClientConsole::start() {
 
     if (this->func.getDrivensItems().empty())
         throw udpReceiveException("Aucun message n'a été reçu du serveur");
@@ -29,7 +29,7 @@ void consoleClient::start() {
  * Print drivenItem
  *
  */
-void consoleClient::showDrivenItems() {
+void ClientConsole::showDrivenItems() {
 
     //Affichage des éléments modifiables
     for (auto &item : this->func.getDrivensItems()) {
@@ -41,7 +41,7 @@ void consoleClient::showDrivenItems() {
  * User item selection
  * @return user's choice
  */
-string consoleClient::selectItemToModify() {
+string ClientConsole::selectItemToModify() {
 
     //Choix de l'item à modifier
     string choice;
@@ -58,7 +58,7 @@ string consoleClient::selectItemToModify() {
  * @param item
  * @return the new Value
  */
-string consoleClient::modifyItem(const string& item){
+string ClientConsole::modifyItem(const string& item){
     string newValue;
     bool resp = true;
 
@@ -118,7 +118,7 @@ string consoleClient::modifyItem(const string& item){
  * Finish interaction ... or not
  * If no, return to the start
  */
-void consoleClient::finish() {
+void ClientConsole::finish() {
     //Demande à l'utilisateur si il souhaite en modifier d'autres
     //Sinon, envoie les données au serveur (puis le client se ferme)
     bool resp = this->func.yesNoQuestion("Voulez vous modifier d'autres item ? (yes / no)");
