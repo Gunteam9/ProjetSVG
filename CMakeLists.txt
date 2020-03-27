@@ -38,8 +38,10 @@ add_executable(client client/launcher client/functions serveur/dataparser.cpp se
         vendor/exceptions/
 
         vendor/cbor11/cbor11
-        client/consoleClient.cpp client/include/consoleClient.hpp client/include/iClient.hpp)
+        client/client_console.cpp client/client_graphique client/include/iClient.hpp)
 
 
 #On lies les librairies pour le serveur
 target_link_libraries(serveur ${GTK3_LIBRARIES} ${RSVG_LIBRARIES} ${CAIRO_LIBRARIES} ${TXML_LIBRARIES}  Threads::Threads stdc++fs)
+
+target_link_libraries(client ${GTK3_LIBRARIES})

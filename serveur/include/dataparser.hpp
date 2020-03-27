@@ -20,6 +20,9 @@ static std::map<std::string, std::string> COULEURS_MAP;
 
 class DataParser {
     private:
+        /**
+         * L'attribut les nécessaire pour éviter de devoir lier la window avec le client
+         */
         std::map<const char *,const  char*> lesElementsDriven;
 
         /**
@@ -45,12 +48,16 @@ class DataParser {
     public:
         DataParser();
 
+        //Getter
         const map<const char *, const char *> &getLesElementsDriven() const;
-
         static DataParser& getInstance();
 
+        //Setter
+        void setLesElementsDriven(const map<const char *, const char *> &lesElementsDriven);
+
         /**
-         * @brief IONAS TODO
+         * @brief Méthode qui prend un cbor::map encodé et qui renvoie un vector de messages contenant les noms et les
+         * nouvelles valeur des attributs a modifier
          * 
          * @return vector<Message> 
          */
@@ -72,12 +79,17 @@ class DataParser {
          */
         std::vector<std::string> interpolate(std::string, std::string, std::string, double);
 
+        /**
+         * @brief Méthode qui retourne une map contenant en clé les nom des attributs de type style et en valeur un
+         * vector contenant les noms des attributs styles
+         */
         cbor::map getCss();
 
-        void setLesElementsDriven(const map<const char *, const char *> &lesElementsDriven);
-
+        /**
+         * @brief Méthode qui retourne une map contenant en clé les nom des attributs de type style et en valeur
+         * une une map contenant en clé le nom des éléments style et en valeur leur valeur actuelles.
+         * @return
+         */
         std::map<string,std::map<string,string>> getCssValues();
-
-        map<string, std::map<string, string>> getCssValuesReceived();
 };
 

@@ -8,6 +8,9 @@
 
 using namespace std;
 
+/**
+ * Classe utilisée pour associer un nom d'élément driven avec sa valeur
+ */
 class Message {
 private:
     string nomElement;

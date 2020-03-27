@@ -21,33 +21,45 @@
 
 #define PORT 6789
 #define IP_SERVER "127.0.0.2"
-#define IP_CLIENT "127.0.0.3"
 
 
 using namespace std;
 
+/**
+ * Classe s'occupant du serveur en UDP sur le port 6789 avec son ip en 127.0.0.2
+ */
 class Serveur {
 
 private:
     char* IMAGE_SVG ;
     int sock;
-    DataParser dataParser;
 
+    /**
+     * @brief Méthode qui envooie les attributs au client dès que le client envoie des '?' au serveur
+     * @param w
+     * @param from
+     */
     void envoiDesAttributs(Window& w,sockaddr_in from) ;
 
 public:
-    Serveur(char* IMAGE_SVG,DataParser dataparser);
+    /**
+     * @brief Constructeur qui crée le serveur avec l'image svg en paramètres
+     * @param IMAGE_SVG
+     */
+    Serveur(char* IMAGE_SVG);
 
     virtual ~Serveur();
 
-    int getMaSocket() const;
-
-    int getPort() const ;
-
+    /**
+     * Méthode qui initialise le serveur
+     */
     void startServer(Window&);
 
-
-    void envoiDuCss(Window &window, sockaddr_in in);
+    /**
+     * @brief Méthode qui envoie les éléments de type style de l'image au client
+     * @param in est l'adresse du client
+     */
+    void envoiDuCss(sockaddr_in in);
 };
 
 

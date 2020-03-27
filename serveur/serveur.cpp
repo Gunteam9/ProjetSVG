@@ -4,14 +4,11 @@
 
 #include "include/serveur.hpp"
 
-#include <utility>
-
 #include "../vendor/exceptions/udpSendingException.hpp"
 
 using namespace std;
 
-Serveur::Serveur(char * IMAGE_SVG,DataParser dataParser) {
-    this->dataParser=dataParser;
+Serveur::Serveur(char * IMAGE_SVG) {
 
     this->IMAGE_SVG=IMAGE_SVG;
 
@@ -72,12 +69,14 @@ void Serveur::startServer(Window& w) {
 
         cbor::binary binaryEncodedMessage = encodedMessge;
 
+        DataParser dataParser = DataParser::getInstance();
 
-        std::vector<Message> vT = this->dataParser.lireMessage(binaryEncodedMessage);
+
+        std::vector<Message> vT = dataParser.lireMessage(binaryEncodedMessage);
 
         if (vT[0].getNomElement() == "?") { //si le message reçu commence par un '?' alors on envoie les driven au client
             this->envoiDesAttributs(w,from);
-            this->envoiDuCss(w,from);
+            this->envoiDuCss(from);
         } else {
 
             w.update(vT);
@@ -86,9 +85,6 @@ void Serveur::startServer(Window& w) {
 
 }
 
-int Serveur::getMaSocket() const{
-    return this->sock;
-}
 
 void Serveur::envoiDesAttributs(Window& w,sockaddr_in from) {
 
@@ -110,9 +106,11 @@ void Serveur::envoiDesAttributs(Window& w,sockaddr_in from) {
 
 }
 
-void Serveur::envoiDuCss(Window &w, sockaddr_in from) {
+void Serveur::envoiDuCss(sockaddr_in from) {
 
-    cbor::map map = this->dataParser.getCss();
+    DataParser dataParser = DataParser::getInstance();
+
+    cbor::map map = dataParser.getCss();
 
     std::string s ="Les elements de type style sont : \n";
 

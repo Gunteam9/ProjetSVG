@@ -286,7 +286,7 @@ std::map<string,std::map<string,string>> DataParser::getCssValues() {
             while(s.length()>2) {
                 int indicefin = s.find(";");
                 std::string couple = s.substr(0, indicefin);
-                std::string type =  couple.substr(0,couple.find(":")); // changer le couple.find en s.find
+                std::string type =  couple.substr(0,couple.find(":"));
                 std::string valeur = couple.substr(couple.find(":")+2,couple.length());
 
                 map1.insert({type,valeur});
