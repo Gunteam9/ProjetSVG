@@ -79,11 +79,13 @@ void functions::sendData() {
     }
     cout << "Message envoyé" << endl;
 
+
     // Réception des informations modifiables
     if (data.begin()->first == "?") {
         data = {};
         getModifiableInformations();
     }
+    this->data.clear();
 }
 
 
