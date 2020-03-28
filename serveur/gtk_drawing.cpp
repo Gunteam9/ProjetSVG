@@ -9,6 +9,15 @@
 
 #include "include/window.hpp"
 
+/**
+ * @brief Cette fonction est appelée à chaque fois qu'il faut redessiner sur le canva cairo. 
+ * 
+ * @param cr le canva cairo
+ * @param svg_handle le handler pour le fichier svg
+ * @param tx longueur de la fenetre
+ * @param ty largeur de la fenetre
+ * @param w objet Window.
+ */
 static void do_drawing_svg(cairo_t * cr, RsvgHandle * svg_handle, int tx, int ty, Window& w)
 {
     tinyxml2::XMLPrinter printer;
@@ -35,6 +44,14 @@ static void do_drawing(cairo_t* cr, int tx, int ty, Window& w){
     do_drawing_svg(cr, w.getSvgHandle(), tx, ty, w);
 }
 
+/**
+ * @brief Cette fonction est un callback gtk appelé à chaque fois qu'il reçoit un event draw. Il redessine sur la fenetre en conséquence.
+ * 
+ * @param widget 
+ * @param cr 
+ * @param user_data 
+ * @return gboolean 
+ */
 static gboolean on_draw_event(GtkWidget *widget, cairo_t *cr, gpointer user_data){
     Window* w = static_cast<Window*>(user_data);
     GtkWindow* window = GTK_WINDOW(w->getWindow());

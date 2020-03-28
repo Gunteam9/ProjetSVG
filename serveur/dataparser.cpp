@@ -8,6 +8,14 @@
 
 #include "include/dataparser.hpp"
 
+/**
+ * @brief Cette fonction nous donne des valeurs HSV grâce aux paramètres donnés correspondants respectivement à des valeur RGB.
+ * 
+ * @param r composante rouge
+ * @param g composante verte
+ * @param b composante bleue
+ * @return std::vector<double> le vecteur contenant les valeurs HSV. 
+ */
 std::vector<double> rgbToHsv(float r, float g, float b){
     color::hsv<float> hsvT({0, 0, 100});
     color::rgb<float> rgbTest({r/255, g/255, b/255});
@@ -15,12 +23,29 @@ std::vector<double> rgbToHsv(float r, float g, float b){
     return std::vector<double>({hsvT[0], hsvT[1], hsvT[2]});
 }
 
+/**
+ * @brief Cette fonction nous permet de normaliser un angle qui sera utiliser pour obtenir une position dans la palette de couleur.
+ * 
+ * @param a un angle en degré
+ * @return double l'angle normalisé
+ */
 double normAngle(double a){
     a =  std::fmod(a, 360);
     a += (a < 0) ? 360 : 0;
     return a;
 }
 
+/**
+ * @brief Cette fonction va effectuer l'interpolation de couleur à partir de l'ancienne valeur vers la nouvelle valeur en fonction d'un nombre de pas
+ * donné en paramètre. Pour ce faire, on récupère la valeur héxadécimale des deux couleurs. Puis on prend les valeurs HSV de ces dernières.
+ * On effectue l'interpolation grâce à une formule. Enfin on repasse la valeur obtenue en RGB, puis on prend la valeur Héxadécimale de cette valeur
+ * et on la met dans le vecteur.
+ * 
+ * @param oldColor l'ancienne couleur
+ * @param newColor la nouvelle couleur
+ * @param steps le nombre de pas à effectuer
+ * @return std::vector<std::string> les valeurs interpolées entre l'ancienne valeur et la nouvelle.
+ */
 std::vector<std::string> colorInterpolation(std::string oldColor, std::string newColor, double steps){
     std::vector<std::string> values;
 
@@ -64,6 +89,15 @@ std::vector<std::string> colorInterpolation(std::string oldColor, std::string ne
     return values;
 }
 
+/**
+ * @brief Cette fonction nous permet d'interpoler deux coordonnées. Son fonctionnement est identique à l'interpolation pour les nombres 
+ * (voir fonction : numberInterpolation)
+ * 
+ * @param oldValue l'ancienne valeur
+ * @param newValue la nouvelle valeur
+ * @param steps le nombre de pas à effectuer.
+ * @return std::vector<std::string> le vecteur de valeurs interpolées entre l'ancienne valeur et la nouvelle.
+ */
 std::vector<std::string> coordinateInterpolation(std::string oldValue, std::string newValue, double steps){
     std::vector<std::string> values;
 
@@ -86,6 +120,15 @@ std::vector<std::string> coordinateInterpolation(std::string oldValue, std::stri
     return values;
 }
 
+/**
+ * @brief Cette fonction nous permet d'interpoler deux nombres. La fonction d'interpolation est une formule assez simple (old + (new - old) * pas), nous l'appliquons juste
+ * pour chaque pas et nous mettons la valeur obtenue dans le vecteur.
+ * 
+ * @param oldValue l'ancienne valeur
+ * @param newValue la nouvelle valeur
+ * @param steps le nombre de pas 
+ * @return std::vector<std::string> le vecteurs contenant les différentes valeurs.
+ */
 std::vector<std::string> numberInterpolation(std::string oldValue, std::string newValue, double steps){
     std::vector<std::string> values;
 
@@ -112,6 +155,14 @@ std::vector<std::string> numberInterpolation(std::string oldValue, std::string n
     return values;
 }
 
+/**
+ * @brief Nous n'effectuons pas d'interpolation pour les attributs de style.
+ * 
+ * @param oldRule ancienne règle css
+ * @param newRule nouvelle règle css
+ * @param steps nombre de pas
+ * @return std::vector<std::string> le vecteur contenant les deux valeurs : ancienne, nouvelle. 
+ */
 std::vector<std::string> styleInterpolation(std::string oldRule, std::string newRule, double steps){
     std::vector<std::string> values;
 
@@ -121,6 +172,10 @@ std::vector<std::string> styleInterpolation(std::string oldRule, std::string new
     return values;
 }   
 
+/**
+ * @brief Ici on va initialiser la map de couleur, mais aussi la map qui associe à chaque type d'attribut SVG une fonction d'interpolation.
+ * 
+ */
 DataParser::DataParser(){
     this->initColorMap();
     this->interpolationMap = {
@@ -217,6 +272,14 @@ vector<Message> DataParser::lireMessage(cbor::binary encodedItem) {
     return mesMessages;
 }
 
+/**
+ * @brief Pour pouvoir valider les valeurs on regarde dans le fichier de type, on prend la regex et on applique celle ci sur la valeur en paramètre.
+ * 
+ * @param type type de l'attribut svg
+ * @param value valeur voulant être appliquée
+ * @return true si la regex s'applique
+ * @return false sinon
+ */
 bool DataParser::validateValue(const char* type, const char* value){
     std::ifstream types("serveur/config/types.cfg");
     std::string ligne;
@@ -241,6 +304,16 @@ bool DataParser::validateValue(const char* type, const char* value){
     return matching;
 }
 
+/**
+ * @brief Cette fonction est une fonction assez générique, nous permettant d'appeler la bonne fonction en fonction du type d'attribut
+ * donné en paramètre.
+ * 
+ * @param type type de l'attribut SVG
+ * @param oldValue ancienne valeur
+ * @param newValue nouvelle valeur
+ * @param steps nombre de pas
+ * @return std::vector<std::string> les valeurs interpolées. 
+ */
 std::vector<std::string> DataParser::interpolate(std::string type, std::string oldValue, std::string newValue, double steps){
     return this->interpolationMap[type](oldValue, newValue, steps);
 }
@@ -274,9 +347,6 @@ cbor::map DataParser::getCss() {
     return map;
 }
 
-
-
-
 std::map<string,std::map<string,string>> DataParser::getCssValues() {
     std::map<const char *,const  char*>::iterator it ;
 
@@ -308,8 +378,6 @@ std::map<string,std::map<string,string>> DataParser::getCssValues() {
     }
     return map;
 }
-
-
 
 void DataParser::setLesElementsDriven(const map<const char *, const char *> &lesElementsDriven) {
     DataParser::lesElementsDriven = lesElementsDriven;
