@@ -116,6 +116,7 @@ std::vector<std::string> coordinateInterpolation(std::string oldValue, std::stri
         values.push_back(ifs.str());
     }
 
+    //values.push_back(std::to_string(max));
 
     return values;
 }
@@ -184,7 +185,7 @@ DataParser::DataParser(){
         {"integer", &numberInterpolation},
         {"opacity-value", &numberInterpolation},
         {"angle", &numberInterpolation},
-        {"coordinate", &numberInterpolation},
+        {"coordinate", &coordinateInterpolation},
         {"style", &styleInterpolation}
     };
 }
