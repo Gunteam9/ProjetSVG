@@ -32,12 +32,6 @@ class DataParser {
         static DataParser instance;
 
         /**
-         * @brief Initialisation de la map de couleurs.
-         * 
-         */
-        void initColorMap();
-
-        /**
          * @brief Cette map associe un type d'attribut SVG à une fonction d'interpolation.
          * Cette fonction prend en paramètre la valeur actuelle, la nouvelle valeur ainsi que le nombre 
          * de pas à effectuer pour passer de l'ancienne à la nouvelle valeur.
@@ -47,6 +41,13 @@ class DataParser {
 
     public:
         DataParser();
+
+        /**
+         * @brief Initialisation de la map de couleurs.
+         * 
+         */
+        void initColorMap();
+
 
         //Getter
         const map<const char *, const char *> &getLesElementsDriven() const;
