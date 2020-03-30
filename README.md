@@ -1,4 +1,5 @@
-﻿## **Rapport d'avancement du projet - Toutes les tâches demandées ont été mises en place :**
+﻿
+**Rapport d'avancement du projet - Toutes les tâches demandées ont été mises en place :**
 
 ## **Côté serveur :**
 
