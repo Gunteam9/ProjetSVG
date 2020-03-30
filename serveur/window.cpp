@@ -167,6 +167,8 @@ void Window::update(std::vector<Message> const& v){
         tinyxml2::XMLElement* attribut = getElementByName(drivens, m.getNomElement());
         const char* nomAttribut = attribut->Attribute("target");
         const char* typeAttribut = attribut->Attribute("type");
+        const char* delay = attribut->Attribute("delay") ? attribut->Attribute("delay") : "5";
+        double delayDouble = std::stoi(delay);
         tinyxml2::XMLElement* parent = attribut->Parent()->ToElement();
         
         exprtk::parser<float> parser;
@@ -183,12 +185,12 @@ void Window::update(std::vector<Message> const& v){
         bool matchingValue = DataParser::getInstance().validateValue(typeAttribut, value.c_str());
         if(matchingValue){
             std::string parentAttribute = parent->Attribute(nomAttribut);
-            std::vector<std::string> values = DataParser::getInstance().interpolate(typeAttribut, parent->Attribute(nomAttribut), value, 30.0);
+            std::vector<std::string> values = DataParser::getInstance().interpolate(typeAttribut, parent->Attribute(nomAttribut), value, 50.0);
             std::vector<Message> messages;
             for(std::string s : values){
                 parent->SetAttribute(nomAttribut, s.c_str());
                 gtk_widget_queue_draw(Window::darea);
-                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                std::this_thread::sleep_for(std::chrono::milliseconds((int)delayDouble * 10));
             }
         }else{
             std::cout << "Parametre pas conforme" << std::endl;
