@@ -47,4 +47,4 @@ $(EXEC_SERVEUR) : $(OBJ_VENDOR) $(OBJ_SERVEUR)
 .PHONY : clean
 
 clean:
-	rm -f serveur/*.o client/*.o vendor/exceptions/*.o start_client start_serveur demo/start_demo_dvd
+	rm -f serveur/*.o client/*.o vendor/exceptions/*.o start_client start_serveur demo/start_demo_dvd start_demo_dvd
