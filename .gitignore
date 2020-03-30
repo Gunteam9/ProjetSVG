@@ -4,5 +4,6 @@ cmake-build-debug
 *.o
 start_client
 start_serveur
+start_demo_dvd
 build
 client/test_gtk/.vscode

@@ -151,7 +151,7 @@ std::vector<std::string> numberInterpolation(std::string oldValue, std::string n
         values.push_back(ifs.str());
     }
 
-    values.push_back(std::to_string(max));
+    values.push_back(newValue);
 
     return values;
 }
@@ -316,7 +316,10 @@ bool DataParser::validateValue(const char* type, const char* value){
  * @return std::vector<std::string> les valeurs interpolées. 
  */
 std::vector<std::string> DataParser::interpolate(std::string type, std::string oldValue, std::string newValue, double steps){
-    return this->interpolationMap[type](oldValue, newValue, steps);
+    std::replace(oldValue.begin(), oldValue.end(), ',', '.');
+    std::replace(newValue.begin(), newValue.end(), ',', '.');
+    return this->interpolationMap.find(type) != this->interpolationMap.end() ? this->interpolationMap[type](oldValue, newValue, steps) :
+    std::vector({oldValue, newValue});
 }
 
 cbor::map DataParser::getCss() {

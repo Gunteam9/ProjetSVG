@@ -20,13 +20,17 @@ OBJ_DEMO_DVD = $(SRC_DEMO_DVD:.cpp=.o)
 # executables
 EXEC_CLIENT = start_client
 EXEC_SERVEUR = start_serveur
-EXEC_DEMO_DVD = start_demo_dvd
+EXEC_DEMO_DVD = demo/start_demo_dvd
+EXEC_START_DEMO_DVD = start_demo_dvd
 
 # Règle de compilation
-all : clean $(EXEC_CLIENT) $(EXEC_SERVEUR) $(EXEC_DEMO_DVD)
+all : clean $(EXEC_CLIENT) $(EXEC_SERVEUR) $(EXEC_DEMO_DVD) $(EXEC_START_DEMO_DVD)
 
 mem : $(EXEC_CLIENT)
 	valgrind --leak-check=full ./$<
+
+$(EXEC_START_DEMO_DVD) :
+	echo "./demo/start_demo_dvd 1" > start_demo_dvd && chmod u+x start_demo_dvd
 
 $(EXEC_DEMO_DVD) : $(OBJ_DEMO_DVD) $(OBJ_VENDOR)
 	$(CPPC) $(CPPFLAGS) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
@@ -43,4 +47,4 @@ $(EXEC_SERVEUR) : $(OBJ_VENDOR) $(OBJ_SERVEUR)
 .PHONY : clean
 
 clean:
-	rm -f serveur/*.o client/*.o vendor/exceptions/*.o start_client start_serveur start_demo_dvd
+	rm -f serveur/*.o client/*.o vendor/exceptions/*.o start_client start_serveur demo/start_demo_dvd
